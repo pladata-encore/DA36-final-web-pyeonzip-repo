@@ -34,56 +34,64 @@ class UserForm(UserCreationForm):
         fields = ('username', 'password', 'email', 'name','phoneNumber')
 
 class Product(models.Model):
-    productId = models.AutoField(primary_key=True)
+    productId = models.AutoField(primary_key=True) #크롤링 후 수정 예정
     productName = models.CharField(max_length=100)
-    convenientStoreName = models.IntegerField()
+    convenientStoreName = models.IntegerField() #0,1,2,3
     productPrice = models.IntegerField()
-    productImageUrl = models.URLField()
-    created_at = models.DateTimeField(auto_now_add=True)
+    productImageUrl = models.URLField() #Imagefield 차이점 확인 후!! 
+    updated_at = models.DateTimeField(auto_now_add=True)
+    likes=models.ManyToManyField(User, null=True, blank=True, related_name='Product_likes') # 투표일 추가 가능인지 check , 불가능일 시 : model 따로 만들어
 
 class Review(models.Model):
-    reviewId=models.AutoField(primary_key=True)
-    author = models.ForeignKey(User,null=True, blank=True, related_name='User_reviews')
-    productId=models.ForeignKey(Product,null=True, blank=True, related_name='Product_reviews')
-    tasteContent = models.TextField()
+    reviewId=models.AutoField(primary_key=True) # okay
+    authorId = models.ForeignKey(User,null=True, blank=True, related_name='User_reviews') # author_id, user_id [erd_cloud 통일]
+    productId=models.ForeignKey(Product,null=True, blank=True, related_name='Product_reviews')  
+    tasteContent = models.TextField() 
     priceContent = models.TextField()
+    convenienceContent=models.TextField() # erd cloud 추가
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    profileUrl=models.URLField()
-    voter = models.ManyToManyField(User, null=True, blank=True, related_name='review_voters')  # 추천인 추가
+    reviewImageUrl=models.URLField() # url, imageField
+    recommender = models.ManyToManyField(User, null=True, blank=True, related_name='Review_voters')  # 투표일 추가 가능인지 check , 불가능일 시 : model 따로 만들어
 
 class ReviewForm(forms.ModelForm):
     class Meta:
-        model = Review
-        fields = ['tasteContent', 'priceContent']  # Form클래스에서 사용할 Model클래스 속성
+        model = Review 
+        fields = ['productId','tasteContent', 'priceContent','convenienceContent','reviewImageUrl']  # Form클래스에서 사용할 Model클래스 속성
 
         labels = {
-            'subject': '맛 리뷰',
-            'content': '가격 리뷰',
+            'tasteContent': '맛 리뷰',
+            'priceContent': '가격 리뷰',
+            'convenienceContent':'편리성 리뷰',
+            'productId' : '제품',
+            'reviewImageUrl' : '제품 사진',
         }
 
 class Category(models.Model):
     categoryId=models.AutoField(primary_key=True)
-    categoryName=models.CharField(max_length=100)
+    categoryName=models.CharField(max_length=10)
 
 class Community(models.Model):
     communityId=models.AutoField(primary_key=True)
     categoryId=models.ForeignKey(Category,null=True, blank=True)
-    author = models.ForeignKey(User,null=True, blank=True, related_name='User_community')
-    productId=models.ForeignKey(Product,null=True, blank=True, related_name='Product_reviews')
+    authorId = models.ForeignKey(User,null=True, blank=True, related_name='User_community')
+    productId=models.ForeignKey(Product,null=True, blank=True, related_name='Product_reviews') # 3개가 참조 가능 ? ? ?  ? ?  
     communityTitle=models.CharField(max_length=100)
     communityContent = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     deadline=models.DateField()
-    voter = models.ManyToManyField(User, null=True,blank=True,related_name='community_voters')  # 추천인 추가
+    voter = models.ManyToManyField(User, null=True,blank=True,related_name='Community_voters')  # 투표일 추가 가능인지 check , 불가능일 시 : model 따로 만들어
 
 
 class CommunityForm(forms.ModelForm):
     class Meta:
         model = Review
-        fields = ['communityTitle', 'communityContent']  # Form클래스에서 사용할 Model클래스 속성
+        fields = ['categoryId','communityTitle', 'communityContent','productId']  # Form클래스에서 사용할 Model클래스 속성
 
         labels = {
-            'subject': '제목',
-            'content': '내용',
+            'categoryId' : '카테고리',
+            'communityTitle': '제목',
+            'communityContent': '내용',
+            'productId' : '제품 선택',
+    
         }
