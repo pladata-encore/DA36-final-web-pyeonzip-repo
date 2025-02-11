@@ -3,10 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>편ZIP</title>
-        <a href="{%  url 'board:board_write' %}"><p>community</p></a>
-{#        <a href="{%  url 'review_:review_write' %}"><p>review</p></a>#}
-    </div>
-
+        <div>
+            <button><a href="{%  url 'board:board_write' %}"><p>커뮤니티</p></a></button>
+        </div>
+    
+        <div>
+            <button><a href="{% url 'review:review_write' %}"><p>리뷰</p></a></button>
+        </div>
+    
 </head>
 <body>
 
