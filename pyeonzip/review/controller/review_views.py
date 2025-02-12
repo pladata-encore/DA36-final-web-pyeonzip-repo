@@ -2,13 +2,15 @@ from django.shortcuts import redirect, render
 
 from review.entity.models import ReviewForm
 
-
 def review_write(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST)
         if form.is_valid():
             form.save()
             pass
+        else:
+            print('form.errors=',form.errors)
+    else:
+        form = ReviewForm()
 
-
-    return render(request, 'review_/review_write.html', {'ReviewForm': ReviewForm})
+    return render(request, 'review/review_form.html', {'ReviewForm': ReviewForm})
