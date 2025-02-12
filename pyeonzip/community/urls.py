@@ -19,8 +19,11 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from django.conf import settings
 from django.views.generic import RedirectView
-from community.controller import views
+from community.controller import community_views
 
+app_name='community'
 urlpatterns = [
-    path("", views.index, name="index"),
+    path("community_list/", community_views.community_list, name="community_list"),
+    path("community_write/", community_views.community_write, name="community_write"),
+
 ]
