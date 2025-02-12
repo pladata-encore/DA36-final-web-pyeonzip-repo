@@ -19,8 +19,9 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from django.conf import settings
 from django.views.generic import RedirectView
-from review.controller import views
-
+from review.controller import views,review_views
+app_name='review'
 urlpatterns = [
     path("", views.index, name="index"),
+    path('review_write/', review_views.review_write, name='review_write'),
 ]
