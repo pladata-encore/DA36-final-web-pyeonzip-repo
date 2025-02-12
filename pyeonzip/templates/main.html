@@ -1,15 +1,14 @@
 {% extends 'layout/base.html'%}
 {% block content %}
     <h1>pyeonzip</h1>
-    <div><button type="button" >제품보기</button></div>
+    <div><button type="button" ><a href="{%  url 'community:community_list' %}">커뮤니티작성</a></button></div>
     <br>
     <br>
-    <div><button type="button" >리뷰작성</button></div>
+    <div><button type="button" ><a href="{%  url 'review:review_write' %}">리뷰</a></button></div>
     <br>
     <br>
-    <div><button type="button" >커뮤니티작성</button></div>
+    <div><button type="button"  >제품보기</button></div>
     <br>
     <br>
     <div><button type="button" >마이페이지</button></div>
-
 {% endblock content %}
