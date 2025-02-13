@@ -12,6 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+<<<<<<< HEAD
+from static import *
+=======
+>>>>>>> 2dadfdd9eb7f3b76777a7df27fa166a60a84c21d
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -38,9 +42,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.sites',
     'review',
     'product',
+<<<<<<< HEAD
+    'oauth',
+    'community'
+]
+
+=======
     'users',
     'community',
     'allauth',
@@ -55,6 +64,7 @@ AUTHENTICATION_BACKENDS = (
     'allauth.account.auth_backends.AuthenticationBackend',
 )
 
+>>>>>>> 2dadfdd9eb7f3b76777a7df27fa166a60a84c21d
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -63,7 +73,6 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'allauth.account.middleware.AccountMiddleware', # 추가
 ]
 
 ROOT_URLCONF = 'pyeonzip.urls'
@@ -139,13 +148,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+# BASE_DIR = Path(__file__).resolve().parent.parent
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # staticfiles 디렉토리 지정
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -156,11 +167,10 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # 로그인 성공후 리다이렉트 페이지 지정
 # (기본값: /accounts/profile/)
-
-SITE_ID = 1
-
-LOGIN_REDIRECT_URL = '/'  # 로그인 후 리다이렉트 될 경로\
+LOGIN_REDIRECT_URL = '/'
 
 # 파일 업로드를 위한 설정
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
