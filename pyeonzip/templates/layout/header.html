@@ -1,7 +1,8 @@
 {%  load static %}
 
-<nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top shadow">
-    <div class="container">
+<header class="header-bar">
+<nav class="navbar navbar-expand-lg navbar-light bg-light shadow">
+    <div class="container-fluid">
         <!-- 🔹 로고 -->
         <a class="navbar-brand" href="#">
             <img src="{% static 'images/logo.png' %}" alt="Logo" width="120" height="40">
@@ -24,11 +25,31 @@
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'community:community_list' %}">Community</a>
                 </li>
-                
+
                 <li class="nav-item">
-                    <a class="nav-link btn btn-primary text-white px-3" href="#">Login</a>
-                </li>
-                
+                    {% if user.is_authenticated %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" title="{{ user.username }}">
+                                {% if user.userdetail.profile %}
+                                    <img src="{{ user.userdetail.profile.url }}" class="rounded-circle" width="26"/>
+                                {% else %}
+                                    <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
+                                {% endif %}
+
+
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'users:logout' %}">로그아웃</a>
+                        </li>
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link btn btn-primary text-white px-3" href="{%  url 'users:login' %}">Login</a>
+                    </li>
+                {% endif %}
+
+            </li>
+
                 <li class="nav-item">
                     <select class="form-select" aria-label="Default select example" id='write'>
                       <option selected>글쓰기</option>
@@ -36,12 +57,13 @@
                       <option value="{% url 'review:review_write' %}">리뷰작성</option>
                     </select>
                 </li>
-                
-                
+
+
             </ul>
         </div>
     </div>
 </nav>
+</header>
 <!-- Bootstrap JS (footer에 배치) -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 
