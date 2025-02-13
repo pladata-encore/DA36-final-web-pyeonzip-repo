@@ -25,5 +25,5 @@ app_name='users'
 urlpatterns = [
     path('login/', views.login, name="login"),
     path('logout/', views.logout, name="logout"),
-    path('mypage/',mypage_views.mypage, name="mypage"),
+    path('mypage_update/',mypage_views.mypage_update, name="mypage_update"),
 ]

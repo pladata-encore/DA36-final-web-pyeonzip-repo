@@ -17,5 +17,16 @@ class UserDetail(models.Model):
     age_range = models.CharField(max_length=10, blank=True, null=True)
     reward=models.IntegerField(blank=True, null=False, default=0)
     profile=models.ImageField(upload_to='profile/',null=True, blank=True)
+    email=models.EmailField(blank=True, null=False, default='')
 
 
+class mypageUpdateForm(forms.ModelForm):
+    class Meta:
+        model = UserDetail
+        fields = ['uid', 'nickname', 'profile']
+
+        labels = {
+            'uid': '유저 아이디',
+            'nickname': '유저 닉네임',
+            'profile': '유저 프로필'
+        }
