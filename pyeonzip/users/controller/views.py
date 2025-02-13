@@ -11,7 +11,7 @@ def login(request):
 
 def logout(request):
     auth.logout(request)
-    return redirect('index')
+    return render(request,'main.html')
 
 
 @receiver(post_save, sender=User)
