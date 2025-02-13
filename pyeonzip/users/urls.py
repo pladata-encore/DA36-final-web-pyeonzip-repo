@@ -19,10 +19,11 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from django.conf import settings
 from django.views.generic import RedirectView
-from users.controller import views
+from users.controller import views, mypage_views
 
 app_name='users'
 urlpatterns = [
     path('login/', views.login, name="login"),
     path('logout/', views.logout, name="logout"),
+    path('mypage/',mypage_views.mypage, name="mypage"),
 ]

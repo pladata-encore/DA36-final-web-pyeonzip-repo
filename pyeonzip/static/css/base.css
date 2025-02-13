@@ -1,23 +1,21 @@
-/*.logo {*/
-/*    font-family:'Noto Sans KR';*/
-/*}*/
-
-/*.header {*/
-/*    text-align:center; margin: 2rem 0; font-family: 'Noto Sans KR'*/
-/*}*/
-
-/*.footer_buttom {*/
-/*    font-size: 0.6rem;*/
-/*}*/
-
-/*.footer {*/
-/*    text-align:center; margin-top: 2rem; font-family:'Noto Sans KR'*/
-/*}*/
-
+/* ✅ 네비게이션 바 스타일 */
+.header-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: white;
+    z-index: 1050;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 32px 0;  /* ✅ 패딩 제거 */
+    height: 80px; /* ✅ 네비게이션 높이 고정 */
+}
 /* ✅ 네비게이션 바 스타일 */
 .navbar {
-    padding-top: 5px;   /* 상단 패딩 줄이기 */
-    padding-bottom: 5px; /* 하단 패딩 줄이기 */
+    padding: 32px 0;  /* ✅ 상하 패딩 제거 */
+    height: 80px; /* ✅ 네비게이션 높이 고정 */
+    display: flex;
+    align-items: center; /* ✅ 수직 중앙 정렬 */
 }
 
 /* ✅ 네비게이션 바 링크 스타일 */
@@ -43,15 +41,13 @@
 }
 
 /* ✅ 컨텐츠가 헤더 밑으로 가도록 여백 추가 */
-.container {
-    margin-top: 80px;
-}
+/*.container {*/
+/*    margin-top: 60px;*/
+/*}*/
 
 /* ✅ 하단 고정된 footer 스타일 */
 .footer {
     position: fixed;  /* 하단 고정 */
-    bottom: 0;        /* 페이지 하단 */
-    left: 0;
     width: 100%;      /* 화면 너비 */
     background-color: #333;  /* 배경색 */
     color: white;     /* 텍스트 색상 */
@@ -62,6 +58,6 @@
 
 /* 본문 컨텐츠 영역에 아래 여백 추가 */
 body {
-    padding-top: 150px;
-    padding-bottom: 50px;  /* footer와 겹치지 않도록 여백 추가 */
+    padding-top: 100px;  /* ✅ 헤더 높이만큼 조정 */
+    padding-bottom: 50px; /* ✅ footer와 겹치지 않도록 여백 유지 */
 }
