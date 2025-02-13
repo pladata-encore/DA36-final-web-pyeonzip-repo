@@ -14,10 +14,8 @@ class UserDetail(models.Model):
     uid= models.CharField(max_length=255, blank=True, null=True)
     nickname = models.CharField(max_length=255, blank=True, null=True)
     gender = models.CharField(max_length=10, blank=True, null=True)
-    birthday = models.DateField(blank=True, null=True)
+    age_range = models.CharField(max_length=10, blank=True, null=True)
+    reward=models.IntegerField(blank=True, null=False, default=0)
+    profile=models.ImageField(upload_to='profile/',null=True, blank=True)
 
-class UserDetailForm(forms.ModelForm):
-    class Meta:
-        model = UserDetail
-        fields = ['nickname', 'birthday']
 

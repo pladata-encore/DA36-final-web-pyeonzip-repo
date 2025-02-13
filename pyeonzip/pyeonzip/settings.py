@@ -163,8 +163,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # (기본값: /accounts/profile/)
 LOGIN_REDIRECT_URL = '/'
 
+SOCIALACCOUNT_LOGIN_ON_GET = True
 # 파일 업로드를 위한 설정
 MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, '/static/images/review/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
