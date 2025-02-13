@@ -1,7 +1,7 @@
 {% extends '../layout/base.html' %}
 
 {% block content %}
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
 
         <div class="p-5">
@@ -26,7 +26,7 @@
         <div class="p-5">
           <label for="reviewImageUrl" class="form-label">사진 뿅</label>
             <br>
-          <input class="form-control" type="file" id="reviewImageUrl" name="convenienceContent">
+          <input class="form-control" type="file" id="reviewImageUrl" name="reviewImageUrl">
         </div>
 
         <button>저장</button>

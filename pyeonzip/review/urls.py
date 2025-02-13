@@ -24,3 +24,4 @@ app_name='review'
 urlpatterns = [
     path('review_write/', review_views.review_write, name='review_write'),
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
