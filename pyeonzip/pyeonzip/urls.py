@@ -21,11 +21,14 @@ from django.conf import settings
 from django.views.generic import RedirectView
 from django.views.generic import TemplateView
 
+app_name="product"
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='main.html'), name='home'),
     path('review/',include('review.urls')),
     path('community/', include('community.urls')),
     path('product/', include('product.urls')),
-    path('oauth/', include('oauth.urls')),
+    path('mypage/', include('users.urls')),
+
+    path('accounts/', include('allauth.urls')),  # 추가
 ]
