@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+from static import *
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -127,13 +128,15 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
+# BASE_DIR = Path(__file__).resolve().parent.parent
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # staticfiles 디렉토리 지정
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -149,3 +152,5 @@ LOGIN_REDIRECT_URL = '/'
 # 파일 업로드를 위한 설정
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
