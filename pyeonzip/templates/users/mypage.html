@@ -1,0 +1,12 @@
+{% extends '../layout/base.html' %}
+
+{% block content %}
+{% block title %} 마이페이지 {% endblock %}
+    
+        <div class="p-5">
+          <label for="reviewImageUrl" class="form-label">사진 뿅</label>
+            <br>
+          <input class="form-control" type="file" id="reviewImageUrl" name="reviewImageUrl">
+        </div>
+        <button>저장</button>
+{% endblock content %}
