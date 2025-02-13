@@ -1,0 +1,8 @@
+{% extends '../layout/base.html' %}
+
+{% block content %}
+
+ {% for p in product %}
+     <li>{{ p.product_name }} </li>
+{% endfor %}
+{% endblock content %}
