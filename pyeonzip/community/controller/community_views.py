@@ -1,10 +1,12 @@
 from django.shortcuts import render
 from community.entity.models import Community, CommunityForm
+from django.contrib.auth.decorators import login_required
 
 def community_list(request):
     communities = Community.objects.all()
     return render(request, 'community/community_list.html', {'communities': communities })
 
+@login_required(login_url='users:login')
 def community_write(request):
     if request.method == 'POST':
         form = CommunityForm(request.POST)
