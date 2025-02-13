@@ -19,17 +19,10 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from django.conf import settings
 from django.views.generic import RedirectView
-from django.views.generic import TemplateView
+from users.controller import views
 
-
+app_name='users'
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='main.html'), name='home'),
-    path('review/',include('review.urls')),
-    path('community/', include('community.urls')),
-    path('product/', include('product.urls')),
-    path('users/', include('users.urls')),
-    path('accounts/', include('allauth.urls')),  # 추가
-
-
+    path('login/', views.login, name="login"),
+    path('logout/', views.logout, name="logout"),
 ]

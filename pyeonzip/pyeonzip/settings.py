@@ -12,7 +12,6 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
-from users.models import SignupForm,CustomUser
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -49,18 +48,12 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.naver',
     'allauth.socialaccount.providers.kakao',
-    'rest_framework',
-    'rest_framework.authtoken',
-    'rest_auth',
-    'rest_auth.registration',
 ]
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
     'allauth.account.auth_backends.AuthenticationBackend',
 )
-ACCOUNT_SIGNUP_FORM_CLASS = 'users.SignupForm'
-AUTH_USER_MODEL = 'users.CustomUser'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -101,10 +94,10 @@ WSGI_APPLICATION = 'pyeonzip.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pyeonzip',
-        'USER': 'cy',
-        'PASSWORD': 'cy',
-        'HOST': '127.0.0.1',
+        'NAME': 'pyeonzipdb',
+        'USER': 'pyeonzip',
+        'PASSWORD': 'pyeonzip',
+        'HOST': '13.125.248.218',
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',
