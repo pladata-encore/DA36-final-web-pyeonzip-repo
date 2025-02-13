@@ -2,9 +2,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.dispatch import receiver
 from django.db.models.signals import post_save
-from allauth.socialaccount.models import SocialAccount
+# from allauth.socialaccount.models import SocialAccount
 from django import forms
-from allauth.socialaccount.signals import pre_social_login
+# from allauth.socialaccount.signals import pre_social_login
 
 
 # Create your models here.
