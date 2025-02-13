@@ -1,10 +1,6 @@
 from django.shortcuts import render
 from community.entity.models import Community, CommunityForm
 
-def community_main(request):
-    return render(request, 'community/community_main.html', {'community_main':community_main})
-
-
 def community_list(request):
     communities = Community.objects.all()
     return render(request, 'community/community_list.html', {'communities': communities })
