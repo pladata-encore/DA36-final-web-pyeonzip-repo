@@ -32,6 +32,7 @@ def user_detail_naver(user_detail, data):
     user_detail.uid = data.get("id")
     user_detail.gender = data.get("gender")
     user_detail.age_range = data.get("age")
+    user_detail.email=data.get("email")
     user_detail.extra_data = data  # 원본 JSON 저장
     user_detail.save()
 
@@ -44,5 +45,7 @@ def user_detail_kakao( user_detail ,data ):
         user_detail.gender = "F"
     user_detail.gender=gender
     user_detail.age_range = data.get("age_range")
+    kakao_account=data.get("kakao_account")
+    user_detail.email=kakao_account.get("email")
     user_detail.extra_data = data  # 원본 JSON 저장
     user_detail.save()
