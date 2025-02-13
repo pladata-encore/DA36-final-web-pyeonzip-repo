@@ -12,7 +12,10 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+<<<<<<< HEAD
 from static import *
+=======
+>>>>>>> 2dadfdd9eb7f3b76777a7df27fa166a60a84c21d
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -41,10 +44,27 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'review',
     'product',
+<<<<<<< HEAD
     'oauth',
     'community'
 ]
 
+=======
+    'users',
+    'community',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.naver',
+    'allauth.socialaccount.providers.kakao',
+]
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'allauth.account.auth_backends.AuthenticationBackend',
+)
+
+>>>>>>> 2dadfdd9eb7f3b76777a7df27fa166a60a84c21d
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -83,10 +103,10 @@ WSGI_APPLICATION = 'pyeonzip.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'pyeonzip',
-        'USER': 'cy',
-        'PASSWORD': 'cy',
-        'HOST': '127.0.0.1',
+        'NAME': 'pyeonzipdb',
+        'USER': 'pyeonzip',
+        'PASSWORD': 'pyeonzip',
+        'HOST': '13.125.248.218',
         'PORT': '3306',
         'OPTIONS': {
             'charset': 'utf8mb4',
