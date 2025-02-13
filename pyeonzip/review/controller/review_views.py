@@ -4,7 +4,7 @@ from review.entity.models import ReviewForm
 
 def review_write(request):
     if request.method == 'POST':
-        form = ReviewForm(request.POST)
+        form = ReviewForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             pass

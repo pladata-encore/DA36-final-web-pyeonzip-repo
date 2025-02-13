@@ -16,7 +16,7 @@ class Review(models.Model):
     convenienceContent = models.TextField()  # erd cloud 추가
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    reviewImageUrl = models.URLField()  # url, imageField
+    reviewImageUrl = models.ImageField(upload_to='reviews/', null=True, blank=True)  # url, imageField, null, blank true
     recommender = models.ManyToManyField(User, null=True, blank=True,related_name='Review_recommender',through='ReviewRecommender')  # 투표일 추가 가능인지 check , 불가능일 시 : model 따로 만들어
 
 class ReviewRecommender(models.Model):
