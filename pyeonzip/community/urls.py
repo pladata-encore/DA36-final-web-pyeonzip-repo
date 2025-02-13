@@ -23,6 +23,7 @@ from community.controller import community_views
 
 app_name='community'
 urlpatterns = [
+    path("community_main", community_views.community_main, name="community_main"),
     path("community_list/", community_views.community_list, name="community_list"),
     path("community_write/", community_views.community_write, name="community_write"),
 

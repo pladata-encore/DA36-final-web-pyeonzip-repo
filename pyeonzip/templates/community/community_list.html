@@ -1,10 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>community_list</title>
-</head>
-<body>
+{% extends '../layout/base.html' %}
+{% load static %}
+
 
 {% block title %} Community List {% endblock %}
 
@@ -39,8 +35,13 @@
             </tbody>
         </table>
     </div>
-    <div><button type="button" ><a href="{%  url 'community:community_write' %}">커뮤니티작성</a></button>
+    <div><button type="button" ><a href="{%  url 'community:community_write' %}">커뮤니티작성</a></button></div>
 
     {% endblock %}
-</body>
-</html>
+
+{% block script %}
+    <script src="{% static 'js/community/community_list.js' %}"></script>
+    <script>
+    console.log('community_list.html script...');
+    </script>
+{% endblock %}
