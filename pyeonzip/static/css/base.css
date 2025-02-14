@@ -7,13 +7,18 @@
     background-color: white;
     z-index: 1050;
     box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 32px 0;  /* ✅ 패딩 제거 */
+    padding: 0;  /* ✅ 패딩 제거 */
+    margin: 0;
     height: 80px; /* ✅ 네비게이션 높이 고정 */
+    align-items: center;
+    display: flex;
 }
 /* ✅ 네비게이션 바 스타일 */
 .navbar {
-    padding: 32px 0;  /* ✅ 상하 패딩 제거 */
-    height: 80px; /* ✅ 네비게이션 높이 고정 */
+    position: relative;
+    padding: 0 !important;   /* ✅ 상하 패딩 제거 */
+    height: 100%; /* ✅ 네비게이션 높이 고정 */
+    width: 100%;
     display: flex;
     align-items: center; /* ✅ 수직 중앙 정렬 */
 }
@@ -44,6 +49,7 @@
 /*.container {*/
 /*    margin-top: 60px;*/
 /*}*/
+
 
 /* ✅ 하단 고정된 footer 스타일 */
 .footer {
