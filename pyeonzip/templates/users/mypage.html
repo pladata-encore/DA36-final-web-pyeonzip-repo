@@ -1,12 +1,21 @@
 {% extends '../layout/base.html' %}
 
 {% block content %}
-{% block title %} 마이페이지 {% endblock %}
     
-        <div class="p-5">
-          <label for="reviewImageUrl" class="form-label">사진 뿅</label>
-            <br>
-          <input class="form-control" type="file" id="reviewImageUrl" name="reviewImageUrl">
+<div class="container text-center">
+    <h2>마이페이지</h2>
+            
+        <div class="profile-section">
+            {% if user_detail.profile and user_detail.profile.url %}
+                <img src="{{ user_detail.profile.url }}" class="userprofile" alt="프로필이미지">
+            {% else %}
+                <img src="/static/images/logo.png" alt="기본이미지">
+            {% endif%}
+            <p>닉네임: {{ user_detail.nickname }}</p>
+            <p>이메일: {{ user_detail.email }}</p>
+            
+        <!--수정버튼-->
+            <a href="{% url "users:mypage_update" %}" class="btn btn-primary">수정하기</a>
         </div>
-        <button>저장</button>
+</div>
 {% endblock content %}
