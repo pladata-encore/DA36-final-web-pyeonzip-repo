@@ -53,17 +53,26 @@
 
 /* ✅ 하단 고정된 footer 스타일 */
 .footer {
-    position: fixed;  /* 하단 고정 */
+    /*position: fixed;  !* 하단 고정 *!*/
     width: 100%;      /* 화면 너비 */
     background-color: #333;  /* 배경색 */
     color: white;     /* 텍스트 색상 */
     text-align: center; /* 텍스트 중앙 정렬 */
     padding: 10px 0;  /* 여백 */
-    z-index: 1020;    /* 다른 요소 위에 표시 */
+    /*z-index: 1020;    !* 다른 요소 위에 표시 * 필요한지??/*/
+    margin-top: auto; /* footer가 항상 아래에 위치하도록*/
 }
 
 /* 본문 컨텐츠 영역에 아래 여백 추가 */
-body {
+html, body {
     padding-top: 100px;  /* ✅ 헤더 높이만큼 조정 */
     padding-bottom: 50px; /* ✅ footer와 겹치지 않도록 여백 유지 */
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.content {
+    flex: 1; /* 남은 공간을 차지하도록 설정 */
 }

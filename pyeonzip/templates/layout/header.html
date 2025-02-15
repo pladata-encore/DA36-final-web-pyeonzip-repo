@@ -18,7 +18,7 @@
             <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link active" href="#">Home</a>
+                        <a class="nav-link active" href={% url 'home' %}>Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'review:review_main' %}">Reviews</a>
@@ -26,27 +26,32 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'community:community_list' %}">Community</a>
                     </li>
-    
-                    <li class="nav-item">
-                        {% if user.is_authenticated %}
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" title="{{ user.username }}">
-                                    {% if user.userdetail.profile %}
-                                        <img src="{{ user.userdetail.profile.url }}" class="rounded-circle" width="26"/>
-                                    {% else %}
-                                        <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
-                                    {% endif %}    
-                                </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="{% url 'users:logout' %}">로그아웃</a>
-                            </li>
+                    
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            
+{#                            <li class="nav-item">#}
+{#                                <a class="nav-link" href="#" title="{{ user.username }}">#}
+                            {% if user.userdetail.profile %}
+                                <img src="{{ user.userdetail.profile.url }}" class="rounded-circle" width="26"/>
+                            {% else %}
+                                <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
+                            {% endif %}    
+                        </a>
+
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'users:mypage' %}">마이페이지</a></li>
+                        <li><a class="dropdown-item" href="{% url 'users:mywrite' %}">내가 쓴 글</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'users:logout' %}">로그아웃</a></li>
+                      </ul>
+                    </li>
                     {% else %}
                         <li class="nav-item">
                             <a class="nav-link btn btn-primary text-white px-3" href="{%  url 'users:login' %}">Login</a>
                         </li>
                     {% endif %}
-                    </li>
     
                     <li class="nav-item">
                         <select class="form-select" aria-label="Default select example" id='write'>

@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from django.conf import settings
 from django.views.generic import RedirectView
-from users.controller import views, mypage_views
+from users.controller import views, mypage_views, mywrite_views
 
 app_name='users'
 urlpatterns = [
@@ -27,4 +27,5 @@ urlpatterns = [
     path('logout/', views.logout, name="logout"),
     path('mypage/', mypage_views.mypage, name="mypage"),
     path('mypage_update/',mypage_views.mypage_update, name="mypage_update"),
+    path('mywrite/', mywrite_views.mywrite, name="mywrite"),
 ]
