@@ -81,17 +81,19 @@ WSGI_APPLICATION = 'pyeonzip.wsgi.application'
 
 DATABASES = {
     'default': {
-        # 'ENGINE': 'django.db.backends.mysql',
-        # 'NAME': 'pyeonzipdb',
-        # 'USER': 'cy',
-        # # 'PASSWORD': '20020912',
-        # # 'HOST': '54.90.211.18',
-        # # 'PORT': '3306',
-        # # 'OPTIONS': {
-        # #     'charset': 'utf8mb4',
-        # # }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'pyeonzip',
+        'USER': 'cy',
+        'PASSWORD': 'cy',
+        'HOST': '127.0.0.1',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+        }
     }
 }
+
+
 
 
 # Password validation

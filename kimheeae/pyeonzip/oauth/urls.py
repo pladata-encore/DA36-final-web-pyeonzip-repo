@@ -21,6 +21,10 @@ from django.conf import settings
 from django.views.generic import RedirectView
 from oauth.controller import views
 
+app_name = 'oauth'
+
 urlpatterns = [
     path("", views.index, name="index"),
+    path("mypage_review/", views.mypage_review, name="mypage_review"),
+    path("mypage_community", views.mypage_community, name="mypage_community"),
 ]
