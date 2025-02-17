@@ -19,9 +19,12 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from django.conf import settings
 from django.views.generic import RedirectView
-from product.controller import views
+from product.controller import views, select_product_views
+from product.controller.select_product_views import select_product_list
+
 app_name='product'
 urlpatterns = [
+    path("select_product",select_product_views.select_product_list,name="select_product"),
     # path("", views.index, name="index"),
     path("all_product_list_pagination",views.all_product_list_pagination,name="all_product_list_pagination"),
     path("product_detail/<int:product_id>/",views.product_detail,name="product_detail"),
