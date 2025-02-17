@@ -1,0 +1,12 @@
+{% extends '../layout/base.html' %}
+
+{% block content %}
+    <div>
+        <img src="{{ product.product_image_url }}" class="img-fluid rounded-start" style="object-fit : cover;" alt="...">
+        {{ product.product_name }}
+        {{ product.product_category_name }}
+        {{ product.convenient_store_name }}
+    </div>
+{% endblock content %}
+
+

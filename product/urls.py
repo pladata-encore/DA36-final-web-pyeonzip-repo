@@ -22,6 +22,7 @@ from django.views.generic import RedirectView
 from product.controller import views
 app_name='product'
 urlpatterns = [
-    path("", views.index, name="index"),
-    path("all_product_list",views.all_product_list,name="all_product_list"),
+    # path("", views.index, name="index"),
+    path("all_product_list_pagination",views.all_product_list_pagination,name="all_product_list_pagination"),
+    path("product_detail/<int:product_id>/",views.product_detail,name="product_detail"),
 ]

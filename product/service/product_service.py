@@ -5,6 +5,9 @@ class ProductService(ABC):
     @abstractmethod
     def find_all(self):
         pass
+    @abstractmethod
+    def find_by_id(self, id):
+        pass
 
 class ProductServiceImpl(ProductService):
     __instance = None
@@ -28,3 +31,6 @@ class ProductServiceImpl(ProductService):
 
     def find_all(self):
         return self.__product_repository.find_all()
+
+    def find_by_id(self,id):
+        return self.__product_repository.find_by_id(id)

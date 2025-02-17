@@ -6,6 +6,9 @@ class ProductRepository(ABC):
     @abstractmethod
     def find_all(self):
         pass
+    @abstractmethod
+    def find_by_id(self, id):
+        pass
 
 
 class ProductRepositoryImpl(ProductRepository):
@@ -24,4 +27,7 @@ class ProductRepositoryImpl(ProductRepository):
 
     def find_all(self):
         return Product.objects.prefetch_related().order_by('-updated_at')
+
+    def find_by_id(self, id):
+        return Product.objects.get(pk=id)
 
