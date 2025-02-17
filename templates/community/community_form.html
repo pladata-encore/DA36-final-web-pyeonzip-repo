@@ -8,45 +8,137 @@
 
     <form method="post">
         {% csrf_token %}
-
+        
+        <!-- 1️⃣ 연관 상품 선택 -->
         <div class="p-5">
-            <label for="productId" class="form-label">상품선택</label>
-            <input class="form-control" list="datalistOptions" id="productId" name="productId" placeholder="Search...">
-            <datalist id="datalistOptions">
-                <option value=1></option>
-            </datalist>
+            <label for="productId" class="form-label">🔍연관 상품을 선택해주세요</label>
+            <div class="d-flex">
+                <input type="text" class="form-control" id="searchProduct" placeholder="Search..." readonly>
+{#                <input class="form-control" id="productId" name="productId" placeholder="선택된 상품" readonly>#}
+                <button type="button" class="btn btn-primary ms-2" onclick="openProductPopup()">+</button>
+            </div>
+            
+            <!-- 선택한 제품 목록 -->
+            <div id="selectedProducts" class="mt-3 d-flex flex-wrap"></div>
+
         </div>
 
+         <!-- 2️⃣ 카테고리 선택 -->
         <div class="p-5">
-            <select class="form-select" aria-label="Default select example" id="categoryId" name="categoryId">
-              <option selected>카테고리</option>
-              <option value=1>아이디어</option>
-              <option value="2">꿀조합</option>
+            <label class="form-label"><strong>카테고리</strong></label>
+            <select class="form-select" aria-label="Default select example" id="categoryId" name="categoryId" onchange="checkFormCompletion()">
+              <option selected>아이디어</option>
+              <option value=1>꿀조합</option>
             </select>
         </div>
 
+        <!-- 3️⃣ 제목 입력 -->
+        <div class="p-5">
+          <label for="communityTitle" class="form-label"><strong>제목</strong></label>
+          <input type="text"
+                 class="form-control"
+                 name="communityTitle"
+                 id="communityTitle"
+                 placeholder="제목을 입력하세요. (50자 이내)" 
+                 maxlength="50" 
+                 oninput="checkFormCompletion()">
+        </div>
+        
+        <!-- 4️⃣ 본문 입력 -->
+        <div class="p-5">
+          <label for="communityContent" class="form-label"><strong>본문</strong></label>
+          <textarea
+                  class="form-control"
+                  name="communityContent"
+                  id="communityContent"
+                  rows="10" 
+                  maxlength="200" 
+                  oninput="updateCharCount(); checkFormCompletion()">
+              
+          </textarea>
+            
+            <!-- 글자 수 카운트 표시 -->
+            <div class="text-end"><span id="charCount">0</span>/200</div>
+        </div>
 
-            <div class="p-5">
-              <label for="communityTitle" class="form-label">제목</label>
-              <input type="text"
-                     class="form-control"
-                     name="communityTitle"
-                     id="communityTitle"
-                     placeholder="제목">
-            </div>
-
-              <label for="communityContent" class="form-label">본문</label>
-              <textarea
-                      class="form-control"
-                      name="communityContent"
-                      id="communityContent"
-                      rows="10"></textarea>
-            </div>
-
-            <button>저장</button>
-
+        <!-- 등록 버튼 -->
+        <div class="p-5 text-end">
+            <button type="submit" id="submitBtn" class="btn btn-secondary" disabled>등록</button>
+        </div>
     
     </form>
+    
+    
+        <script>
+        let selectedProducts = [];
+
+        function openProductPopup() {
+            window.open("{% url 'product:select_product' %}", "제품 선택", "width=600,height=500");
+        }
+
+        function setSelectedProduct(productId, productName, productImage) {
+            if (!selectedProducts.some(p => p.id === productId)) {
+                selectedProducts.push({id: productId, name: productName, image: productImage});
+                updateSelectedProducts();
+                checkFormCompletion();
+            }
+        }
+
+        function updateSelectedProducts() {
+            const container = document.getElementById("selectedProducts");
+            container.innerHTML = "";
+
+            selectedProducts.forEach((product, index) => {
+                const card = document.createElement("div");
+                card.className = "card m-2";
+                card.style = "width: 150px;";
+
+                card.innerHTML = `
+                    <img src="${product.image}" class="card-img-top" alt="${product.name}" style="height: 100px;">
+                    <div class="card-body text-center">
+                        <p class="card-text">${product.name}</p>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(${index})">삭제</button>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        function removeProduct(index) {
+            selectedProducts.splice(index, 1);
+            updateSelectedProducts();
+            checkFormCompletion();
+        }
+
+        function updateCharCount() {
+            document.getElementById("charCount").innerText = document.getElementById("communityContent").value.length;
+        }
+
+        function checkFormCompletion() {
+            const category = document.getElementById("categoryId").value;
+            const title = document.getElementById("communityTitle").value.trim();
+            const content = document.getElementById("communityContent").value.trim();
+            const submitBtn = document.getElementById("submitBtn");
+            
+            console.log("Checking form completion..."); // 디버깅 로그
+            console.log("Selected Products:", selectedProducts.length);
+            console.log("Category:", category);
+            console.log("Title:", title);
+            console.log("Content:", content);
+
+            if (selectedProducts.length > 0 && category !== "" && title !== "" && content !== "") {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove("btn-secondary");
+                submitBtn.classList.add("btn-success");
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.remove("btn-success");
+                submitBtn.classList.add("btn-secondary");
+            }
+        }
+    </script>
+    
     
 {% endblock content %}
 

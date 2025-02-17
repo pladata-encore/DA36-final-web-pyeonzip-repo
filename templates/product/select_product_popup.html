@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>제품 선택</title>
+
+    <script>
+    function selectProduct(productId, productName, productImageUrl) {
+        window.opener.setSelectedProduct(productId, productName, productImageUrl);  // 부모 창의 함수 호출
+        window.close();  // 팝업 닫기
+    }
+    </script>
+
+    {% for p in product|slice:":10" %}
+        <button type="button" onclick="selectProduct('{{ p.product_id }}', '{{ p.product_name }}', '{{ p.product_image_url }}')">
+            <div class="card mb-3" style="max-width: 540px;">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ p.product_image_url }}" class="img-fluid rounded-start" alt="제품 이미지">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ p.product_name }}</h5>
+                            <p class="card-text">{{ p.product_price }}원</p>
+                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </button>
+    {% endfor %}
+
+
+</html>
