@@ -1,4 +1,5 @@
 {% extends '../layout/base.html' %}
+{%  load static %}
 
 {% block content %}
     
@@ -9,7 +10,8 @@
             {% if user_detail.profile and user_detail.profile.url %}
                 <img src="{{ user_detail.profile.url }}" class="userprofile" alt="프로필이미지">
             {% else %}
-                <img src="/static/images/logo.png" alt="기본이미지">
+                <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
+
             {% endif%}
             <p>닉네임: {{ user_detail.nickname }}</p>
             <p>이메일: {{ user_detail.email }}</p>

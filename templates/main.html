@@ -1,10 +1,10 @@
 {% extends 'layout/base.html'%}
 {% block content %}
     <h1>pyeonzip</h1>
-    <div><button type="button"  ><a href="{%  url 'product:all_product_list' %}">전체 제품 보기</a></button></div>
+    <div><button type="button"  ><a href="{%  url 'product:all_product_list_pagination' %}">전체 제품 보기</a></button></div>
     <br>
     <br>
-    <div><button type="button"  ><a href="{%  url 'product:all_product_list' %}">최신 상품 보기</a></button></div>
+{#    <div><button type="button"  ><a href="{%  url 'product:all_product_list' %}">최신 상품 보기</a></button></div>#}
     <br>
     <br>
     <div><button type="button"  ><a href="{% url 'review:review_main' %}">AI 리뷰 보기</a></button></div>
