@@ -2,10 +2,7 @@ from .settings import *
 import os
 DEBUG = True
 
-ALLOWED_HOSTS = [
-    'localhost',
-    '43.201.66.188'
-]
+ALLOWED_HOSTS = []
 
 # DB 관련 세팅
 DATABASES = {
