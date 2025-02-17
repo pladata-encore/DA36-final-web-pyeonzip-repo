@@ -9,6 +9,7 @@ ALLOWED_HOSTS = [
 ]
 
 # DB 관련 세팅
+<<<<<<< HEAD
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
@@ -22,3 +23,5 @@ DATABASES = {
         }
     }
 }
+=======
+>>>>>>> 1cb3ce2caaf804e20a891e7399d7d810434d1a73
