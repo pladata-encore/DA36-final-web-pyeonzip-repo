@@ -24,7 +24,8 @@ from product.controller.select_product_views import select_product_list
 
 app_name='product'
 urlpatterns = [
-    path("", views.index, name="index"),
-    path("all_product_list",views.all_product_list,name="all_product_list"),
     path("select_product",select_product_views.select_product_list,name="select_product"),
+    # path("", views.index, name="index"),
+    path("all_product_list_pagination",views.all_product_list_pagination,name="all_product_list_pagination"),
+    path("product_detail/<int:product_id>/",views.product_detail,name="product_detail"),
 ]
