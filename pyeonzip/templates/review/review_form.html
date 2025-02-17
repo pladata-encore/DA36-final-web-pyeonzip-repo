@@ -1,0 +1,36 @@
+{% extends '../layout/base.html' %}
+
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="p-5">
+          <label for="tasteContent" class="form-label">맛</label>
+            <br>
+            <textarea class="form-control" id="tasteContent" rows="3" name="tasteContent"></textarea>
+        </div>
+        
+        <div class="p-5">
+          <label for="priceContent" class="form-label">가격</label>
+            <br>
+            <textarea class="form-control" id="priceContent" rows="3" name="priceContent"></textarea>
+        </div>
+        
+        <div class="p-5">
+          <label for="convenienceContent" class="form-label">편의성</label>
+            <br>
+            <textarea class="form-control" id="convenienceContent" name="convenienceContent" rows="3"></textarea>
+        </div>
+        
+        
+        <div class="p-5">
+          <label for="reviewImageUrl" class="form-label">사진 뿅</label>
+            <br>
+          <input class="form-control" type="file" id="reviewImageUrl" name="reviewImageUrl">
+        </div>
+
+        <button>저장</button>
+    </form>
+    
+
+{% endblock content %}

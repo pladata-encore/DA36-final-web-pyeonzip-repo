@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>'커뮤니티'</title>
+</head>
+<body>
+{% block title %} 커뮤니티 글쓰기 {% endblock %}
+
+{% block content %}
+    <div>
+        <label for="productlist" class="form-label">상품선택</label>
+        <input class="form-control-lg" list="datalistOptions" id="productlist" placeholder="Search...">
+        <datalist id="datalistOptions">
+            <option value="불닭볶음면">
+        </datalist>
+    </div>
+    
+    <div>
+        <select class="form-select" aria-label="Default select example">
+          <option selected>카테고리</option>
+          <option value="1">아이디어</option>
+          <option value="2">꿀조합</option>
+        </select>
+    </div>
+    
+    <form action="" method="post">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="title" class="form-label">제목</label>
+          <input type="text" 
+                 class="form-control-lg" 
+                 name="title"
+                 id="title" 
+                 placeholder="제목">
+        </div>
+        
+        <div class="mb-3">
+          <label for="content" class="form-label">본문</label>
+          <textarea 
+                  class="form-control"
+                  name="content"
+                  id="content" 
+                  rows="10"></textarea>
+        </div>
+        
+            <button>
+            <a href="{% url 'board:board_list' %}" class="btn btn-primary" type="submit">저장</a>
+            </button>
+    </form>
+{% endblock content %}
+</body>
+</html>

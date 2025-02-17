@@ -1,0 +1,21 @@
+{% extends '../layout/base.html' %}
+
+{% block content %}
+    
+<div class="container text-center">
+    <h2>마이페이지</h2>
+            
+        <div class="profile-section">
+            {% if user_detail.profile and user_detail.profile.url %}
+                <img src="{{ user_detail.profile.url }}" class="userprofile" alt="프로필이미지">
+            {% else %}
+                <img src="/static/images/logo.png" alt="기본이미지">
+            {% endif%}
+            <p>닉네임: {{ user_detail.nickname }}</p>
+            <p>이메일: {{ user_detail.email }}</p>
+            
+        <!--수정버튼-->
+            <a href="{% url "users:mypage_update" %}" class="btn btn-primary">수정하기</a>
+        </div>
+</div>
+{% endblock content %}

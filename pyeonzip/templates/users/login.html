@@ -1,0 +1,17 @@
+<!-- 추가 -->
+{% extends '../layout/base.html' %}
+{% load socialaccount %}
+
+{% block content %}
+    <div>
+        <button type="button" class="btn btn-outline-success">
+            <a class="social_login3" href="{% provider_login_url 'naver' %}">네이버 로그인</a>
+        </button>
+    </div>
+    <div>
+        <button type="button" class="btn btn-outline-warning">
+            <a class="social_login3" href="{% provider_login_url 'kakao' %}">카카오 로그인</a>
+        </button>
+    </div>
+    
+{% endblock content %}

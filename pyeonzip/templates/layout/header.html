@@ -1,0 +1,80 @@
+{%  load static %}
+
+{#헤더 스타일 inline stlye로 강제 적용#}
+<header class="header-bar">
+    <nav class="navbar navbar-expand-lg navbar-light" style="padding: 0 !important; margin: 0 !important; height: 100%;">
+        <div class="container-fluid">
+        <!-- 🔹 로고 -->
+            <a class="navbar-brand" href="{% url 'home' %}">
+                <img src="{% static 'images/logo.png' %}" alt="Logo" width="120" height="40">
+            </a>
+    
+            <!-- 🔹 토글 버튼 (모바일용) -->
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+    
+            <!-- 🔹 네비게이션 메뉴 -->
+            <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href={% url 'home' %}>Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'review:review_main' %}">Reviews</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'community:community_list' %}">Community</a>
+                    </li>
+                    
+                    {% if user.is_authenticated %}
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle d-flex align-items-center" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            
+{#                            <li class="nav-item">#}
+{#                                <a class="nav-link" href="#" title="{{ user.username }}">#}
+                            {% if user.userdetail.profile %}
+                                <img src="{{ user.userdetail.profile.url }}" class="rounded-circle" width="26"/>
+                            {% else %}
+                                <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
+                            {% endif %}    
+                        </a>
+
+                      <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" href="{% url 'users:mypage' %}">마이페이지</a></li>
+                        <li><a class="dropdown-item" href="{% url 'users:mywrite' %}">내가 쓴 글</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item" href="{% url 'users:logout' %}">로그아웃</a></li>
+                      </ul>
+                    </li>
+                    {% else %}
+                        <li class="nav-item">
+                            <a class="nav-link btn btn-primary text-white px-3" href="{%  url 'users:login' %}">Login</a>
+                        </li>
+                    {% endif %}
+    
+                    <li class="nav-item">
+                        <select class="form-select" aria-label="Default select example" id='write'>
+                          <option selected>글쓰기</option>
+                          <option value="{% url 'community:community_write' %}">커뮤니티작성</option>
+                          <option value="{% url 'review:review_write' %}">리뷰작성</option>
+                        </select>
+                    </li>
+    
+    
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+<!-- Bootstrap JS (footer에 배치) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    document.getElementById('write').addEventListener("change", function() {
+        var selectedValue = this.value;
+        if (selectedValue) {
+            window.location.href = selectedValue; // 선택한 페이지로 이동
+        }
+    });
+</script>

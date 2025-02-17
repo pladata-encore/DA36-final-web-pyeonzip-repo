@@ -1,0 +1,10 @@
+django
+gunicorn
+uvicorn
+blacknoise
+whitenoise
+django-allauth
+mysqlclient
+requests
+python-dotenv
+pillow

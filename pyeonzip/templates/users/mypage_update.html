@@ -1,0 +1,25 @@
+{% extends '../layout/base.html' %}
+
+{% block content %}
+<div class="container text-center">    
+    <h2>프로필 수정</h2>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+        
+        <div class="mb-3">
+            <label class="form-label">프로필 사진 변경</label><br>
+            {{ form.profile }}
+        </div>
+
+        <!--닉네임 입력 필드-->
+        <div class="mb-3">
+            <label class="form-label">닉네임 변경</label>
+            {{ form.nickname }}
+        </div>
+    
+        <button type="submit" class="btn btn-secondary">저장하기</button>
+        <a href="{% url 'users:mypage' %}" class="btn btn-secondary">취소하기</a>
+    </form>
+</div>
+{% endblock %}
