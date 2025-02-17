@@ -30,6 +30,8 @@ SECRET_KEY = 'django-insecure-4pv*_6d7um$pxjnc84gl2ujw!zcyaol5y4y+%1ijp!)&cql$m^
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
+CSRF_TRUSTED_ORIGINS = ["https://pyeonzip.store"]
+
 ALLOWED_HOSTS = [
     '3.34.109.55',
 ]
