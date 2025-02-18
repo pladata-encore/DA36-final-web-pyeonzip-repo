@@ -1,4 +1,6 @@
 from abc import ABC, abstractmethod
+
+from review.entity.models import Review
 from review.repository.review_repository import ReviewRepositoryImpl
 
 class ReviewService(ABC):
@@ -26,7 +28,9 @@ class ReviewServiceImpl(ReviewService):
             cls.__instance = cls()
         return cls.__instance
 
-
-
     def find_by_product_id(self,product_id):
         return self.__review_repository.find_by_product_id(product_id)
+
+    def find_by_user_id(self, user_id):
+        return self.__review_repository.find_by_user_id(user_id)
+
