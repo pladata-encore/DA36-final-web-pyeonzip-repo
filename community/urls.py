@@ -25,5 +25,6 @@ app_name='community'
 urlpatterns = [
     path("community_list/", community_views.community_list, name="community_list"),
     path("community_write/", community_views.community_write, name="community_write"),
+    path("community_save/", community_views.community_save, name="community_save"),
 
 ]
