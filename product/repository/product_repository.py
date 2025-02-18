@@ -41,3 +41,6 @@ class ProductRepositoryImpl(ProductRepository):
         else:
             product.likes.add(likes)
             return True
+
+    def find_by_name(self, query):
+        return Product.objects.filter(product_name__icontains=query)

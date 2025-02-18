@@ -20,9 +20,8 @@
                     {% for community in communities %}
                         <tr>
                             <td>{{ community.communityId }}</td>
-                            <td>
-                            </td>
                             <td>{{ community.communityTitle | default:'' }}</td>
+                            <td>{{ community.author_id | default:'unknown' }}</td>
                             <td>{{ community.created_at }}</td>
                         </tr> 
                     
