@@ -1,27 +1,20 @@
 from django.shortcuts import render
+
+import users.urls
 from product.service.product_service import ProductServiceImpl
 from django.core.paginator import Paginator
+from review.service.review_service import ReviewServiceImpl
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
+
 
 product_service=ProductServiceImpl.get_instance() # 객체 생성
+review_service=ReviewServiceImpl.get_instance()
 # Create your views here.
 def all_product_list_pagination(request):
         # question service로부터 받아옴
         product = product_service.find_all()
-
-        # paging 처리
-
-        #     Page 객체 속성
-        #     paginator.count    전체 게시물 개수
-        #     paginator.per_page    페이지당 보여줄 게시물 개수
-        #     paginator.page_range    페이지 범위 (range객체: range(1, 32))
-        #     number    현재 페이지 번호
-        #     previous_page_number()    이전 페이지 번호 (현재페이지가 1인 경우,  EmptyPage오류 발생하므로, has_previous 속성을 사용하여 이전 페이지 유무를 확인)
-        #     next_page_number()    다음 페이지 번호 (다음페지이 없는 경우, EmptyPage오류 발생하므로, has_next 속성을 사용하여 다음 페이지 유무를 확인)
-        #     has_previous    이전 페이지 유무
-        #     has_next    다음 페이지 유무
-        #     start_index    현재 페이지 시작 인덱스(1부터 시작)
-        #     end_index    현재 페이지의 끝 인덱스(1부터 시작)
-
         page = request.GET.get('page', 1)
         paginator = Paginator(product, 20)  # 한페이지에 몇개씩?
         page_obj = paginator.get_page(page)
@@ -31,6 +24,26 @@ def all_product_list_pagination(request):
 
 def product_detail(request,product_id):
         product = product_service.find_by_id(product_id)
-        return render(request, 'product/product_detail.html', context={'product':product})
+        reviews = review_service.find_by_product_id(product_id)
+        liked=product.likes.filter(id=request.user.id).exists()
+        return render(request, 'product/product_detail.html', context={'product':product,"reviews":reviews,"liked":liked})
+
+@login_required(login_url='users:login')
+def product_likes(request, product_id):
+    try:
+        product,liked = product_service.add_remove_likes(product_id, request.user)
+        likes_count = product.likes.count() if hasattr(product, 'likes') else 0
+
+        print('product.likes.count() =', likes_count)
+        return JsonResponse({
+            'result': 'success',
+            'likes_count': likes_count,
+            'liked':liked
+        })
+    except Exception as e:
+        return JsonResponse({
+            'result': 'error',
+            'message': str(e)
+        }, status=400)
 
 
