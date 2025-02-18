@@ -2,6 +2,8 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import SET_NULL
 
+from users.entity.models import UserDetail
+
 
 class Product(models.Model):
     product_id = models.AutoField(primary_key=True)
@@ -15,8 +17,8 @@ class Product(models.Model):
 
 
 class ProductLikes(models.Model):
-    userID=models.ForeignKey(User, on_delete=models.CASCADE)
-    productId = models.ForeignKey(Product, on_delete=models.CASCADE)
+    user=models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
     liked_at=models.DateTimeField(auto_now_add=True)
 
     class Meta:

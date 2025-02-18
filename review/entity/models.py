@@ -6,10 +6,11 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import SET_NULL
 from product.entity.models import Product
+from users.entity.models import UserDetail
 
 class Review(models.Model):
     reviewId = models.AutoField(primary_key=True)  # okay
-    authorId = models.ForeignKey(User, null=True, blank=True,related_name='User_reviews',on_delete=SET_NULL)  # author_id, user_id [erd_cloud 통일]
+    authorId = models.ForeignKey(UserDetail, null=True, blank=True,related_name='UserDetail_reviews',on_delete=SET_NULL)  # author_id, user_id [erd_cloud 통일]
     productId = models.ForeignKey(Product, null=True, blank=True, related_name='Product_reviews',on_delete=SET_NULL)
     tasteContent = models.TextField()
     priceContent = models.TextField()
