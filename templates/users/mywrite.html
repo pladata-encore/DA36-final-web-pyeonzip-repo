@@ -1,9 +1,147 @@
 {% extends '../layout/base.html' %}
 
-{% block content %}
     
-<div class="container text-center">
-    <h2>내가 쓴 글</h2>
+{% block content %}
+    <div class="review-container">
+        <h1>내가 작성한 리뷰</h1>
 
-</div>
+        {% if my_reviews %}
+            {% for review in my_reviews %}
+                <div class="review-card">
+                    <!-- 상품 정보 -->
+                    <div class="product-info">
+                        <h2>{{ review.product.product_name }}</h2>
+                        <span class="product-meta">
+                            {{ review.product.convenient_store_name }} | {{ review.product.product_category_name }} | {{ review.product.product_price }}원
+                        </span>
+                        <img class="product-image" src="{{ review.product.product_image_url }}" alt="{{ review.product.product_name }}">
+                    </div>
+
+                    <!-- 작성자 정보 -->
+                    <div class="review-author">
+                        <img class="profile-pic" src="{{ review.author.profile.url }}" alt="{{ review.author.nickname }}">
+                        <span class="author-name">{{ review.author.nickname }}</span>
+                        <span class="review-date">{{ review.created_at|date:"Y.m.d" }}</span>
+                    </div>
+
+                    <!-- 리뷰 내용 (아코디언 형식) -->
+                    <div class="review-content">
+                        <details>
+                            <summary>맛</summary>
+                            <p>{{ review.tasteContent }}</p>
+                        </details>
+                        <details>
+                            <summary>가성비</summary>
+                            <p>{{ review.priceContent }}</p>
+                        </details>
+                        <details>
+                            <summary>편리성</summary>
+                            <p>{{ review.convenienceContent }}</p>
+                        </details>
+                    </div>
+
+                    <!-- 리뷰 이미지 -->
+                    {% if review.reviewImageUrl %}
+                        <div class="review-image">
+                            <img src="{{ review.reviewImageUrl.url }}" alt="리뷰 이미지">
+                        </div>
+                    {% endif %}
+
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-review">작성한 리뷰가 없습니다.</p>
+        {% endif %}
+    </div>
+<style>
+        .review-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        .review-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        {#}#}
+        {#.product-info {#}
+        {#    text-align: center;#}
+        {#}#}
+        {#.product-meta {#}
+        {#    font-size: 14px;#}
+        {#    color: #777;#}
+        {#}#}
+        {#.product-image {#}
+        {#    width: 100%;#}
+        {#    max-width: 250px;#}
+        {#    border-radius: 10px;#}
+        {#    margin-top: 10px;#}
+        {#}#}
+        .review-author {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .author-name {
+            font-weight: bold;
+        }
+        .review-date {
+            font-size: 14px;
+            color: #777;
+            margin-left: auto;
+        }
+        .review-content details {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .review-image img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .review-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            align-items: center;
+        }
+        .share-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .no-review {
+            text-align: center;
+            font-size: 16px;
+            color: #777;
+        }
+    </style>
+    
+    
+    
+    
+    
 {% endblock content %}
+
+    
+    {% block script %}
+        {% load static %}
+    <script src="{% static 'js/mywrite/mywrite_review.js' %}"></script>
+    <script>
+    console.log('community_list.html script...');
+    </script>
+    
+    {% endblock script %}
+
