@@ -7,6 +7,19 @@
         {{ product.product_category_name }}
         {{ product.convenient_store_name }}
     </div>
+    <div>
+    {% for review in reviews %}
+        <div>맛</div>
+        <div>{{ review.tasteContent }}</div>
+        <div>가격</div>
+        <div>{{ review.priceContent }}</div>
+        <div>편리성</div>
+        <div>{{ review.convenienceContent }}</div>
+        <img src="{{ review.reviewImageUrl }}" class="img-fluid rounded-start" style="object-fit : cover;" alt="...">
+        
+        
+    {% endfor %}
+    </div>
 {% endblock content %}
 
 
