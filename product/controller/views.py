@@ -1,8 +1,10 @@
 from django.shortcuts import render
 from product.service.product_service import ProductServiceImpl
 from django.core.paginator import Paginator
+from review.service.review_service import ReviewServiceImpl
 
 product_service=ProductServiceImpl.get_instance() # 객체 생성
+review_service=ReviewServiceImpl.get_instance()
 # Create your views here.
 def all_product_list_pagination(request):
         # question service로부터 받아옴
@@ -31,6 +33,8 @@ def all_product_list_pagination(request):
 
 def product_detail(request,product_id):
         product = product_service.find_by_id(product_id)
-        return render(request, 'product/product_detail.html', context={'product':product})
+        reviews = review_service.find_by_product_id(product_id)
+        print(reviews)
+        return render(request, 'product/product_detail.html', context={'product':product,"reviews":reviews})
 
 
