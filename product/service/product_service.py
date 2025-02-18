@@ -49,3 +49,6 @@ class ProductServiceImpl(ProductService):
         product = self.__product_repository.find_by_id(product_id)
         liked=self.__product_repository.add_remove_likes(product, likes)
         return product,liked
+
+    def find_by_name(self, query):
+        return self.__product_repository.find_by_name(query)

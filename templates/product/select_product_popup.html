@@ -4,6 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>제품 선택</title>
+    
+    <style>
+        .product-item {
+            display: flex;
+            align-items: center;
+            border: 1px solid #ddd;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            justify-content: space-between;
+        }
+
+        .product-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            margin-right: 15px;
+            border-radius: 5px;
+        }
+
+        .product-info {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .product-tags {
+            display: flex;
+            gap: 5px;
+            margin-top: 5px;
+        }
+
+        .tag {
+            background-color: #f1f1f1;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+
+        .select-btn {
+            padding: 5px 10px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .select-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- 🔍 장고 검색 기능 추가 -->
+    <form method="get" action="{% url 'product:select_product' %}">
+        <input type="text" name="q" class="form-control" placeholder="제품을 검색하세요..." value="{{ query|default:'' }}">
+        <button type="submit" class="btn btn-primary">검색</button>
+    </form>
+
+    <!-- 📜 검색된 제품 목록 -->
+    <div id="productList">
+        {% for p in product %}
+            <div class="product-item">
+                <span>{{ forloop.counter }}</span> <!-- 순번 추가 -->
+                <img src="{{ p.product_image_url }}" alt="제품 이미지">
+                <div class="product-info">
+                    <p class="product-name"><strong>{{ p.product_name }}</strong></p>
+                    <div class="product-tags">
+                        <span class="tag">{{ p.product_price }}원</span>
+                        <span class="tag">{{ p.convenient_store_name }}</span>
+                        <span class="tag">{{ p.product_category_name }}</span>
+                    </div>
+                </div>
+                <button class="select-btn" onclick="selectProduct('{{ p.product_id }}', '{{ p.product_name }}', '{{ p.product_image_url }}')">선택</button>
+            </div>
+        {% empty %}
+            <p>검색 결과가 존재하지 않습니다.</p>
+        {% endfor %}
+    </div>
 
     <script>
     function selectProduct(productId, productName, productImageUrl) {
@@ -12,24 +94,5 @@
     }
     </script>
 
-    {% for p in product|slice:":10" %}
-        <button type="button" onclick="selectProduct('{{ p.product_id }}', '{{ p.product_name }}', '{{ p.product_image_url }}')">
-            <div class="card mb-3" style="max-width: 540px;">
-                <div class="row g-0">
-                    <div class="col-md-4">
-                        <img src="{{ p.product_image_url }}" class="img-fluid rounded-start" alt="제품 이미지">
-                    </div>
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ p.product_name }}</h5>
-                            <p class="card-text">{{ p.product_price }}원</p>
-                            <p class="card-text"><small class="text-body-secondary">Last updated 3 mins ago</small></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </button>
-    {% endfor %}
-
-
+</body>
 </html>
