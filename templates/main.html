@@ -1,14 +1,97 @@
 {% extends 'layout/base.html'%}
 {% block content %}
-    <h1>pyeonzip</h1>
-    <div><button type="button"  ><a href="{%  url 'product:all_product_list_pagination' %}">전체 제품 보기</a></button></div>
-    <br>
-    <br>
+{#    <h1>pyeonzip</h1>#}
+{#    <div><button type="button"  ><a href="{%  url 'product:all_product_list_pagination' %}">전체 제품 보기</a></button></div>#}
+{#    <br>#}
+{#    <br>#}
 {#    <div><button type="button"  ><a href="{%  url 'product:all_product_list' %}">최신 상품 보기</a></button></div>#}
-    <br>
-    <br>
-    <div><button type="button"  ><a href="{% url 'review:review_main' %}">AI 리뷰 보기</a></button></div>
-    <br>
-    <br>
+{#    <br>#}
+{#    <br>#}
+{#    <div><button type="button"  ><a href="{% url 'review:review_main' %}">AI 리뷰 보기</a></button></div>#}
+{#    <br>#}
+{#    <br>#}
 
+<div class="container">
+
+<!-- 검색바-->
+<section class="search-main">
+    <h1>편의점 신상 리뷰, 여기 다 ZIP중!</h1>
+    <h2 class="fw-bold">편ZIP</h2>
+    <div class="col">
+        <div class="col-md-5">
+            <div class="search-main input-group">
+                <input type="text" class="form-control" placeholder="검색할 상품을 입력해 주세요">
+                <button class="btn btn-primary">🔍</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="lastest-main">
+    <h4>최신 제품 확인해보세요!</h4>
+    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
+        {%  for product in lastest_product %}
+        <div class="col">
+            <div class="card product-card">
+                <img src="{{ product.product_image_url }}" alt="{{ product.product_name}}">
+                <div class="card-body">
+                    <h6 class="card-title">{{ product.product_name}}</h6>
+                    <p class="text-muted">{{product.convenient_store_name}}</p>
+                    <p>{{ product.product_price }}원</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="text-center mt-2 mb-2">
+        <button class="btn btn-outline-secondary" type="button"><a href="{% url 'product:all_product_list_pagination' %}">더보기 ▶</a></button>
+    </div>
+</section>    
+
+<section class="ai-main">            
+    <h4>AI 리뷰 기반, 이런 신제품은 어때요?</h4>
+    <div class="btn-group mb-3" role="group">
+        <button class="btn btn-outline-primary">전체</button>
+        <button class="btn btn-outline-primary">음료</button>
+        <button class="btn btn-outline-primary">간식</button>
+        <button class="btn btn-outline-primary">기타</button>
+    </div>
+    <!--for문으로 수정 예정 test 중-->
+    <div class="row row-cols-2 row-cols-md-4 row-cols-lg-6 g-4">
+        <div class="col">
+            <div class="card product-card">
+                <img src="#" alt="상품 이미지">
+                <div class="card-body">
+                    <h6 class="card-title">Green Tea</h6>
+                    <p class="text-muted">CU</p>
+                    <p>2700원</p>
+                    <p></p>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card product-card">
+                <img src="#" alt="상품 이미지">
+                <div class="card-body">
+                    <h6 class="card-title">White Tea</h6>
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card product-card">
+                <img src="#" alt="상품 이미지">
+                <div class="card-body">
+                    <h6 class="card-title">Super Matcha</h6>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="text-center mt-3 mb-3">
+        <button class="btn btn-outline-secondary" type="button"><a href="{% url 'review:review_main' %}">더보기 ▶</a></button>
+    </div>
+    
+</section>
+</div>
+    
 {% endblock content %}
