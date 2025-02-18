@@ -51,6 +51,52 @@
 /*}*/
 
 
+/* -----------------------main--------------------- */
+
+.section {
+    padding-top: 90px;
+    padding-bottom: 90px;
+    position: relative;
+}
+
+.search-main {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 0; /* 상하 여백 추가 */
+}
+
+.lastest-main {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 0;
+}
+
+.ai-main {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 0;
+}
+
+.product-card {
+    text-align: center;
+}
+
+.product-card img {
+    width: 100%;
+    height: 150px;
+    background: #ccc;
+}
+
+.product-image {
+    width: 100px; /* 고정된 너비 /
+    height: 100px; / 고정된 높이 /
+    object-fit: cover; / 비율을 유지하면서 크롭 /
+    border-radius: 8px; / 둥근 모서리 적용 */
+}
+/* -----------------------main--------------------- */
+
+
+/* -----------------------footer--------------------- */
 /* ✅ 하단 고정된 footer 스타일 */
 .footer {
     /*position: fixed;  !* 하단 고정 *!*/
@@ -64,13 +110,14 @@
 }
 
 /* 본문 컨텐츠 영역에 아래 여백 추가 */
-html, body {
-    padding-top: 100px;  /* ✅ 헤더 높이만큼 조정 */
-    /*padding-bottom: 50px; !* ✅ footer와 겹치지 않도록 여백 유지 -> 제거 *!*/
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
+.body {
+    /*padding-top: 50px !important;  !* ✅ 헤더 높이만큼 조정 *!*/
+    /*!*padding-bottom: 50px; !* ✅ footer와 겹치지 않도록 여백 유지 -> 제거 *!*!*/
+    /*height: 100%;*/
+    /*margin: 0;*/
+    /*display: flex;*/
+    /*flex-direction: column;*/
+    /*background-color: #f8f8f8;*/
 }
 
 .content {
