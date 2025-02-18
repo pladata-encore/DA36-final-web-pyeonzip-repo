@@ -6,22 +6,40 @@
 {% endblock css %}
 
 {% block content %}
-    <div>
-        <img src="{{ product.product_image_url }}" class="img-fluid rounded-start" style="object-fit : cover;" alt="...">
-        {{ product.product_name }}
-        {{ product.product_category_name }}
-        {{ product.convenient_store_name }}
-    </div>
 
-    <div class="recommend" data-uri="{% url 'product:product_likes' product.product_id %}">
-         <ion-icon id="heart-icon" name="{% if liked %}heart{% else %}heart-outline{% endif %}"></ion-icon>
-        <span class="badge rounded-pill bg-success">{{ product.likes.count }}</span>
-    </div>
+    <div class="row">
+        <div class="col-md-3">
+                <img src="{{ product.product_image_url }}" class="img-fluid rounded-start" style="object-fit : cover;" alt="...">
+         </div>
+
+        <div class="col-md-9">
+            <br>
+            <br>
+            <br>
+            <br>
+            <br>
+            <div>상품명 : {{ product.product_name }}</div>
+            <div>상품 카테고리 : {{ product.product_category_name }}</div>
+
+            <div>상품 판매 편의점 : {{ product.convenient_store_name }}</div>
+            <div class="recommend" data-uri="{% url 'product:product_likes' product.product_id %}">
+                <ion-icon id="heart-icon" name="{% if liked %}heart{% else %}heart-outline{% endif %}"></ion-icon>
+                <span class="badge rounded-pill bg-success">{{ product.likes.count }}</span>
+            </div>
+            <div>
+                <span class="card-text"><small class="text-body-secondary">🗯️ 리뷰개수:{{ product.Product_reviews.count }}</small></span>
+            </div>
+        </div>
+
+</div>
+
 
     {% for review in reviews %}
-        <div>
-            {{ review.authorId.nickname }}
+        <div class="card mb-3">
             <dl class="row">
+                <dt class="col-sm-3">작성자</dt>
+                <dd class="col-sm-9">{{ review.author.nickname }}</dd>
+
                 <dt class="col-sm-3">맛</dt>
                 <dd class="col-sm-9">{{ review.tasteContent }}</dd>
 

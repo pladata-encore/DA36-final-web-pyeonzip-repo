@@ -2,34 +2,68 @@
 
 {% load static %}
 {% block content %}
-    <div class="tab">
-        <button class="tab-btn active" onclick="openTab(event, 'all_product_tab')">All</button>
-        <button class="tab-btn" onclick="openTab(event, 'recent_product')">Recent</button>
-        <button class="tab-btn" onclick="openTab(event, 'ai_product')">AI</button>
-    </div>
-
 
 <div class="container">
     <div class="row">
         <div class="col-md-2">
-            <div class="card mb-3" style="max-width: 100%; height: 300px;">
+            <div class="card mb-3" style="max-width: 100%; height: 130px;">
                 <div class="card-body">
-                    <h5 class="card-title">왼쪽 컬럼</h5>
-                    <p class="card-text">여기에 내용을 넣어.</p>
+                    <div><label>
+                        <input type="radio" name="store" value="ALL" onclick="filterProducts('ALL')" checked>
+                        ALL
+                    </label></div>
+                    <div><label>
+                        <input type="radio" name="store" value="CU" onclick="filterProducts('CU')">
+                        CU
+                    </label></div>
+                    <div><label>
+                        <input type="radio" name="store" value="GS25" onclick="filterProducts('GS25')">
+                        GS25
+                    </label></div>
+                    <div> <label>
+                        <input type="radio" name="store" value="7-ELEVEN" onclick="filterProducts('7-ELEVEN')">
+                        7-ELEVEN
+                    </label></div>
+                </div>
+            </div>
+            <div class="card mb-3" style="max-width: 100%; height: 130px;">
+                <div class="card-body">
+                    <div><label>
+                        <input type="radio" name="category" value="all" onclick="filterProducts('간편식품')" checked>
+                        간편식품
+                    </label></div>
+                    <div><label>
+                        <input type="radio" name="category" value="cu" onclick="filterProducts('과자류')">
+                        과자류
+                    </label></div>
+                    <div><label>
+                        <input type="radio" name="category" value="cu" onclick="filterProducts('아이스크림')">
+                        아이스크림
+                    </label></div>
+                    <div> <label>
+                        <input type="radio" name="category" value="cu" onclick="filterProducts('음료')">
+                        음료
+                    </label></div>
                 </div>
             </div>
         </div>
 
         <div class="col-md-10">
+            <div class="tab">
+                <button class="tab-btn btn active" onclick="openTab(event, 'all_product_tab')">All</button>
+                <button class="tab-btn btn" onclick="openTab(event, 'latest_product_tab')">Recent</button>
+                <button class="tab-btn btn" onclick="openTab(event, 'ai_product_tab')">AI</button>
+            </div>
+
             <div id="all_product_tab" class="tab-content active">
                 {% for product in page_obj %}
                     <div class="card mb-3" style="max-width: 100%; height: 300px;">
-                        <button>
+                       <button type="button" class="btn">
                             <a href="{% url 'product:product_detail' product_id=product.product_id %}" class="text-decoration-none">
                               <div class="row g-0">
                                 <div class="col-md-4">
                                     {% if product.product_image_url %}
-                                        <img src="{{ product.product_image_url }}"  style="width:300px; height=300px;" alt="...">
+                                        <img src="{{ product.product_image_url }}"  style="width:300px; height:300px;" alt="...">
                                     {% else %}
                                         <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
                                     {% endif%}
@@ -39,39 +73,37 @@
                                     <h5 class="card-title">{{ product.product_name }}</h5>
                                     <p class="card-text">{{ product.product_price }}원</p>
                                     <p class="card-text"><small class="text-body-secondary">{{ product.convenient_store_name }}</small></p>
+                                    <span class="card-text"><small class="text-body-secondary">❤️:{{ product.likes.count }}</small></span>
+                                    <span class="card-text"><small class="text-body-secondary">🗯️:{{ product.Product_reviews.count }}</small></span>
                                   </div>
                                 </div>
                               </div>
                             </a>
                         </button>
+
                     </div>
                 {% endfor %}
-        </div>
+            </div>
+
+            <div id="latest_product_tab" class="tab-content">
+                <h3>Recent</h3>
+                <p>이곳은 두 번째 탭의 내용입니다.</p>
+            </div>
+            <div id="ai_product_tab" class="tab-content">
+                <h3>AI</h3>
+                <p>이곳은 세 번째 탭의 내용입니다.</p>
+            </div>
     </div>
+
 </div>
 
-
-
-
-    <div id="recent_product" class="tab-content">
-        <h3>Recent</h3>
-        <p>이곳은 두 번째 탭의 내용입니다.</p>
-    </div>
-
-    <div id="ai_product" class="tab-content">
-        <h3>AI</h3>
-        <p>이곳은 세 번째 탭의 내용입니다.</p>
-    </div>
-
-
-
-    <!-- 페이징 처리 시작 -->
+   <!-- 페이징 처리 시작 -->
      <nav aria-label="Page navigation example">
         <ul class="pagination justify-content-center">
             <!-- 이전페이지 영역 시작 -->
            {% if page_obj.previous_page_number|add:-4 >= 0 %}
                     <li class="page-item">
-                        <a class="page-link" href="{% url 'product:all_product_list_pagination' %}?page={{ page_obj.previous_page_number|add:-3 }}">Previous</a>
+                        <a class="page-link" href="{% url 'product:all_product_pagination' %}?page={{ page_obj.previous_page_number|add:-3 }}">Previous</a>
                     </li>
             {% endif %}
             <!-- 이전페이지 영역 끝 -->
@@ -82,11 +114,11 @@
                 {% if page_number >= page_obj.number|add:-3 and page_number <= page_obj.number|add:3 %}
                     {% if page_number == page_obj.number %}
                         {# 현재페이지인 경우 #}
-                        <li class="page-item active"><a class="page-link" href="#">{{ page_number }}</a></li>
+                        <li class="pagination-link active"><a class="page-link" href="#">{{ page_number }}</a></li>
                     {% else %}
                         {# 현재페이지가 아닌 경우 #}
                         <li class="page-item">
-                            <a class="page-link" href="{% url 'product:all_product_list_pagination' %}?page={{ page_number }}">{{ page_number }}</a>
+                            <a class="page-link" href="{% url 'product:all_product_pagination' %}?page={{ page_number }}">{{ page_number }}</a>
                         </li>
                     {% endif %}
                 {% endif %}
@@ -96,13 +128,41 @@
         <!-- 다음페이지 영역 시작 -->
         {% if last_page >= page_obj.number|add:4 %}
             <li class="page-item">
-                        <a class="page-link" href="{% url 'product:all_product_list_pagination' %}?page={{ page_obj.next_page_number|add:+3 }}">Next</a>
+                        <a class="page-link" href="{% url 'product:all_product_pagination' %}?page={{ page_obj.next_page_number|add:+3 }}">Next</a>
             </li>
         {% endif %}
     <!-- 다음페이지 영역 끝 -->
         </ul>
     </nav>
     <!-- 페이징 처리 끝 -->
+</div>
 {% endblock content %}
+{% block script %}
+<script>
+    function openTab(evt, tabName) {
+        let i, tabcontent, tablinks;
 
+        tabcontent = document.getElementsByClassName("tab-content");
+        for (i = 0; i < tabcontent.length; i++) {
+            tabcontent[i].style.display = "none";
+        }
 
+        tablinks = document.getElementsByClassName("tab-btn");
+        for (i = 0; i < tablinks.length; i++) {
+            tablinks[i].className = tablinks[i].className.replace(" active", "");
+        }
+
+        document.getElementById(tabName).style.display = "block";
+    }
+
+    if (document.addEventListener) {
+      window.addEventListener('pageshow', function(event) {
+        if (event.persisted || performance.getEntriesByType("navigation")[0].type === 'back_forward') {
+          location.reload();
+        }
+      }, false);
+    }
+
+</script>
+
+{% endblock script %}
