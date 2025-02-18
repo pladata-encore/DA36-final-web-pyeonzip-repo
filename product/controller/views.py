@@ -12,7 +12,13 @@ from django.http import JsonResponse
 product_service=ProductServiceImpl.get_instance() # 객체 생성
 review_service=ReviewServiceImpl.get_instance()
 # Create your views here.
-def all_product_list_pagination(request):
+
+
+
+
+
+
+def all_product_pagination(request):
         # question service로부터 받아옴
         product = product_service.find_all()
         page = request.GET.get('page', 1)
@@ -22,8 +28,23 @@ def all_product_list_pagination(request):
 
         return render(request, 'product/product_list.html', context={'page_obj': page_obj,'last_page':last_page})
 
+
+def latest_product_pagination(request):
+    # question service로부터 받아옴
+    product = product_service.find_latest_product()
+    page = request.GET.get('page', 1)
+    paginator = Paginator(product, 20)  # 한페이지에 몇개씩?
+    page_obj = paginator.get_page(page)
+    last_page = paginator.num_pages
+
+    return render(request, 'product/product_list.html', context={'page_obj': page_obj, 'last_page': last_page})
+
+
+
+
 def product_detail(request,product_id):
         product = product_service.find_by_id(product_id)
+        # 각 product에 대한 리뷰 개수를 함께 조회
         reviews = review_service.find_by_product_id(product_id)
         liked=product.likes.filter(id=request.user.id).exists()
         return render(request, 'product/product_detail.html', context={'product':product,"reviews":reviews,"liked":liked})
