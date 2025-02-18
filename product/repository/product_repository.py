@@ -10,6 +10,9 @@ class ProductRepository(ABC):
     def find_by_id(self, id):
         pass
 
+    @abstractmethod
+    def add_remove_likes(self, product, likes):
+        pass
 
 class ProductRepositoryImpl(ProductRepository):
     __instance = None
@@ -31,3 +34,10 @@ class ProductRepositoryImpl(ProductRepository):
     def find_by_id(self, id):
         return Product.objects.get(pk=id)
 
+    def add_remove_likes(self, product, likes):
+        if product.likes.filter(id=likes.id).exists():
+            product.likes.remove(likes)
+            return False
+        else:
+            product.likes.add(likes)
+            return True
