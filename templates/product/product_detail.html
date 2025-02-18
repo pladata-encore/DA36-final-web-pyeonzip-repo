@@ -1,5 +1,7 @@
 {% extends '../layout/base.html' %}
+
 {% block css %}
+
 
 {% endblock css %}
 
@@ -28,6 +30,9 @@
 
                 <dt class="col-sm-3">편리성</dt>
                 <dd class="col-sm-9">{{ review.convenienceContent }}</dd>
+
+                <dt class="col-sm-3">편리성</dt>
+                <dd class="col-sm-9"><img src="{{ review.reviewImageUrl.url}}" alt="Review Image"></dd>
             </dl>
         </div>
     {% endfor %}

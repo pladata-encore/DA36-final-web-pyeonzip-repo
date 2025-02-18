@@ -18,7 +18,6 @@ def mypage_update(request):
 
     return render(request, 'users/mypage_update.html', {'form':form})
 
-
 def mypage(request):
     user_detail = UserDetail.objects.get(user=request.user)
     return render(request, 'users/mypage.html', {
