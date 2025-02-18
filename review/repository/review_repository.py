@@ -26,7 +26,7 @@ class ReviewRepositoryImpl(ReviewRepository):
         return cls.__instance
 
     def find_by_product_id(self, product_id):
-        return Review.objects.filter(product=product_id)
+        return Review.objects.filter(product_id=product_id)
 
     def find_by_user_id(self, user_id):
         return Review.objects.filter(author=user_id).select_related('product', 'author')

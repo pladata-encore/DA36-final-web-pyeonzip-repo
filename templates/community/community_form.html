@@ -1,12 +1,9 @@
 {% extends '../layout/base.html' %}
+{% load static %}
 
-
-
-{% block title %} 커뮤니티 글쓰기 {% endblock %}
 
 {% block content %}
-
-    <form method="post">
+    <form method="post" action="{% url 'community:community_save' %}">
         {% csrf_token %}
         
         <!-- 1️⃣ 연관 상품 선택 -->
@@ -16,6 +13,7 @@
                 <input type="text" class="form-control" id="searchProduct" placeholder="Search..." readonly>
 {#                <input class="form-control" id="productId" name="productId" placeholder="선택된 상품" readonly>#}
                 <button type="button" class="btn btn-primary ms-2" onclick="openProductPopup()">+</button>
+                <input type="hidden" name="products" id="productsInput">
             </div>
             
             <!-- 선택한 제품 목록 -->
@@ -26,9 +24,10 @@
          <!-- 2️⃣ 카테고리 선택 -->
         <div class="p-5">
             <label class="form-label"><strong>카테고리</strong></label>
-            <select class="form-select" aria-label="Default select example" id="categoryId" name="categoryId" onchange="checkFormCompletion()">
-              <option selected>아이디어</option>
-              <option value=1>꿀조합</option>
+            <select class="form-select" aria-label="Default select example" id="category" name="categoryId" onchange="checkFormCompletion()">
+                <option value="">카테고리 선택</option>
+                <option value=1>아이디어</option>
+                <option value=2>꿀조합</option>
             </select>
         </div>
 
@@ -86,7 +85,9 @@
 
         function updateSelectedProducts() {
             const container = document.getElementById("selectedProducts");
+            const hiddenInput = document.getElementById("productsInput");
             container.innerHTML = "";
+            hiddenInput.value = selectedProducts.map(p => p.id).join(",");
 
             selectedProducts.forEach((product, index) => {
                 const card = document.createElement("div");
@@ -116,7 +117,7 @@
         }
 
         function checkFormCompletion() {
-            const category = document.getElementById("categoryId").value;
+            const category = document.getElementById("category").value;
             const title = document.getElementById("communityTitle").value.trim();
             const content = document.getElementById("communityContent").value.trim();
             const submitBtn = document.getElementById("submitBtn");
