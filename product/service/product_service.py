@@ -13,9 +13,6 @@ class ProductService(ABC):
     def add_remove_likes(self, product, voter):
         pass
 
-    @abstractmethod
-    def find_liker(self, product_id, likes):
-        pass
 class ProductServiceImpl(ProductService):
     __instance = None
 
@@ -35,15 +32,12 @@ class ProductServiceImpl(ProductService):
             cls.__instance = cls()
         return cls.__instance
 
-
     def find_all(self):
         return self.__product_repository.find_all()
 
     def find_by_id(self,id):
         return self.__product_repository.find_by_id(id)
 
-    def find_liker(self,product_id, likes):
-        self.__product_repository.find_liker(product_id, likes)
 
     def add_remove_likes(self, product_id, likes):
         product = self.__product_repository.find_by_id(product_id)

@@ -27,6 +27,5 @@ class ReviewServiceImpl(ReviewService):
         return cls.__instance
 
 
-
     def find_by_product_id(self,product_id):
         return self.__review_repository.find_by_product_id(product_id)
