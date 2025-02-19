@@ -27,5 +27,6 @@ urlpatterns = [
     path('logout/', views.logout, name="logout"),
     path('mypage/', mypage_views.mypage, name="mypage"),
     path('mypage_update/',mypage_views.mypage_update, name="mypage_update"),
-    path('mywrite/', mywrite_views.mywrite, name="mywrite"),
+    path('my_review/', mywrite_views.my_review, name="my_review"),
+    path('my_community/', mywrite_views.my_community, name="my_community"),
 ]

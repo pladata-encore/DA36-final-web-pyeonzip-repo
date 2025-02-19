@@ -1,11 +1,20 @@
 {% extends '../layout/base.html' %}
 {% load static %}
+
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/base.css' %}">
 
+    <h3>나의 리뷰</h3>
     
     <div class="review-container">
-        <h1>내가 작성한 리뷰</h1>
+        <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'users:my_review' %}">review</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:my_community' %}">community</a>
+          </li>
+        </ul>
 
         {% if my_reviews %}
             {% for review in my_reviews %}
@@ -27,7 +36,7 @@
                     </div>
 
                     <!-- 리뷰 내용 (아코디언 형식) -->
-                    <div class="review-content">
+                     <div class="review-content">
                         <details>
                             <summary>맛</summary>
                             <p>{{ review.tasteContent }}</p>
@@ -63,6 +72,6 @@
 {% block script %}
     <script src="{% static 'js/mywrite/mywrite_review.js' %}"></script>
     <script>
-    console.log('community_list.html script...');
+    console.log('review_list.html script...');
     </script>
 {% endblock script %}
