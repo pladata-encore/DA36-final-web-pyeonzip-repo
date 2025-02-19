@@ -14,6 +14,10 @@ class CommunityRepository(ABC):
         pass
 
     @abstractmethod
+    def find_by_user_id(self, user_id):
+        pass
+
+    @abstractmethod
     def save(self, community):
         pass
 
@@ -40,6 +44,9 @@ class CommunityRepositoryImpl(CommunityRepository):
 
     def find_by_id(self, id):
         return Community.objects.prefetch_related("products").get(pk=id)
+
+    def find_by_user_id(self, user_id):
+        return Community.objects.filter(author=user_id)
 
     def save(self, community):
         community.save()
