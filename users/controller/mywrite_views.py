@@ -18,8 +18,8 @@ def my_review(request):
 
 @login_required()
 def my_community(request):
-    author= request.user
-    my_communities = community_service.find_all_by_author(author)
+    author = UserDetail.objects.get(user_id=request.user.id)
+    my_communities = community_service.find_by_user_id(author)
     return render(request, 'users/my_community.html', {'my_communities': my_communities})
 
 

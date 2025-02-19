@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import SET_NULL
 from product.entity.models import Product
+from users.entity.models import UserDetail
 
 
 class Category(models.Model):
@@ -16,7 +17,7 @@ class Category(models.Model):
 class Community(models.Model):
     communityId = models.AutoField(primary_key=True)
     category = models.ForeignKey(Category, null=True, blank=True,on_delete=SET_NULL)
-    author = models.ForeignKey(User, null=True, blank=True, related_name='User_community',on_delete=SET_NULL)
+    author = models.ForeignKey(UserDetail, null=True, blank=True, related_name='User_community',on_delete=SET_NULL)
     products = models.ManyToManyField(Product, blank=True, related_name='Community_products') # product 여러개 지정 가능하도록 ManyToManyField로 변경
     communityTitle = models.CharField(max_length=50)
     communityContent = models.TextField(max_length=500)
@@ -38,10 +39,7 @@ class CommunityVoters(models.Model):
         db_table = 'community_voters'
 
 class CommunityForm(forms.ModelForm):
-    products = forms.ModelMultipleChoiceField(
-        queryset=Product.objects.all(),
-        required=False
-    )
+    products = forms.CharField(widget=forms.HiddenInput(), required=False)
     class Meta:
         model = Community
         fields = ['category', 'communityTitle', 'communityContent', 'products']  # Form클래스에서 사용할 Model클래스 속성
@@ -52,6 +50,17 @@ class CommunityForm(forms.ModelForm):
             'communityContent': '내용',
             'products': '제품 선택',
         }
+    def clean_products(self):
+        """쉼표로 구분된 product_ids를 리스트로 변환하여 검증"""
+        data = self.cleaned_data['products']
+        if data:
+            try:
+                product_ids = [int(pid) for pid in data.split(",") if pid]  # ✅ 쉼표로 구분된 문자열을 리스트로 변환
+                products = Product.objects.filter(product_id__in=product_ids)  # ✅ 유효한 제품 ID인지 확인
+                return products  # ✅ 검증된 Product 객체 리스트 반환
+            except ValueError:
+                raise forms.ValidationError("유효한 제품 ID를 입력하세요.")
+        return []
 
 
 
