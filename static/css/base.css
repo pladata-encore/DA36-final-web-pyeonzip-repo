@@ -192,6 +192,82 @@
 /* -----------------------main--------------------- */
 
 
+/* -----------------------mywrite_review--------------------- */
+.review-container {
+            max-width: 800px;
+            margin: auto;
+            padding: 20px;
+        }
+        .review-card {
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .product-info {
+            text-align: center;
+        }
+        .product-meta {
+            font-size: 14px;
+            color: #777;
+        }
+        .product-image {
+            width: 100%;
+            max-width: 250px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .review-author {
+            display: flex;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .profile-pic {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        .author-name {
+            font-weight: bold;
+        }
+        .review-date {
+            font-size: 14px;
+            color: #777;
+            margin-left: auto;
+        }
+        .review-content details {
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+        .review-image img {
+            width: 100%;
+            max-width: 300px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        .review-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+            align-items: center;
+        }
+        .share-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .no-review {
+            text-align: center;
+            font-size: 16px;
+            color: #777;}
+/* -----------------------mywrite_review--------------------- */
+
+
 /* -----------------------footer--------------------- */
 /* ✅ 하단 고정된 footer 스타일 */
 .footer {
