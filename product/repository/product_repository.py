@@ -14,6 +14,10 @@ class ProductRepository(ABC):
     def add_remove_likes(self, product, likes):
         pass
 
+    @abstractmethod
+    def latest_product(self):
+        pass
+
 class ProductRepositoryImpl(ProductRepository):
     __instance = None
 
@@ -44,3 +48,12 @@ class ProductRepositoryImpl(ProductRepository):
 
     def find_by_name(self, query):
         return Product.objects.filter(product_name__icontains=query)
+
+
+    def latest_product(self):
+
+        # 가장 최근 등록된 상품의 날짜 가져오기
+        latest_date = Product.objects.latest("updated_at").updated_at
+        latest_products = Product.objects.filter(updated_at=latest_date)
+
+        return latest_products

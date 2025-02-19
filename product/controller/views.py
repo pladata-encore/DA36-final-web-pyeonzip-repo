@@ -32,20 +32,13 @@ def all_product_pagination(request):
 
 def latest_product_pagination(request):
     # question service로부터 받아옴
-    product = product_service.find_latest_product()
+    product = product_service.latest_product()
     page = request.GET.get('page', 1)
     paginator = Paginator(product, 20)  # 한페이지에 몇개씩?
     page_obj = paginator.get_page(page)
     last_page = paginator.num_pages
 
     return render(request, 'product/product_list.html', context={'page_obj': page_obj, 'last_page': last_page})
-
-def latest_product_showcase(request):
-    latest_product = product_service.find_all()[:12]
-    return render(request, 'main.html', {'latest_product': latest_product})
-
-
-
 
 def product_detail(request,product_id):
         product = product_service.find_by_id(product_id)
