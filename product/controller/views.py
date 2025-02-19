@@ -1,6 +1,7 @@
 from django.shortcuts import render
 
 import users.urls
+from product.entity.models import Product
 from product.service.product_service import ProductServiceImpl
 from django.core.paginator import Paginator
 from review.service.review_service import ReviewServiceImpl
@@ -38,6 +39,10 @@ def latest_product_pagination(request):
     last_page = paginator.num_pages
 
     return render(request, 'product/product_list.html', context={'page_obj': page_obj, 'last_page': last_page})
+
+def latest_product_showcase(request):
+    latest_product = product_service.find_all()[:12]
+    return render(request, 'main.html', {'latest_product': latest_product})
 
 
 
