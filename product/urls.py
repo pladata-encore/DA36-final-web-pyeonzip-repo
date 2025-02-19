@@ -30,4 +30,5 @@ urlpatterns = [
     path("latest_product_pagination",views.latest_product_pagination,name="latest_product_pagination"),
     path("product_detail/<int:product_id>/",views.product_detail,name="product_detail"),
     path("product_likes/<int:product_id>/",views.product_likes,name="product_likes"),
+    path("filter_products/", views.filter_products, name="filter_products"),
 ]

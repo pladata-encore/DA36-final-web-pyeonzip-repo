@@ -66,3 +66,34 @@ def product_likes(request, product_id):
         }, status=400)
 
 
+def filter_products(request):
+    store = request.GET.get("store", "ALL")  # store 요청 가져요기 _ 기본값=ALL
+    print(store)
+    if store == "ALL":
+        products = Product.objects.all()  # 전체 상품
+    else:
+        products = Product.objects.filter(convenient_store_name=store)  # 선택한 편의점의 상품만 필터링
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(products, 20)  # 한페이지에 몇개씩?
+    page_obj = paginator.get_page(page)
+    last_page = paginator.num_pages
+    product_list = [
+        {
+            "id": product.product_id,
+            "name": product.product_name,
+            "price": product.product_price,
+            "store": product.convenient_store_name,
+            "image": product.product_image_url if product.product_image_url else "/static/images/logo.png",
+            "likes": product.likes.count(),
+            "reviews": product.Product_reviews.count(),
+        }
+        for product in page_obj
+    ]
+
+    data = {
+        "products": product_list,  # 상품 리스트
+        "total_pages": paginator.num_pages,  # 총 페이지 수
+        "current_page": page_obj.number,  # 현재 페이지
+    }
+    return JsonResponse(data)
