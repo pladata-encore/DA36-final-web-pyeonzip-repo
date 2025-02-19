@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-<div class="container">
+<div class="main">
 
 <!-- 검색바-->
 <section class="search-main">
@@ -45,12 +45,13 @@
     <div class="ai-main-text">
         <span>🤖 똑똑한 AI 리뷰 분석</span>
     </div>
-    
-    <div class="btn-group my-2" role="group">
-        <button class="btn btn-outline-primary">전체</button>
-        <button class="btn btn-outline-primary">음료</button>
-        <button class="btn btn-outline-primary">간식</button>
-        <button class="btn btn-outline-primary">기타</button>
+    <div class="product-scroll-container" id="product-list">
+        <div class="btn-group my-2" role="group">
+            <button class="btn btn-outline-primary">전체</button>
+            <button class="btn btn-outline-primary">음료</button>
+            <button class="btn btn-outline-primary">간식</button>
+            <button class="btn btn-outline-primary">기타</button>
+        </div>
     </div>
     <!--for문으로 수정 예정 test 중-->
     <div class="container">
@@ -171,7 +172,7 @@
         if (!isDown) return;
         e.preventDefault();
         const x = e.pageX - scrollContainer.offsetLeft;
-        const walk = (x - startX) * 1.5; // 스크롤 속도 조절
+        const walk = (x - startX) * 2; // 스크롤 속도 조절
         scrollContainer.scrollLeft = scrollLeft - walk;
     });
 });

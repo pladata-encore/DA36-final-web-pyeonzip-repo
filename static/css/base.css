@@ -47,7 +47,7 @@
 
 /* ✅ 컨텐츠가 헤더 밑으로 가도록 여백 추가 */
 /*.container {*/
-/*    margin-top: 60px;*/
+/*    padding-top: 80px;*/
 /*}*/
 
 
@@ -60,9 +60,32 @@
 }
 
 .search-main {
-    width: 100%;
+    width: 100vw;
     max-width: 100%;
-    padding: 20px 16px; /* 상하 여백 추가 */
+    height: 350px; /* 배너 높이 조정 */
+    padding: 20px 16px; /* 기본 패딩 유지 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 왼쪽 정렬 */
+    justify-content: center;
+    background: url('/static/images/bg.png') no-repeat center center;
+    background-size: cover;
+    color: black;
+    text-align: center;
+    position: relative;
+}
+
+
+.search-main .input-group button {
+    width: 50px;
+    height: 38px;
+}
+
+.search-main .input-group {
+    max-width: 500px; /* 검색창 최대 크기 제한 */
+    width: 100%;
+    background: rgba(255, 255, 255, 0.8); /* 투명한 배경 */
+    border-radius: 8px;
 }
 
 .search-main-title {
@@ -70,6 +93,7 @@
     font-size: 32px;
     font-weight: 500;
     padding: 8px 0px;
+    color: black;
 
 }
 
@@ -78,6 +102,7 @@
     font-size: 48px;
     font-weight: 500;
     padding: 8px 0px;
+    color: black;
 }
 
 .lastest-main {
@@ -180,15 +205,8 @@
     margin-top: auto; /* footer가 항상 아래에 위치하도록*/
 }
 
-/* 본문 컨텐츠 영역에 아래 여백 추가 */
-.body {
-    /*padding-top: 50px !important;  !* ✅ 헤더 높이만큼 조정 *!*/
-    /*!*padding-bottom: 50px; !* ✅ footer와 겹치지 않도록 여백 유지 -> 제거 *!*!*/
-    /*height: 100%;*/
-    /*margin: 0;*/
-    /*display: flex;*/
-    /*flex-direction: column;*/
-    /*background-color: #f8f8f8;*/
+.main {
+    padding-top: 80px !important;
 }
 
 .content {
