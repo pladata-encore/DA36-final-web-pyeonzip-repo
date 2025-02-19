@@ -21,7 +21,6 @@ from django.conf import settings
 from django.views.generic import RedirectView
 from django.views.generic import TemplateView
 
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', TemplateView.as_view(template_name='main.html'), name='home'),
@@ -30,5 +29,6 @@ urlpatterns = [
     path('product/', include('product.urls')),
     path('users/', include('users.urls')),
     path('accounts/', include('allauth.urls')),  # 추가
+
 ]
 urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
