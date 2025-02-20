@@ -24,13 +24,10 @@ from product.controller.select_product_views import select_product_list
 
 app_name='product'
 urlpatterns = [
-    path("product_main",views.product_main,name="product_main"),
+    path("main",views.main,name="main"),
     path("select_product",select_product_views.select_product_list,name="select_product"),
-    # path("", views.index, name="index"),
-    # path("all_product_pagination",views.all_product_pagination,name="all_product_pagination"),
-    # path("latest_product_pagination",views.latest_product_pagination,name="latest_product_pagination"),
     path("product_detail/<int:product_id>/",views.product_detail,name="product_detail"),
     path("product_likes/<int:product_id>/",views.product_likes,name="product_likes"),
-    path("filter_products/<str:store>/", views.filter_products, name="filter_products"),
-    path("product_list/<str:tab>/",views.product_list,name="product_list"),
+    path("filter_products/<str:store>/<str:category>/<str:tab>/<int:page>/", views.filter_products, name="filter_products"),
+
 ]
