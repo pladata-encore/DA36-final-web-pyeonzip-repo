@@ -25,7 +25,7 @@
     </div>
     <div class="product-scroll-container" id="product-list">
         {% for product in latest_product %}
-            <div class="product-card">
+            2<div class="product-card">
                 <img src="{{ product.product_image_url }}" alt="{{ product.product_name}}">
                 <div class="card-body">
                     <h6 class="card-title">{{ product.product_name}}</h6>
@@ -39,7 +39,7 @@
     
 
     <div class="text-center mt-3 mb-3">
-        <button class="btn btn-outline-secondary" type="button"><a href="{% url 'product:all_product_pagination' %}">더보기 ▶</a></button>
+        <button class="btn btn-outline-secondary" type="button"><a href="{% url 'product:product_main' %}">더보기 ▶</a></button>
     </div>
 </section>    
 

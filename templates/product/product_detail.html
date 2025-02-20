@@ -31,29 +31,29 @@
             </div>
         </div>
 
-</div>
+    </div>
 
 
-    {% for review in reviews %}
-        <div class="card mb-3">
-            <dl class="row">
-                <dt class="col-sm-3">작성자</dt>
-                <dd class="col-sm-9">{{ review.author.nickname }}</dd>
+        {% for review in reviews %}
+            <div class="card mb-3">
+                <dl class="row">
+                    <dt class="col-sm-3">작성자</dt>
+                    <dd class="col-sm-9">{{ review.author.nickname }}</dd>
 
-                <dt class="col-sm-3">맛</dt>
-                <dd class="col-sm-9">{{ review.tasteContent }}</dd>
+                    <dt class="col-sm-3">맛</dt>
+                    <dd class="col-sm-9">{{ review.tasteContent }}</dd>
 
-                <dt class="col-sm-3">가격</dt>
-                <dd class="col-sm-9">{{ review.priceContent }}</dd>
+                    <dt class="col-sm-3">가격</dt>
+                    <dd class="col-sm-9">{{ review.priceContent }}</dd>
 
-                <dt class="col-sm-3">편리성</dt>
-                <dd class="col-sm-9">{{ review.convenienceContent }}</dd>
+                    <dt class="col-sm-3">편리성</dt>
+                    <dd class="col-sm-9">{{ review.convenienceContent }}</dd>
 
-                <dt class="col-sm-3">편리성</dt>
-                <dd class="col-sm-9"><img src="{{ review.reviewImageUrl.url}}" alt="Review Image"></dd>
-            </dl>
-        </div>
-    {% endfor %}
+                    <dt class="col-sm-3">편리성</dt>
+                    <dd class="col-sm-9"><img src="{{ review.reviewImageUrl.url}}" alt="Review Image"></dd>
+                </dl>
+            </div>
+        {% endfor %}
 
 
 
