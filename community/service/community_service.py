@@ -9,11 +9,18 @@ class CommunityService(ABC):
         pass
 
     @abstractmethod
-    def find_by_id(self, id):
+    def find_by_id(self, community_id):
         pass
 
     @abstractmethod
-    def create_community(self, data, product_ids):
+    def find_by_user_id(self, user_id):
+        pass
+
+    @abstractmethod
+    def create_community(self, data, product_ids, author):
+        pass
+
+    def add_vote(self, community_id, user):
         pass
 
 
@@ -38,18 +45,25 @@ class CommunityServiceImpl(CommunityService):
         """모든 커뮤니티 게시글 조회"""
         return self.__community_repository.find_all()
 
-    def find_by_id(self, id):
+    def find_by_id(self, community_id):
         """ID를 기반으로 특정 커뮤니티 게시글 조회"""
-        return self.__community_repository.find_by_id(id)
+        return self.__community_repository.find_by_id(community_id)
 
-    def create_community(self, data, product_ids):
+    def find_by_user_id(self, user_id):
+        return self.__community_repository.find_by_user_id(user_id)
+
+    def create_community(self, data, product_ids, author):
         """커뮤니티 게시글 생성 및 저장"""
         community = Community(
             category=data.get("category"),
-            author=data.get("author"),
+            author=author,
             communityTitle=data.get("communityTitle"),
             communityContent=data.get("communityContent")
         )
         self.__community_repository.save(community)
         self.__community_repository.choose_products(community, product_ids)
         return community
+
+    def add_vote(self, community_id, user):
+        community = self.__community_repository.find_by_id(community_id)
+        return self.__community_repository.add_vote(community, user)

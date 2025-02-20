@@ -1,4 +1,5 @@
 from abc import abstractmethod, ABC
+from django.db.models import Count
 
 from community.entity.models import Community
 from product.entity.models import Product
@@ -10,7 +11,11 @@ class CommunityRepository(ABC):
         pass
 
     @abstractmethod
-    def find_by_id(self, id):
+    def find_by_id(self, community_id):
+        pass
+
+    @abstractmethod
+    def find_by_user_id(self, user_id):
         pass
 
     @abstractmethod
@@ -19,6 +24,10 @@ class CommunityRepository(ABC):
 
     @abstractmethod
     def choose_products(self, community, product_ids):
+        pass
+
+    @abstractmethod
+    def add_vote(self, community, user):
         pass
 
 class CommunityRepositoryImpl(CommunityRepository):
@@ -36,10 +45,17 @@ class CommunityRepositoryImpl(CommunityRepository):
         return cls.__instance
 
     def find_all(self):
-        return Community.objects.prefetch_related("products").all()
 
-    def find_by_id(self, id):
-        return Community.objects.prefetch_related("products").get(pk=id)
+        return Community.objects.select_related("category")\
+            .prefetch_related("products")\
+            .annotate(vote_count=Count("voter"))\
+            .order_by('-created_at')
+
+    def find_by_id(self, community_id):
+        return Community.objects.prefetch_related("products").get(pk=community_id)
+
+    def find_by_user_id(self, user_id):
+        return Community.objects.filter(author_id=user_id).select_related('author')
 
     def save(self, community):
         community.save()
@@ -47,3 +63,7 @@ class CommunityRepositoryImpl(CommunityRepository):
     def choose_products(self, community, product_ids):
         products = Product.objects.filter(product_id__in=product_ids)
         community.products.set(products)
+
+    def add_vote(self, community, user):
+        is_voted = community.add_vote(user)  # ✅ 중간 테이블에 직접 추가
+        return is_voted
