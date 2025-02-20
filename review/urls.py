@@ -26,4 +26,5 @@ app_name='review'
 urlpatterns = [
     path('reveiw_main/', review_views.review_main, name='review_main'),
     path('review_write/', review_views.review_write, name='review_write'),
+    path('review_likes/<int:review_id>', review_views.review_likes, name='review_likes'),
 ]

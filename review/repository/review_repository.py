@@ -11,6 +11,9 @@ class ReviewRepository(ABC):
     def find_by_user_id(self, user_id):
         pass
 
+    def delete(self, review_id):
+        pass
+
 class ReviewRepositoryImpl(ReviewRepository):
     __instance = None
 
@@ -30,4 +33,17 @@ class ReviewRepositoryImpl(ReviewRepository):
 
     def find_by_user_id(self, user_id):
         return Review.objects.filter(author=user_id).select_related('product', 'author')
+
+    def delete(self, review_id):
+        review = Review.objects.get(reviewId=review_id)
+        review.delete()
+        return review
+
+    def review_likes(self, review, likes):
+        if review.likes.filter(review_id=likes.id).exists():
+            review.likes.remove(likes)
+            return False
+        else:
+            review.likes.add(likes)
+            return True
 
