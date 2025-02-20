@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.http import JsonResponse
 
 from community.entity.models import CommunityForm
 from community.service.community_service import CommunityServiceImpl
@@ -8,7 +9,7 @@ from users.entity.models import UserDetail
 community_service = CommunityServiceImpl()
 
 def community_list(request):
-    communities = community_service.find_all()
+    communities = community_service.find_all().order_by('-created_at')
     return render(request, 'community/community_list.html', {'communities': communities })
 
 @login_required(login_url='users:login')
@@ -37,3 +38,23 @@ def community_save(request):
             print('form.errors=', form.errors)
 
     return redirect("community:community_write")
+
+@login_required(login_url='users:login')
+def vote_community(request):
+    """✅ 투표하기 기능 (AJAX 요청)"""
+    if request.method == 'POST':
+        from json import loads
+        data = loads(request.body)
+        community_id = data.get("communityId")
+
+        if not community_id:
+            return JsonResponse({"success": False, "message": "커뮤니티 ID 없음"}, status=400)
+
+        is_voted = community_service.add_vote(community_id, request.user)
+
+        if is_voted:
+            return JsonResponse({"success": True, "message": "✅ 투표 완료!"})
+        else:
+            return JsonResponse({"success": False, "message": "❌ 이미 투표한 게시글입니다."})
+
+    return JsonResponse({"success": False, "message": "잘못된 요청"}, status=400)
