@@ -45,12 +45,6 @@
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* ✅ 컨텐츠가 헤더 밑으로 가도록 여백 추가 */
-/*.container {*/
-/*    padding-top: 80px;*/
-/*}*/
-
-
 /* -----------------------main--------------------- */
 
 .section {
@@ -95,6 +89,7 @@
     font-weight: 500;
     padding: 8px 0px;
     color: black;
+    text-align: left;
 
 }
 
@@ -104,6 +99,7 @@
     font-weight: 500;
     padding: 8px 0px;
     color: black;
+    text-align: left;
 }
 
 .latest-main {
@@ -124,6 +120,7 @@
     font-size: 36px;
     font-weight: 500;
     padding: 8px 0px;
+    text-align: center;
 }
 
 .ai-main-text {
@@ -131,6 +128,7 @@
     font-size: 36px;
     font-weight: 500;
     padding: 8px 0px;
+    text-align: center;
 }
 
 .product-scroll-container {
@@ -155,16 +153,18 @@
 }
 
 .product-card {
-    flex: 0 0 auto;
-    width: 200px;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    overflow: hidden;
-    text-align: center;
-    background: white;
-    padding: 10px;
-    white-space: normal;
+    flex: 0 0 auto;  /* flex 컨테이너에서 크기 자동 조정 */
+    width: 250px;  /* ✅ 현재 카드 너비 (200px) */
+    height: 300px;
+    border: 1px solid #ddd;  /* ✅ 테두리 적용 */
+    border-radius: 8px;  /* ✅ 모서리를 둥글게 */
+    overflow: hidden;  /* ✅ 넘치는 내용 숨김 */
+    text-align: center;  /* ✅ 내부 텍스트 중앙 정렬 */
+    background: white;  /* ✅ 배경색 흰색 */
+    padding: 10px;  /* ✅ 내부 여백 */
+    white-space: normal;  /* ✅ 줄 바꿈 허용 */
 }
+
 
 .product-card img {
     width: 100%;
@@ -172,25 +172,96 @@
     background: #ccc;
 }
 
-/*.product-card {*/
-/*    text-align: center;*/
-/*}*/
+.card-body {
+    text-align: left; /* 상품명 왼쪽 정렬 */
+}
 
-/*.product-card img {*/
-/*    width: 100%;*/
-/*    height: 150px;*/
-/*    background: #ccc;*/
-/*}*/
+.card-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #999;
+}
 
-/*.product-image {*/
-/*    width: 100px; !* 고정된 너비 /*/
-/*    height: 100px; / 고정된 높이 /*/
-/*    object-fit: cover; / 비율을 유지하면서 크롭 /*/
-/*    border-radius: 8px; / 둥근 모서리 적용 *!*/
-/*}*/
+.card-store-name {
+    font-size: 16px;
+    color: #999;
+}
+
+.card-price {
+    font-size: 16px;
+    color: #999;
+}
+
+.product-link {
+    text-decoration: none;  /* 밑줄 제거 */
+    color: inherit;  /* 부모 요소의 색상을 따르게 설정 */
+}
+
+/* -----------------------main end--------------------- */
+
+/* -----------------------mypage start--------------------- */
+.mypage-title {
+    font-family: "Noto Sans KR SemiBold";
+    font-size: 48px;
+    font-weight: 500;
+    text-align: center;
+    padding: 2rem 2rem;
+}
+
+.profile-content {
+    padding: 2rem 0rem;
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 가로 중앙 정렬 */
+    justify-content: center; /* 세로 중앙 정렬 (필요 시 조정) */
+    text-align: center; /* 텍스트 요소 정렬 */
+    width: 100%; /* 부모 요소에 맞춤 */
+}
 
 
-/* -----------------------main--------------------- */
+.mypage-nickname {
+    font-family: "Noto Sans KR";
+    font-size: 24px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.mypage-email {
+    font-family: "Noto Sans KR";
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.userprofile {
+    width: 150px;
+    height: 150px;
+}
+
+.likes_prod {
+    padding: 2rem 0rem;
+
+}
+
+.likes-prod-image {
+    width: 150px;
+    height: 150px;
+}
+
+.likes_prod-card {
+    flex: 0 0 auto;  /* flex 컨테이너에서 크기 자동 조정 */
+    width: 250px;  /* ✅ 현재 카드 너비 (200px) */
+    height: 300px;
+    border: 1px solid #ddd;  /* ✅ 테두리 적용 */
+    border-radius: 8px;  /* ✅ 모서리를 둥글게 */
+    overflow: hidden;  /* ✅ 넘치는 내용 숨김 */
+    text-align: center;  /* ✅ 내부 텍스트 중앙 정렬 */
+    background: white;  /* ✅ 배경색 흰색 */
+    padding: 10px;  /* ✅ 내부 여백 */
+    white-space: normal;  /* ✅ 줄 바꿈 허용 */
+}
+
+/* -----------------------mypage end--------------------- */
 
 
 /* -----------------------mywrite_review--------------------- */

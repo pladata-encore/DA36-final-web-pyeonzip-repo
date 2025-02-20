@@ -30,13 +30,22 @@ class Community(models.Model):
             self.deadline = now().date() + timedelta(days=30)
         super().save(*args, **kwargs)
 
+    def add_vote(self, user):
+        """ 한 번 투표하면 취소할 수 없음"""
+        if not CommunityVoters.objects.filter(community=self, voter=user).exists():  # 이미 투표한 경우 무시
+            CommunityVoters.objects.create(community=self, voter=user)  # 투표 추가
+            return True  # ✅ 투표 성공
+        return False  # ❌ 이미 투표한 경우 아무 작업 없음
+
+
 class CommunityVoters(models.Model):
-    voterId = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-    communityId = models.ForeignKey(Community, null=True, blank=True,on_delete=SET_NULL)
-    voted_at=models.DateTimeField(auto_now_add=True)
+    voter = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    community = models.ForeignKey(Community, null=True, blank=True,on_delete=SET_NULL)
+    voted_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         db_table = 'community_voters'
+        unique_together = ('voter', 'community')
 
 class CommunityForm(forms.ModelForm):
     products = forms.CharField(widget=forms.HiddenInput(), required=False)
