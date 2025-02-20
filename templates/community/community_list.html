@@ -5,47 +5,56 @@
 {% block title %} Community List {% endblock %}
 
 {% block content %}
-    <div class="container my-1">
-        <table class="table table-striped">
-          <thead>
-            <tr>
-                <th>번호</th>
-                <th>카테고리</th>
-                <th>제목</th>
-                <th>작성자</th>
-                <th>작성일시</th>
-            </tr>
-          </thead>
-
-          <tbody>
-                    {% for community in communities %}
-                        <tr>
-                            <td>{{ community.communityId }}</td>
-                            <td>{{ community.category.categoryName|default:"미분류" }}</td>
-                            <td>
-{#                                <a href="{% url 'community:community_detail' community.communityId %}">#}
-                                    {{ community.communityTitle | default:'' }}
-{#                                </a>#}
-                            </td>
-                            <td>{{ community.author.nickname | default:'unknown' }}</td>
-                            <td>{{ community.created_at|date:"Y-m-d" }}</td>
-                        </tr> 
-                    
-                    {% empty %}
-                        <tr>
-                            <td colspan="4">존재하지 않습니다.</td>
-                        </tr>  
-                    {% endfor %}
-                
-            </tbody>
-        </table>
+    
+        <!-- 📌 커뮤니티 목록 -->
+    {% for community in communities %}
+    <div class="card mb-3">
+        <div class="card-header">
+            <span class="badge bg-primary">{{ community.category.categoryName }}</span>
+            <strong>{{ community.communityTitle|truncatewords:20 }}</strong>
+        </div>
+        <div class="card-body">
+            <p>{{ community.communityContent|truncatewords:100 }}</p>
+        </div>
+        <div class="card-footer d-flex justify-content-between align-items-center">
+            <div>
+                <img src="{{ community.author.profile.url }}" alt="User" width="20">
+                <span>{{ community.author.user.username }}</span>
+                <small class="text-muted">{{ community.created_at|date:"Y-m-d" }}</small>
+            </div>
+            <div>
+                <button class="btn btn-outline-success btn-sm" onclick="voteCommunity({{ community.communityId }})">
+                    🗳️ +{{ community.vote_count  }}
+                </button>
+            </div>
+        </div>
     </div>
+    {% endfor %}
 
     {% endblock %}
 
 {% block script %}
-    <script src="{% static 'js/community/community_list.js' %}"></script>
     <script>
-    console.log('community_list.html script...');
+    function voteCommunity(communityId) {
+    fetch("{% url 'community:vote_community' %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ "communityId": communityId })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert("✅ 투표 완료!");
+            location.reload();
+        } else {
+            alert("❌ 투표 실패: " + data.message);
+        }
+    })
+    .catch(error => console.error("❌ 투표 오류:", error));
+}
     </script>
+
 {% endblock %}
