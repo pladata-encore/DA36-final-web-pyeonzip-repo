@@ -9,6 +9,11 @@ class ReviewService(ABC):
     def find_by_product_id(self, id):
         pass
 
+    def find_by_user_id(self, user_id):
+        pass
+
+
+
 class ReviewServiceImpl(ReviewService):
     __instance = None
 

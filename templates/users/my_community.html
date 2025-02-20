@@ -19,14 +19,14 @@
             {% for community in my_communities %}
                 <div class="community-card">
                     <!-- 카테고리 -->
-                    <div class="community-category">{{ community.category.category_name }}</div>
+                    <div class="community-category">{{ community.category_id }}</div>
     
                     <!-- 제목 -->
                     <h3 class="community-title">{{ community.communityTitle }}</h3>
     
                     <!-- 작성자 및 작성일 -->
                     <div class="community-meta">
-    {#                    <img class="profile-pic" src="{{ community.author.profile.profile_image.url }}" alt="{{ community.author.nickname }}">#}
+                        <img class="profile-pic" src="{{ community.author.profile.url }}" alt="{{ community.author.nickname }}">
                         <span class="author-name">{{ community.author.nickname }}</span>
                         <span class="community-date">{{ community.created_at|date:"Y.m.d H:i" }}</span>
                     </div>
