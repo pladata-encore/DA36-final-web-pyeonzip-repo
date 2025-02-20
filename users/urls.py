@@ -27,6 +27,11 @@ urlpatterns = [
     path('logout/', views.logout, name="logout"),
     path('mypage/', mypage_views.mypage, name="mypage"),
     path('mypage_update/',mypage_views.mypage_update, name="mypage_update"),
+
+    # mypage 내가 쓴 글 관련
     path('my_review/', mywrite_views.my_review, name="my_review"),
+    path('my_review/delete/<int:review_id>/', mywrite_views.review_delete, name='review_delete'),
+
     path('my_community/', mywrite_views.my_community, name="my_community"),
+
 ]
