@@ -13,6 +13,10 @@ class ProductService(ABC):
     def add_remove_likes(self, product, voter):
         pass
 
+    @abstractmethod
+    def latest_product(self):
+        pass
+
 class ProductServiceImpl(ProductService):
     __instance = None
 
@@ -46,3 +50,6 @@ class ProductServiceImpl(ProductService):
 
     def find_by_name(self, query):
         return self.__product_repository.find_by_name(query)
+
+    def latest_product(self):
+        return self.__product_repository.latest_product()

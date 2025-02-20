@@ -29,19 +29,19 @@
             <div class="card mb-3" style="max-width: 100%; height: 130px;">
                 <div class="card-body">
                     <div><label>
-                        <input type="radio" name="category" value="all" onclick="filterProducts('간편식품')" checked>
+                        <input type="radio" name="category" value="all" onclick="filterProductss('간편식품')" checked>
                         간편식품
                     </label></div>
                     <div><label>
-                        <input type="radio" name="category" value="cu" onclick="filterProducts('과자류')">
+                        <input type="radio" name="category" value="cu" onclick="filterProductss('과자류')">
                         과자류
                     </label></div>
                     <div><label>
-                        <input type="radio" name="category" value="cu" onclick="filterProducts('아이스크림')">
+                        <input type="radio" name="category" value="cu" onclick="filterProductss('아이스크림')">
                         아이스크림
                     </label></div>
                     <div> <label>
-                        <input type="radio" name="category" value="cu" onclick="filterProducts('음료')">
+                        <input type="radio" name="category" value="cu" onclick="filterProductss('음료')">
                         음료
                     </label></div>
                 </div>
@@ -162,6 +162,102 @@
         }
       }, false);
     }
+
+    let currentPage = 1;
+    let currentStore = "ALL"; // 기본값 설정
+
+    // 상품 필터링 & 페이지네이션 AJAX 요청 함수
+    function filterProducts(store , page = 1) {
+        let currentStore = store;
+        let currentPage = page;
+
+        fetch(`{% url 'product:filter_products' %}?store=${store}&page=${page}`)
+            .then(response => response.json())
+            .then(data => {
+                let productList = document.getElementById("all_product_tab");
+                productList.innerHTML = ""; // 기존 목록 비우기
+
+                // 받아온 상품 데이터 추가
+                data.products.forEach(product => {
+                    let productCard = `
+                        <div class="card mb-3" style="max-width: 100%; height: 300px;">
+                            <button type="button" class="btn">
+                                <a href="/product/${product.id}" class="text-decoration-none">
+                                    <div class="row g-0">
+                                        <div class="col-md-4">
+                                            <img src="${product.image || '/static/images/logo.png'}" style="width:300px; height:300px;" alt="...">
+                                        </div>
+                                        <div class="col-md-8">
+                                            <div class="card-body">
+                                                <h5 class="card-title">${product.name}</h5>
+                                                <p class="card-text">${product.price}원</p>
+                                                <p class="card-text"><small class="text-body-secondary">${product.store}</small></p>
+                                                <span class="card-text"><small class="text-body-secondary">❤️:${product.likes}</small></span>
+                                                <span class="card-text"><small class="text-body-secondary">🗯️:${product.reviews}</small></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                            </button>
+                        </div>
+                    `;
+                    productList.innerHTML += productCard;
+                });
+
+                // 페이지네이션 업데이트
+                updatePagination(data.total_pages);
+            })
+            .catch(error => console.error("Error:", error));
+    }
+
+function updatePagination(currentPage, totalPages) {
+    let paginationDiv = document.querySelector(".pagination");
+    paginationDiv.innerHTML = ""; // 기존 버튼 초기화
+
+    // 이전 페이지 버튼
+    if (currentPage > 1) {
+        let prevButton = document.createElement("li");
+        prevButton.className = "page-item";
+        prevButton.innerHTML = `<a class="page-link" href="#" onclick="filterProducts(currentStore, ${Math.max(1, currentPage - 3)}); return false;">Previous</a>`;
+        paginationDiv.appendChild(prevButton);
+    }
+
+    // 페이지 번호 버튼
+    let startPage = Math.max(1, currentPage - 3);
+    let endPage = Math.min(totalPages, currentPage + 3);
+
+    for (let i = startPage; i <= endPage; i++) {
+        let pageItem = document.createElement("li");
+        pageItem.className = (i === currentPage) ? "pagination-link active" : "page-item";
+        pageItem.innerHTML = `<a class="page-link" href="#" onclick="filterProducts(currentStore, ${i}); return false;">${i}</a>`;
+        paginationDiv.appendChild(pageItem);
+    }
+
+    // 다음 페이지 버튼
+    if (currentPage < totalPages) {
+        let nextButton = document.createElement("li");
+        nextButton.className = "page-item";
+        nextButton.innerHTML = `<a class="page-link" href="#" onclick="filterProducts(currentStore, ${Math.min(totalPages, currentPage + 3)}); return false;">Next</a>`;
+        paginationDiv.appendChild(nextButton);
+    }
+}
+
+
+
+// 라디오 버튼 클릭 이벤트 설정
+document.addEventListener("DOMContentLoaded", function () {
+    let radioButtons = document.querySelectorAll("input[name='store']");
+    
+    radioButtons.forEach(radio => {
+        radio.addEventListener("change", function () {
+            currentStore = this.value; // 선택한 편의점 값 저장
+            filterProducts(currentStore, 1); // 새로운 선택값으로 필터링 실행
+        });
+    });
+
+    // 초기 데이터 로드
+    filterProducts(currentStore, currentPage);
+});
 
 </script>
 
