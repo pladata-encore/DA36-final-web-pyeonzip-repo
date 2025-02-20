@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 from community.entity.models import CommunityForm
 from community.service.community_service import CommunityServiceImpl
+from users.entity.models import UserDetail
 
 community_service = CommunityServiceImpl()
 
@@ -18,6 +19,7 @@ def community_write(request):
         form = CommunityForm()
         return render(request, 'community/community_form.html', {'CommunityForm': form})
 
+@login_required(login_url='users:login')
 def community_save(request):
     if request.method == 'POST':
         form = CommunityForm(request.POST)
@@ -26,7 +28,9 @@ def community_save(request):
             products = form.cleaned_data['products']
             product_ids = [product.product_id for product in products]
 
-            community_service.create_community(form.cleaned_data, product_ids)
+            user_detail = UserDetail.objects.get(user_id=request.user.id)
+
+            community_service.create_community(form.cleaned_data, product_ids, user_detail)
             return redirect("community:community_list")
 
         else:

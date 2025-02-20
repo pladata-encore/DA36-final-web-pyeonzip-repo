@@ -40,7 +40,7 @@ class CommunityRepositoryImpl(CommunityRepository):
         return cls.__instance
 
     def find_all(self):
-        return Community.objects.prefetch_related("products").all()
+        return Community.objects.select_related("category").prefetch_related("products").all()
 
     def find_by_id(self, id):
         return Community.objects.prefetch_related("products").get(pk=id)
