@@ -8,10 +8,16 @@ class ReviewRepository(ABC):
     def find_by_product_id(self, product_id):
         pass
 
+    @abstractmethod
     def find_by_user_id(self, user_id):
         pass
 
+    @abstractmethod
     def delete(self, review_id):
+        pass
+
+    @abstractmethod
+    def find_by_review_id(self, review_id):
         pass
 
 class ReviewRepositoryImpl(ReviewRepository):
@@ -47,3 +53,5 @@ class ReviewRepositoryImpl(ReviewRepository):
             review.likes.add(likes)
             return True
 
+    def find_by_review_id(self,review_id):
+        return Review.objects.get(reviewId=review_id)

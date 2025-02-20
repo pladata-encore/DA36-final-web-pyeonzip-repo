@@ -59,6 +59,12 @@
                     {% endif%}
 
                 </dl>
+                <div class="review-like-btn" data-uri="{% url 'review:review_likes' review.reviewId %}">
+                    <ion-icon id="heart-icon" name="{% if liked %}heart{% else %}heart-outline{% endif %}"></ion-icon>
+                    <span class="badge rounded-pill bg-success">{{ review.recommender.count }}</span>
+                </div>
+
+            
             </div>
         {% endfor %}
 

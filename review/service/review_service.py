@@ -13,9 +13,13 @@ class ReviewService(ABC):
     def find_by_user_id(self, user_id):
         pass
 
+    @abstractmethod
     def find_by_review_id(self, review_id):
         pass
 
+    @abstractmethod
+    def find_by_review_id(self, review_id):
+        pass
 
 class ReviewServiceImpl(ReviewService):
     __instance = None
@@ -49,4 +53,8 @@ class ReviewServiceImpl(ReviewService):
         review = self.__review_repository.review_likes(review_id)
         liked = self.__review_repository.review_likes(review_id, likes)
         return review, liked
+
+    def find_by_review_id(self, review_id):
+        return self.__review_repository.find_by_review_id(review_id)
+
 

@@ -26,11 +26,7 @@
             </div>
         
             <!--추천버튼-->
-            <div class="review-like-btn" data-uri="{% url 'review:review_likes' review.reviewId %}">
-                <ion-icon id="heart-icon" name="{% if liked %}heart{% else %}heart-outline{% endif %}"></ion-icon>
-                <span class="badge rounded-pill bg-success">{{ review.likes.count }}</span>
-            </div>
-
+            
             <!-- 상품 정보 -->
             <div class="product-info">
                 <a href="{% url 'product:product_detail' review.product_id %}"><h2>{{ review.product.product_name }}</h2></a>
@@ -70,12 +66,22 @@
                         </div>
                     </details>
                 {% endif %}
+            <div>{{ li }}</div>
             </div>
 
         </div>
 
         {% if my_reviews %}
             {% for review in my_reviews %}
+                
+                
+                
+                
+                
+                
+                
+                
+                
         <ul class="nav nav-tabs">
           <li class="nav-item">
             <a class="nav-link active" aria-current="page" href="{% url 'users:my_review' %}">review</a>
