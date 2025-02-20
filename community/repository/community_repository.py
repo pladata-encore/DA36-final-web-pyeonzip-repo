@@ -46,7 +46,7 @@ class CommunityRepositoryImpl(CommunityRepository):
         return Community.objects.prefetch_related("products").get(pk=id)
 
     def find_by_user_id(self, user_id):
-        return Community.objects.filter(author=user_id)
+        return Community.objects.filter(author_id=user_id).select_related('author')
 
     def save(self, community):
         community.save()
