@@ -32,4 +32,5 @@ urlpatterns = [
 
     path('my_review/', mywrite_views.my_review, name="my_review"),
     path('my_community/', mywrite_views.my_community, name="my_community"),
+    path('my_review_recommends/', mywrite_views.my_review_recommends, name="my_review_recommends"),
 ]
