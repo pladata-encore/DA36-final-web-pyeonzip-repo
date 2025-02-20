@@ -9,10 +9,11 @@
         <table class="table table-striped">
           <thead>
             <tr>
-              <th>번호</th>
-              <th>제목</th>
-              <th>작성자</th>
-              <th>작성일시</th>
+                <th>번호</th>
+                <th>카테고리</th>
+                <th>제목</th>
+                <th>작성자</th>
+                <th>작성일시</th>
             </tr>
           </thead>
 
@@ -20,9 +21,14 @@
                     {% for community in communities %}
                         <tr>
                             <td>{{ community.communityId }}</td>
-                            <td>{{ community.communityTitle | default:'' }}</td>
-                            <td>{{ community.author_id | default:'unknown' }}</td>
-                            <td>{{ community.created_at }}</td>
+                            <td>{{ community.category.categoryName|default:"미분류" }}</td>
+                            <td>
+{#                                <a href="{% url 'community:community_detail' community.communityId %}">#}
+                                    {{ community.communityTitle | default:'' }}
+{#                                </a>#}
+                            </td>
+                            <td>{{ community.author.nickname | default:'unknown' }}</td>
+                            <td>{{ community.created_at|date:"Y-m-d" }}</td>
                         </tr> 
                     
                     {% empty %}

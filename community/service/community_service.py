@@ -49,11 +49,11 @@ class CommunityServiceImpl(CommunityService):
     def find_by_user_id(self, user_id):
         return self.__community_repository.find_by_user_id(user_id)
 
-    def create_community(self, data, product_ids):
+    def create_community(self, data, product_ids, author):
         """커뮤니티 게시글 생성 및 저장"""
         community = Community(
             category=data.get("category"),
-            author=data.get("author"), #request.user로 수정필요
+            author=author,
             communityTitle=data.get("communityTitle"),
             communityContent=data.get("communityContent")
         )
