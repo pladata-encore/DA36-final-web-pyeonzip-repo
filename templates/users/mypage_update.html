@@ -2,7 +2,7 @@
 
 {% block content %}
 <div class="container text-center">    
-    <h2>프로필 수정</h2>
+    <div class="update-title">프로필 수정</div>
 
     <form method="POST" enctype="multipart/form-data">
         {% csrf_token %}
@@ -16,10 +16,68 @@
         <div class="mb-3">
             <label class="form-label">닉네임 변경</label>
             {{ form.nickname }}
+        
+            {% if form.nickname.errors %}
+                <div class="text-danger">
+                    {{ form.nickname.errors.0 }}
+                </div>
+            {% endif %}
         </div>
     
         <button type="submit" class="btn btn-secondary">저장하기</button>
         <a href="{% url 'users:mypage' %}" class="btn btn-secondary">취소하기</a>
     </form>
 </div>
+    
+{#비동기 방식(AJAX)으로 중복체크#}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const nicknameInput = document.getElementById("id_nickname");
+    const feedbackElement = document.getElementById("nickname-feedback");
+
+    function validateNickname(nickname) {
+        // 닉네임 정규식 패턴: 영어 대소문자, 숫자, _ 만 허용, 8~20자
+        const pattern = /^[A-Za-z0-9_]{8,20}$/;
+        return pattern.test(nickname);
+    }
+
+    nicknameInput.addEventListener("blur", async function () {
+        const nickname = nicknameInput.value.trim();
+
+        // 닉네임이 비어 있는 경우
+        if (nickname === '') {
+            feedbackElement.textContent = "닉네임을 입력하세요.";
+            feedbackElement.style.color = "red";
+            return;
+        }
+
+        // 유효성 검사 실패 시
+        if (!validateNickname(nickname)) {
+            feedbackElement.textContent = "닉네임은 영어 대소문자, 숫자, _ 만 사용 가능하며 8자 이상 20자 미만이어야 합니다.";
+            feedbackElement.style.color = "red";
+            return;
+        }
+
+        // 중복 체크 API 요청
+        try {
+            const response = await fetch("{% url 'users:check_nickname_duplicate' %}?nickname=" + encodeURIComponent(nickname));
+            const data = await response.json();
+
+            if (data.exists) {
+                feedbackElement.textContent = "이미 사용 중인 닉네임입니다.";
+                feedbackElement.style.color = "red";
+            } else {
+                feedbackElement.textContent = "사용 가능한 닉네임입니다.";
+                feedbackElement.style.color = "green";
+            }
+        } catch (error) {
+            console.error("Error checking nickname:", error);
+            feedbackElement.textContent = "서버 오류가 발생했습니다.";
+            feedbackElement.style.color = "red";
+        }
+    });
+});
+</script>
+
+
 {% endblock %}

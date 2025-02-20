@@ -28,6 +28,7 @@ def review_delete(request, review_id):
 def my_community(request):
     author = UserDetail.objects.get(user_id=request.user.id)
     my_communities = community_service.find_by_user_id(author)
+
     return render(request, 'users/my_community.html', {'my_communities': my_communities})
 
 

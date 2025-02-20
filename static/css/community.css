@@ -1,0 +1,85 @@
+.community-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: white;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+}
+
+.category-badge {
+    background-color: #ddd;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.community-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.user-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.author-name {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.post-date {
+    font-size: 12px;
+    color: gray;
+}
+
+.community-content {
+    background-color: #f3f3f3;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.vote-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 10px;
+    min-width: 80px;
+}
+
+.vote-btn {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.vote-btn img {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+}
+

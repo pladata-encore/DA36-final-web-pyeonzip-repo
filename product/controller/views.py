@@ -1,5 +1,5 @@
 from django.shortcuts import render
-
+from django.db.models import Q
 import users.urls
 from product.entity.models import Product
 from product.service.product_service import ProductServiceImpl
@@ -14,38 +14,40 @@ product_service=ProductServiceImpl.get_instance() # 객체 생성
 review_service=ReviewServiceImpl.get_instance()
 # Create your views here.
 
-
-
-
-
-
-def all_product_pagination(request):
-        # question service로부터 받아옴
-        product = product_service.find_all()
-        page = request.GET.get('page', 1)
-        paginator = Paginator(product, 20)  # 한페이지에 몇개씩?
-        page_obj = paginator.get_page(page)
-        last_page=paginator.num_pages
-
-        return render(request, 'product/product_list.html', context={'page_obj': page_obj,'last_page':last_page})
-
-
-def latest_product_pagination(request):
-    # question service로부터 받아옴
-    product = product_service.find_latest_product()
+def main(request):
+    products = product_service.find_all()
     page = request.GET.get('page', 1)
-    paginator = Paginator(product, 20)  # 한페이지에 몇개씩?
+    paginator = Paginator(products, 20)
     page_obj = paginator.get_page(page)
     last_page = paginator.num_pages
+    return render(request,'product/product_list.html',context={'page_obj': page_obj,'last_page':last_page})
 
-    return render(request, 'product/product_list.html', context={'page_obj': page_obj, 'last_page': last_page})
+def filter_products(request,store="ALL",category="ALL",tab="ALL",page=1):
 
-def latest_product_showcase(request):
-    latest_product = product_service.find_all()[:12]
-    return render(request, 'main.html', {'latest_product': latest_product})
+    products = product_service.find_all()
+    page = request.GET.get('page', page)
 
+    if tab == 'LATEST':
+        products = product_service.latest_product()
+        page = request.GET.get('page', page)
 
+    elif tab == 'AI':
+        pass
 
+    if category=="ALL":
+        if store == "ALL":
+            pass
+
+        else:
+            products =products.filter(convenient_store_name=store)  # 선택한 편의점의 상품만 필터링
+    else:
+        products = products.filter(Q(convenient_store_name__icontains=store) & Q(product_category_name__icontains=category))
+
+    paginator = Paginator(products, 20)  # 한페이지에 몇개씩?
+    page_obj = paginator.get_page(page)
+    last_page = paginator.num_pages
+    print(page,page_obj,last_page)
+    return render(request, 'product/filter_product.html', context={'page_obj': page_obj,'last_page':last_page,"store":store,"category":category,"page":page ,"tab":tab})
 
 def product_detail(request,product_id):
         product = product_service.find_by_id(product_id)

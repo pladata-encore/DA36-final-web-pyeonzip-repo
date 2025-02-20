@@ -1,7 +1,9 @@
 {% extends '../layout/base.html' %}
 
-{% block css %}
+{% load static %}
 
+{% block css %}
+<link rel="stylesheet"  href="{% static 'css/product.css' %}">
 
 {% endblock css %}
 
@@ -23,7 +25,7 @@
 
             <div>상품 판매 편의점 : {{ product.convenient_store_name }}</div>
             <div class="recommend" data-uri="{% url 'product:product_likes' product.product_id %}">
-                <ion-icon id="heart-icon" name="{% if liked %}heart{% else %}heart-outline{% endif %}"></ion-icon>
+                <ion-icon id="heart-icon" size="large" name="{% if liked %}heart{% else %}heart-outline{% endif %}" ></ion-icon>
                 <span class="badge rounded-pill bg-success">{{ product.likes.count }}</span>
             </div>
             <div>
@@ -31,29 +33,34 @@
             </div>
         </div>
 
-</div>
+    </div>
 
 
-    {% for review in reviews %}
-        <div class="card mb-3">
-            <dl class="row">
-                <dt class="col-sm-3">작성자</dt>
-                <dd class="col-sm-9">{{ review.author.nickname }}</dd>
+        {% for review in reviews %}
+            <div class="card mb-3">
+                <dl class="row">
+                    <dt class="col-sm-3">작성자</dt>
+                    <dd class="col-sm-9">{{ review.author.nickname }}</dd>
 
-                <dt class="col-sm-3">맛</dt>
-                <dd class="col-sm-9">{{ review.tasteContent }}</dd>
+                    <dt class="col-sm-3">맛</dt>
+                    <dd class="col-sm-9">{{ review.tasteContent }}</dd>
 
-                <dt class="col-sm-3">가격</dt>
-                <dd class="col-sm-9">{{ review.priceContent }}</dd>
+                    <dt class="col-sm-3">가격</dt>
+                    <dd class="col-sm-9">{{ review.priceContent }}</dd>
 
-                <dt class="col-sm-3">편리성</dt>
-                <dd class="col-sm-9">{{ review.convenienceContent }}</dd>
+                    <dt class="col-sm-3">편리성</dt>
+                    <dd class="col-sm-9">{{ review.convenienceContent }}</dd>
 
-                <dt class="col-sm-3">편리성</dt>
-                <dd class="col-sm-9"><img src="{{ review.reviewImageUrl.url}}" alt="Review Image"></dd>
-            </dl>
-        </div>
-    {% endfor %}
+                    <dt class="col-sm-3">편리성</dt>
+                    {% if review.reviewImageUrl %}
+                        <dd class="col-sm-9"><img src="{{ review.reviewImageUrl.url}}" alt="Review Image"></dd>
+                    {% else %}
+                        <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
+                    {% endif%}
+
+                </dl>
+            </div>
+        {% endfor %}
 
 
 
