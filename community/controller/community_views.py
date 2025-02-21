@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
 
-from community.entity.models import CommunityForm
+from community.entity.models import CommunityForm, Community
 from community.service.community_service import CommunityServiceImpl
 from users.entity.models import UserDetail
 
@@ -41,7 +41,7 @@ def community_save(request):
 
 @login_required(login_url='users:login')
 def vote_community(request):
-    """✅ 투표하기 기능 (AJAX 요청)"""
+    """ 투표하기 기능 (AJAX 요청)"""
     if request.method == 'POST':
         from json import loads
         data = loads(request.body)
@@ -58,3 +58,8 @@ def vote_community(request):
             return JsonResponse({"success": False, "message": "❌ 이미 투표한 게시글입니다."})
 
     return JsonResponse({"success": False, "message": "잘못된 요청"}, status=400)
+
+@login_required(login_url='users:login')
+def community_detail(request, communityId):
+    community = get_object_or_404(Community.objects.prefetch_related("products", "voter"), communityId=communityId)
+    return render(request, 'community/community_detail.html', {'community': community})

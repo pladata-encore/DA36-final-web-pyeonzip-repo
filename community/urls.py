@@ -27,5 +27,6 @@ urlpatterns = [
     path("community_write/", community_views.community_write, name="community_write"),
     path("community_save/", community_views.community_save, name="community_save"),
     path("vote_community/", community_views.vote_community, name="vote_community"),
+    path("community_detail/<int:communityId>/", community_views.community_detail, name="community_detail"),
 
 ]
