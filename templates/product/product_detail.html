@@ -37,35 +37,40 @@
 
 
         {% for review in reviews %}
-            <div class="card mb-3">
-                <dl class="row">
-                    <dt class="col-sm-3">작성자</dt>
-                    <dd class="col-sm-9">{{ review.author.nickname }}</dd>
-
-                    <dt class="col-sm-3">맛</dt>
-                    <dd class="col-sm-9">{{ review.tasteContent }}</dd>
-
-                    <dt class="col-sm-3">가격</dt>
-                    <dd class="col-sm-9">{{ review.priceContent }}</dd>
-
-                    <dt class="col-sm-3">편리성</dt>
-                    <dd class="col-sm-9">{{ review.convenienceContent }}</dd>
-
-                    <dt class="col-sm-3">편리성</dt>
-                    {% if review.reviewImageUrl %}
-                        <dd class="col-sm-9"><img src="{{ review.reviewImageUrl.url}}" alt="Review Image"></dd>
-                    {% else %}
-                        <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
-                    {% endif%}
-
-                </dl>
-                <div class="review-recommender-btn" data-uri="{% url 'review:review_recommender' review.reviewId %}">
-                    <ion-icon id="heart-icon" name="{% if liked %}heart{% else %}heart-outline{% endif %}"></ion-icon>
-                    <span class="badge rounded-pill bg-success">{{ review.recommenders.count }}</span>
+        <div class="review-container">
+            <div class="review-card">
+                <div class="review-author">
+                    <img class="profile-pic" src="{{ review.author.profile.url }}" alt="{{ review.author.nickname }}">
+                    <span class="author-name">{{ review.author.nickname }}</span>
+                    <span class="review-date">{{ review.created_at|date:"Y.m.d" }}</span>
                 </div>
-
-            
+                
+                
+                <div class="review-content">
+                    <div class="review-item">
+                        <strong>맛</strong>
+                        <span>{{ review.tasteContent }}</span>
+                    </div>
+                    <br>
+                    <div class="review-item">
+                        <strong>가격</strong>
+                        <span>{{ review.priceContent }}</span>
+                    </div>
+                    <br>
+                    <div class="review-item">
+                        <strong>편리성</strong>
+                        <span>{{ review.convenienceContent }}</span>
+                    </div>
+                    <br>
+                    {% if review.reviewImageUrl %}
+                            <strong>리뷰 이미지</strong>
+                            <div class="review-image">
+                                <img src="{{ review.reviewImageUrl.url }}" alt="리뷰 이미지">
+                            </div>
+                    {% endif %}
+                </div>
             </div>
+        </div>
         {% endfor %}
 
 
@@ -87,7 +92,7 @@
                 heartIcon.setAttribute('name', 'heart-outline');
             }
         });
-        
+
         const recommend_elements = document.getElementsByClassName("recommend");
         Array.from(recommend_elements).forEach((element) => {
         // js의 비동기처리를 지원하는 async..await을 사용
@@ -128,8 +133,8 @@
         });
 
     </script>
-    
-    
+
+
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script>
         {# 제품 좋아요 기능 #}
