@@ -74,4 +74,3 @@ def product_likes(request, product_id):
             'message': str(e)
         }, status=400)
 
-

@@ -8,7 +8,20 @@ class ReviewRepository(ABC):
     def find_by_product_id(self, product_id):
         pass
 
+    @abstractmethod
     def find_by_user_id(self, user_id):
+        pass
+
+    @abstractmethod
+    def delete(self, review_id):
+        pass
+
+    @abstractmethod
+    def find_by_review_id(self, review_id):
+        pass
+
+    @abstractmethod
+    def review_recommenders(self, review_id):
         pass
 
 class ReviewRepositoryImpl(ReviewRepository):
@@ -31,3 +44,17 @@ class ReviewRepositoryImpl(ReviewRepository):
     def find_by_user_id(self, user_id):
         return Review.objects.filter(author=user_id).select_related('product', 'author')
 
+    def delete(self, review_id):
+        review = Review.objects.get(reviewId=review_id)
+        review.delete()
+        return review
+
+    def find_by_review_id(self,review_id):
+        return Review.objects.get(review_id=review_id)
+
+    def review_recommenders(self, review, recommenders):
+        if review.recommenders.filter(id=recommenders.id).exists():
+            review.recommenders.remove(recommenders)
+        else:
+            review.recommenders.add(recommenders)
+            return True

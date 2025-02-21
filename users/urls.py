@@ -27,10 +27,11 @@ urlpatterns = [
     path('logout/', views.logout, name="logout"),
     path('mypage/', mypage_views.mypage, name="mypage"),
     path('mypage_update/',mypage_views.mypage_update, name="mypage_update"),
-
     path('check_duplicate/', mypage_views.check_nickname_duplicate, name="check_nickname_duplicate"),
 
+    # 내가 쓴 글
     path('my_review/', mywrite_views.my_review, name="my_review"),
+    path('my_review/delete/<int:review_id>/', mywrite_views.review_delete, name="review_delete"),
     path('my_community/', mywrite_views.my_community, name="my_community"),
-
+    # path('my_review_recommends/', mywrite_views.my_review_recommends, name="my_review_recommends"),
 ]

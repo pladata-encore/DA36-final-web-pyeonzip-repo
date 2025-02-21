@@ -21,8 +21,8 @@ class Review(models.Model):
     recommender = models.ManyToManyField(User, null=True, blank=True,related_name='Review_recommender',through='ReviewRecommender')  # 투표일 추가 가능인지 check , 불가능일 시 : model 따로 만들어
 
 class ReviewRecommender(models.Model):
-    recommenderId = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
-    reviewId = models.ForeignKey(Review, null=True, blank=True,on_delete=SET_NULL)
+    recommender = models.ForeignKey(User, null=True, blank=True, on_delete=models.CASCADE)
+    review = models.ForeignKey(Review, null=True, blank=True,on_delete=SET_NULL)
     recommended_at=models.DateTimeField(auto_now_add=True)
 
     class Meta:

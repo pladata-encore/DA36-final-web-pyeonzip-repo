@@ -1,6 +1,6 @@
 {% load static %}
 {% for product in page_obj %}
-        <div class="card mb-3" style="max-width: 100%; height: 300px;">
+        <div class="card mb-3">
            <button type="button" class="btn">
                 <a href="{% url 'product:product_detail' product_id=product.product_id %}" class="text-decoration-none">
                   <div class="row g-0">
