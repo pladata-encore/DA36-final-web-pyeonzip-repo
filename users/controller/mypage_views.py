@@ -49,7 +49,7 @@ def mypage_update(request):
     else:
         form = MypageUpdateForm(instance=user_detail)
 
-    return render(request, 'users/mypage_update.html', {'form': form})
+    return render(request, 'users/mypage_update.html', {'form': form, 'user_detail':user_detail})
 
 def mypage(request):
     user = request.user # 접속한 유저

@@ -353,6 +353,99 @@
     margin-top: auto; /* ✅ 항상 하단에 정렬 */
 }
 
+
+
+
+/* 전체 폼 스타일 */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    padding: 2rem;
+}
+
+/* 프로필 섹션 */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* 프로필 이미지 원형 표시 */
+.image-container {
+    width: 250px;
+    height: 250px;
+    border-radius: 999px;
+    overflow: hidden;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* 닉네임 입력 섹션 */
+.nickname-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px;
+}
+
+.nickname-section label {
+    font-weight: bold;
+}
+
+.nickname-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+}
+
+
+/* 저장 / 취소 버튼 정렬 */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin: 15px;
+}
+
+.save-btn, .cancel-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.check-btn {
+    background-color: #ccc;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.save-btn {
+    background-color: blue;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #ccc;
+    color: black;
+}
+
+.image-container:hover {
+    transform: scale(1.05);
+}
+
 /* -----------------------mypage end--------------------- */
 
 
