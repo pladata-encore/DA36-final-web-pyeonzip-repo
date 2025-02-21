@@ -29,4 +29,4 @@ urlpatterns = [
     path("vote_community/", community_views.vote_community, name="vote_community"),
     path("community_detail/<int:communityId>/", community_views.community_detail, name="community_detail"),
 
-]
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

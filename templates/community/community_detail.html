@@ -52,54 +52,27 @@
                 <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
             </div>
         {% endif %}
-
-        <button id="voteButton" class="btn btn-lg btn-outline-success d-flex align-items-center px-3"
-                onclick="voteCommunity({{ community.communityId }})">
-            🗳️ <span class="ms-2">+{{ community.voter.count }}</span>
-        </button>
+    
+            <button id="voteButton" class="btn btn-lg btn-outline-success d-flex align-items-center px-3"
+                    onclick="voteCommunity({{ community.communityId }})"
+                    {% if community.is_expired %}disabled{% endif %}>
+                {% if community.is_expired %}
+                    ⏳ 투표 기간 완료
+                {% else %}
+                    🗳️ <span class="ms-2">+{{ community.voter.count }}</span>
+                {% endif %}
+            </button>
     </div>
 
 </div>
 
-<!-- 🔹 투표하기 기능 -->
-<script>
-    function voteCommunity(communityId) {
-        fetch("{% url 'community:vote_community' %}", {
-            method: "POST",
-            headers: {
-                "X-CSRFToken": "{{ csrf_token }}",
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ "communityId": communityId })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // ✅ 투표 카운트 UI 업데이트
-                let voteCountElem = document.getElementById("voteCount");
-                let currentCount = parseInt(voteCountElem.innerText.replace("+", ""));
-                voteCountElem.innerText = `+${currentCount + 1}`;
-    
-                // ✅ 투표 완료 Alert 표시
-                let voteAlert = document.getElementById("voteAlert");
-                if (!voteAlert) {
-                    voteAlert = document.createElement("div");
-                    voteAlert.id = "voteAlert";
-                    voteAlert.className = "alert alert-warning d-flex align-items-center mt-2";
-                    voteAlert.innerHTML = `
-                        <span>이미 투표 완료한 게시물입니다!</span>
-                        <button type="button" class="btn-close ms-auto" onclick="closeVoteAlert()"></button>
-                    `;
-                    document.querySelector(".vote-section").prepend(voteAlert);
-                }
-                voteAlert.style.display = "block";
-            } else {
-                alert("❌ " + data.message);
-            }
-        })
-        .catch(error => console.error("❌ 투표 오류:", error));
-    }
-</script>
+{% block script %}
+    <form id="csrf-form">{% csrf_token %}</form> 
+    <script src="{% static 'js/community/community.js' %}"></script>
+    <script>
+        var voteCommunityUrl = "{% url 'community:vote_community' %}";
+    </script>
+{% endblock %}
     
     <style>
         .product-item img {
