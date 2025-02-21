@@ -20,7 +20,7 @@ def my_review(request):
 @login_required()
 def review_delete(request, review_id):
     del_review = review_service.delete(review_id)
-    messages.success(request, '리뷰를 삭제했습니다.', extra_tags="review_delete_success")
+    messages.success(request, '리뷰를 삭제했습니다.')
 
     return redirect('users:my_review')
 
