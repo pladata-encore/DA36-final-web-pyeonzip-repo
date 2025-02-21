@@ -42,7 +42,7 @@ class ReviewRepositoryImpl(ReviewRepository):
         return Review.objects.filter(product_id=product_id)
 
     def find_by_user_id(self, user_id):
-        return Review.objects.filter(author=user_id).select_related('product', 'author')
+        return Review.objects.filter(author=user_id).prefetch_related('product')
 
     def delete(self, review_id):
         review = Review.objects.get(reviewId=review_id)

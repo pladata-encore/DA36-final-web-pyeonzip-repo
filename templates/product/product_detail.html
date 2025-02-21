@@ -37,39 +37,47 @@
 
 
         {% for review in reviews %}
-            <div class="card mb-3">
-                <dl class="row">
-                    <dt class="col-sm-3">작성자</dt>
-                    <dd class="col-sm-9">{{ review.author.nickname }}</dd>
-
-                    <dt class="col-sm-3">맛</dt>
-                    <dd class="col-sm-9">{{ review.tasteContent }}</dd>
-
-                    <dt class="col-sm-3">가격</dt>
-                    <dd class="col-sm-9">{{ review.priceContent }}</dd>
-
-                    <dt class="col-sm-3">편리성</dt>
-                    <dd class="col-sm-9">{{ review.convenienceContent }}</dd>
-
-                    <dt class="col-sm-3">편리성</dt>
-                    {% if review.reviewImageUrl %}
-                        <dd class="col-sm-9"><img src="{{ review.reviewImageUrl.url}}" alt="Review Image"></dd>
-                    {% else %}
-                        <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
-                    {% endif%}
-
-                </dl>
-                <div class="review-recommender-btn" data-uri="{% url 'review:review_recommender' review.reviewId %}">
-                    <ion-icon id="heart-icon" name="{% if liked %}heart{% else %}heart-outline{% endif %}"></ion-icon>
-                    <span class="badge rounded-pill bg-success">{{ review.recommenders.count }}</span>
+        <div class="review-container">
+            <div class="review-card">
+                <div class="review-author">
+                    <img class="profile-pic" src="{{ review.author.profile.url }}" alt="{{ review.author.nickname }}">
+                    <span class="author-name">{{ review.author.nickname }}</span>
+                    <span class="review-date">{{ review.created_at|date:"Y.m.d" }}</span>
                 </div>
-
-            
+                
+                
+                <div class="review-content">
+                    <div class="review-item">
+                        <strong>맛</strong>
+                        <span>{{ review.tasteContent }}</span>
+                    </div>
+                    <br>
+                    <div class="review-item">
+                        <strong>가격</strong>
+                        <span>{{ review.priceContent }}</span>
+                    </div>
+                    <br>
+                    <div class="review-item">
+                        <strong>편리성</strong>
+                        <span>{{ review.convenienceContent }}</span>
+                    </div>
+                    <br>
+                    {% if review.reviewImageUrl %}
+                            <strong>리뷰 이미지</strong>
+                            <div class="review-image">
+                                <img src="{{ review.reviewImageUrl.url }}" alt="리뷰 이미지">
+                            </div>
+                    {% endif %}
+                </div>
             </div>
+        </div>
         {% endfor %}
 
 
-    
+
+
+
+
 {% endblock content %}
 
 {% block script %}
@@ -78,21 +86,12 @@
         {# 제품 좋아요 기능 #}
         document.addEventListener("DOMContentLoaded", () => {
             const heartIcon = document.querySelector('#heart-icon');
-            console.log(heartIcon);
-
-            // ✅ 현재 하트 아이콘 상태 가져오기
-            let isLiked = heartIcon.getAttribute('name') === 'heart';
-        
-            // ✅ 좋아요 상태 업데이트 함수
-            function toggleHeart() {
-                isLiked = !isLiked;  // 좋아요 상태 반전
-                heartIcon.setAttribute('name', isLiked ? 'heart' : 'heart-outline');
+            if (liked === 'true') {
+                heartIcon.setAttribute('name', 'heart');
+            } else {
+                heartIcon.setAttribute('name', 'heart-outline');
             }
-        
-            // ✅ 아이콘 클릭 시 상태 변경
-            heartIcon.addEventListener('click', toggleHeart);
         });
-
         
         const recommend_elements = document.getElementsByClassName("recommend");
         Array.from(recommend_elements).forEach((element) => {
@@ -135,4 +134,57 @@
 
     </script>
     
+    
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script>
+        {# 제품 좋아요 기능 #}
+        document.addEventListener("DOMContentLoaded", () => {
+            const heartIcon = document.querySelector('#heart-icon');
+            if (liked === 'true') {
+                heartIcon.setAttribute('name', 'heart');
+            } else {
+                heartIcon.setAttribute('name', 'heart-outline');
+            }
+        });
+        
+        const recommend_elements = document.getElementsByClassName("review-recommender-btn");
+        Array.from(recommend_elements).forEach((element) => {
+        // js의 비동기처리를 지원하는 async..await을 사용
+        element.addEventListener('click', async (e) => {
+            {% if not user.is_authenticated %}
+                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+                    location.href = "{% url 'users:login' %}?next={{ request.path }}";
+                }
+                return false;
+            {% endif %}
+
+
+            {# dataset : data-* 속성에 접근 가능한 JavaScript DOM property #}
+            // dataset.uri는 data-uri 속성값 가져옴
+            // ->  '?.' (Optional Chaining) 연산자로 dataset이 존재할 경우에만 uri를 접근 그렇지 않으면 undefined를 반환
+
+            // a태그 또는 자식span태그 클릭 대응
+            const url = e.target.dataset?.uri || e.target.parentElement.dataset.uri;
+
+            const response = await fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}',
+                        },
+                body: JSON.stringify({'product_id': {{ product.product_id }}}),
+            });
+            const data = await response.json();
+            element.querySelector('span').textContent = data.likes_count;
+
+            const heartIcon = element.querySelector('#heart-icon');
+            if (data.liked) { // 서버에서 받은 좋아요 상태
+                heartIcon.setAttribute('name', 'heart'); // 채운 하트로 변경
+            } else {
+                heartIcon.setAttribute('name', 'heart-outline'); // 빈 하트로 변경
+            }
+            });
+        });
+
+    </script>
 {% endblock script %}

@@ -5,13 +5,16 @@
 {% block title %} Community List {% endblock %}
 
 {% block content %}
-    
+
         <!-- 📌 커뮤니티 목록 -->
     {% for community in communities %}
     <div class="card mb-3">
         <div class="card-header">
             <span class="badge bg-primary">{{ community.category.categoryName }}</span>
-            <strong>{{ community.communityTitle|truncatewords:20 }}</strong>
+{#            <strong>{{ community.communityTitle|truncatewords:20 }}</strong>#}
+            <a href="{% url 'community:community_detail' community.communityId %}">
+                {{ community.communityTitle|truncatewords:20 }}
+            </a>
         </div>
         <div class="card-body">
             <p>{{ community.communityContent|truncatewords:100 }}</p>
@@ -20,41 +23,31 @@
             <div>
                 <img src="{{ community.author.profile.url }}" alt="User" width="20">
                 <span>{{ community.author.user.username }}</span>
-                <small class="text-muted">{{ community.created_at|date:"Y-m-d" }}</small>
+                
             </div>
             <div>
-                <button class="btn btn-outline-success btn-sm" onclick="voteCommunity({{ community.communityId }})">
-                    🗳️ +{{ community.vote_count  }}
+                <small class="text-muted">투표기간: {{ community.created_at|date:"Y-m-d" }}~{{ community.deadline|date:"Y-m-d" }} </small>
+                <button class="btn btn-outline-success btn-sm" 
+                        onclick="voteCommunity({{ community.communityId }})" 
+                        {% if community.is_expired %}disabled{% endif %}>
+                    {% if community.is_expired %}
+                        ⏳ 투표 기간 완료
+                    {% else %}
+                        🗳️ +{{ community.voter.count }}
+                    {% endif %}
                 </button>
             </div>
         </div>
     </div>
     {% endfor %}
 
-    {% endblock %}
+{% endblock %}
 
 {% block script %}
+    <form id="csrf-form">{% csrf_token %}</form> 
+    <script src="{% static 'js/community/community.js' %}"></script>
     <script>
-    function voteCommunity(communityId) {
-    fetch("{% url 'community:vote_community' %}", {
-        method: "POST",
-        headers: {
-            "X-CSRFToken": "{{ csrf_token }}",
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ "communityId": communityId })
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.success) {
-            alert("✅ 투표 완료!");
-            location.reload();
-        } else {
-            alert("❌ 투표 실패: " + data.message);
-        }
-    })
-    .catch(error => console.error("❌ 투표 오류:", error));
-}
+        var voteCommunityUrl = "{% url 'community:vote_community' %}";
     </script>
-
 {% endblock %}
+

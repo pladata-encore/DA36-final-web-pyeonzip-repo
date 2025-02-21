@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from django.utils.timezone import now
 
 from community.entity.models import Community
 from community.repository.community_repository import CommunityRepositoryImpl
@@ -66,4 +67,8 @@ class CommunityServiceImpl(CommunityService):
 
     def add_vote(self, community_id, user):
         community = self.__community_repository.find_by_id(community_id)
+
+        if community.deadline < now().date():
+            return False  # 투표 기간이 종료된 경우 False 반환
+
         return self.__community_repository.add_vote(community, user)
