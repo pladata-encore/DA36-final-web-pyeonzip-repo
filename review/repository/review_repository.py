@@ -20,6 +20,10 @@ class ReviewRepository(ABC):
     def find_by_review_id(self, review_id):
         pass
 
+    @abstractmethod
+    def review_recommenders(self, review_id):
+        pass
+
 class ReviewRepositoryImpl(ReviewRepository):
     __instance = None
 
@@ -45,13 +49,12 @@ class ReviewRepositoryImpl(ReviewRepository):
         review.delete()
         return review
 
-    def review_likes(self, review, likes):
-        if review.likes.filter(review_id=likes.id).exists():
-            review.likes.remove(likes)
-            return False
-        else:
-            review.likes.add(likes)
-            return True
-
     def find_by_review_id(self,review_id):
-        return Review.objects.get(reviewId=review_id)
+        return Review.objects.get(review_id=review_id)
+
+    def review_recommenders(self, review, recommenders):
+        if review.recommenders.filter(id=recommenders.id).exists():
+            review.recommenders.remove(recommenders)
+        else:
+            review.recommenders.add(recommenders)
+            return True

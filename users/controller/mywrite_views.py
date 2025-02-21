@@ -14,7 +14,7 @@ community_service = CommunityServiceImpl.get_instance()
 def my_review(request):
     author=UserDetail.objects.get(user_id=request.user.id)
     my_reviews = review_service.find_by_user_id(author)
-    liked = my_reviews.recommender.filter(review_id=my_reviews.review_id).count() ### 수정 필요 #####
+    # liked = my_reviews.recommender.filter(review_id=my_reviews.review_id).count() ### 수정 필요 #####
 
     return render(request, 'users/my_review.html', {'my_reviews': my_reviews})
 @login_required()

@@ -18,8 +18,9 @@ class ReviewService(ABC):
         pass
 
     @abstractmethod
-    def find_by_review_id(self, review_id):
+    def review_recommenders(self, review_id):
         pass
+
 
 class ReviewServiceImpl(ReviewService):
     __instance = None
@@ -49,12 +50,10 @@ class ReviewServiceImpl(ReviewService):
     def delete(self, review_id):
         self.__review_repository.delete(review_id)
 
-    def review_likes(self, review_id, likes):
-        review = self.__review_repository.review_likes(review_id)
-        liked = self.__review_repository.review_likes(review_id, likes)
-        return review, liked
-
     def find_by_review_id(self, review_id):
         return self.__review_repository.find_by_review_id(review_id)
 
-
+    def review_recommenders(self, review_id, recommenders):
+        review = self.__review_repository.find_by_review_id(review_id)
+        recommended = self.__review_repository.review_recommenders(review, recommenders)
+        return review, recommended

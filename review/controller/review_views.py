@@ -24,15 +24,15 @@ def review_write(request):
 
 
 @login_required()
-def review_likes(request, review_id):
+def review_recommender(request, review_id):
     try:
-        review, recommended = review_service.review_likes(review_id, request.user)
-        recommender_count = review.recommender.count() if hasattr(review, 'recommender') else 0
+        review, recommended = review_service.review_recommenders(review_id, request.user)
+        recommenders_count = review.recommenders.count() if hasattr(review, 'recommenders') else 0
 
-        print('review.likes.count() =', recommender_count)
+        print('review.recommenders.count() =', recommenders_count)
         return JsonResponse({
             'result': 'success',
-            'likes_count': recommender_count,
+            'recommenders_count': recommenders_count,
             'recommended': recommended,
         })
     except Exception as e:

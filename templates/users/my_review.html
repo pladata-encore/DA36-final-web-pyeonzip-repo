@@ -17,22 +17,32 @@
         </div>
     {% endif %}
 
-    <div class="review-container">
-        <div class="review-card">
+ {% if my_reviews %}
+    <ul class="nav nav-tabs">
+        <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{% url 'users:my_review' %}">review</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'users:my_community' %}">community</a>
+        </li>
+    </ul>
 
-            <!--삭제 버튼--> 
+    <div class="review-container">
+        {% for review in my_reviews %}
+        <div class="review-card">
+            <!-- 삭제 버튼 -->
             <div class="delete-btn">
                 <button class="btn btn-secondary rounded-pill" onclick="confirmDelete({{ review.reviewId }})">삭제</button>
             </div>
-        
-            <!--추천버튼-->
-            
+
             <!-- 상품 정보 -->
             <div class="product-info">
-                <a href="{% url 'product:product_detail' review.product_id %}"><h2>{{ review.product.product_name }}</h2></a>
+                <a href="{% url 'product:product_detail' review.product_id %}">
+                    <h2>{{ review.product.product_name }}</h2>
+                </a>
                 <span class="product-meta">
-                            {{ review.product.convenient_store_name }} | {{ review.product.product_category_name }} | {{ review.product.product_price }}원
-                        </span>
+                    {{ review.product.convenient_store_name }} | {{ review.product.product_category_name }} | {{ review.product.product_price }}원
+                </span>
                 <img class="product-image" src="{{ review.product.product_image_url }}" alt="{{ review.product.product_name }}">
             </div>
 
@@ -43,7 +53,7 @@
                 <span class="review-date">{{ review.created_at|date:"Y.m.d" }}</span>
             </div>
 
-            <!-- 리뷰 내용 (아코디언 형식) -->
+            <!-- 리뷰 내용 -->
             <div class="review-content">
                 <details>
                     <summary>맛</summary>
@@ -66,35 +76,13 @@
                         </div>
                     </details>
                 {% endif %}
-            <div>{{ li }}</div>
             </div>
-
         </div>
-
-        {% if my_reviews %}
-            {% for review in my_reviews %}
-                
-                
-                
-                
-                
-                
-                
-                
-                
-        <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{% url 'users:my_review' %}">review</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="{% url 'users:my_community' %}">community</a>
-          </li>
-        </ul>
-            {% endfor %}
-        {% else %}
-            <p class="no-review">작성한 리뷰가 없습니다.</p>
-        {% endif %}
+        {% endfor %}
     </div>
+{% else %}
+    <p class="no-review">작성한 리뷰가 없습니다.</p>
+{% endif %}
 
 {% endblock content %}
 
@@ -110,61 +98,6 @@
     }
     </script>
     
-    
-    
-    
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script>
-        {# 제품 좋아요 기능 #}
-        document.addEventListener("DOMContentLoaded", () => {
-            const heartIcon = document.querySelector('#heart-icon');
-            if (liked === 'true') {
-                heartIcon.setAttribute('name', 'heart');
-            } else {
-                heartIcon.setAttribute('name', 'heart-outline');
-            }
-        });
-        
-        const recommend_elements = document.getElementsByClassName("review-like-btn");
-        Array.from(recommend_elements).forEach((element) => {
-        // js의 비동기처리를 지원하는 async..await을 사용
-        element.addEventListener('click', async (e) => {
-            {% if not user.is_authenticated %}
-                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
-                    location.href = "{% url 'users:login' %}?next={{ request.path }}";
-                }
-                return false;
-            {% endif %}
-
-
-            {# dataset : data-* 속성에 접근 가능한 JavaScript DOM property #}
-            // dataset.uri는 data-uri 속성값 가져옴
-            // ->  '?.' (Optional Chaining) 연산자로 dataset이 존재할 경우에만 uri를 접근 그렇지 않으면 undefined를 반환
-
-            // a태그 또는 자식span태그 클릭 대응
-            const url = e.target.dataset?.uri || e.target.parentElement.dataset.uri;
-
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}',
-                        },
-                body: JSON.stringify({'reviewId': {{ review.reviewId }}}),
-            });
-            const data = await response.json();
-            element.querySelector('span').textContent = data.likes_count;
-
-            const heartIcon = element.querySelector('#heart-icon');
-            if (data.liked) { // 서버에서 받은 좋아요 상태
-                heartIcon.setAttribute('name', 'heart'); // 채운 하트로 변경
-            } else {
-                heartIcon.setAttribute('name', 'heart-outline'); // 빈 하트로 변경
-            }
-            });
-        });
-
-    </script>
 {% endblock script %}
 
     
