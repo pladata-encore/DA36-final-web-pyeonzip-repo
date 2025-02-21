@@ -24,7 +24,7 @@ class UserDetail(models.Model):
 class MypageUpdateForm(forms.ModelForm):
     class Meta:
         model = UserDetail
-        fields = ['uid','nickname', 'profile']
+        fields = ['uid','nickname','profile']
 
         labels = {
             'uid' : ' 유저 아이디',
@@ -32,6 +32,7 @@ class MypageUpdateForm(forms.ModelForm):
             'profile': '유저 프로필'
         }
         widgets = {
+            'profile' : forms.ClearableFileInput(attrs={'class':'hidden-file-input'}),
             'nickname': forms.TextInput(attrs={'class':'form-control','placeholder':'변경할 닉네임을 작성해주세요'}),
         }
     def clean_nickname(self):

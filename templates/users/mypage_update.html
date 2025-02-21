@@ -2,30 +2,46 @@
 
 {% block content %}
 <div class="container text-center">    
-    <div class="update-title">프로필 수정</div>
+    <div class="update-title"><h2>프로필 수정</h2></div>
 
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" class="profile-form">
         {% csrf_token %}
         
-        <div class="mb-3">
-            <label class="form-label">프로필 사진 변경</label><br>
-            {{ form.profile }}
+        <div class="profile-section">
+            <div class="image-container" onclick="document.getElementById('id_profile').click();">
+            {%  if user_detail.profile %}
+                <img src="{{ user_detail.profile.url }}" alt="프로필 이미지 사진" class="userprofile" id="profileImage">
+            {% endif %}
+{#            {{ form.profile }}#}
+            </div>
+            <input type="file" id="id_profile" name="profile" accept="image/*" style="display: none;">
+
+{#            <button type="button" class="upload-btn" onclick="document.getElementById('id_profile').click();">#}
+{#                <i class="fas fa-camera">사진 업로드</i>#}
+{#            </button>    #}
         </div>
 
         <!--닉네임 입력 필드-->
-        <div class="mb-3">
-            <label class="form-label">닉네임 변경</label>
-            {{ form.nickname }}
-        
-            {% if form.nickname.errors %}
-                <div class="text-danger">
-                    {{ form.nickname.errors.0 }}
-                </div>
-            {% endif %}
+        <div class="nickname-section">
+            <label for="id_nickname">닉네임</label>
+{#            {{ form.nickname }}#}
+            <input type="text" id="id_nickname" name="nickname" value="{{ user_detail.nickname }}"
+                   class="nickname-input" placeholder="변경할 닉네임일 입력해주세요" data-current-nickname="{{ user_detail.nickname }}">
+            <button type="button" id="check-nickname-btn" class="check-btn">확인</button>
+{#            {% if form.nickname.errors %}#}
+{#                <div class="text-danger">#}
+{#                    {{ form.nickname.errors.0 }}#}
+{#                </div>#}
+{#            {% endif %}#}
         </div>
-    
-        <button type="submit" class="btn btn-secondary">저장하기</button>
-        <a href="{% url 'users:mypage' %}" class="btn btn-secondary">취소하기</a>
+
+        <!--닉네임 유효성 검사-->
+        <div id="nickname-feedback"></div>
+
+        <div class="button-group">
+            <button type="submit" class="save-btn" id="save-btn">저장하기</button>
+            <a href="{% url 'users:mypage' %}" class="cancel-btn">취소하기</a>
+        </div>
     </form>
 </div>
     
@@ -34,6 +50,10 @@
 document.addEventListener("DOMContentLoaded", function () {
     const nicknameInput = document.getElementById("id_nickname");
     const feedbackElement = document.getElementById("nickname-feedback");
+    const checkButton = document.getElementById("check-nickname-btn");
+    const saveButton = document.getElementById("save-btn");
+
+    const currentNickname = nicknameInput.getAttribute("data-current-nickname") || "";
 
     function validateNickname(nickname) {
         // 닉네임 정규식 패턴: 영어 대소문자, 숫자, _ 만 허용, 8~20자
@@ -41,13 +61,20 @@ document.addEventListener("DOMContentLoaded", function () {
         return pattern.test(nickname);
     }
 
-    nicknameInput.addEventListener("blur", async function () {
+    checkButton.addEventListener("click", async function () {
         const nickname = nicknameInput.value.trim();
 
         // 닉네임이 비어 있는 경우
         if (nickname === '') {
             feedbackElement.textContent = "닉네임을 입력하세요.";
             feedbackElement.style.color = "red";
+            return;
+        }
+
+        if (nickname === currentNickname) {
+            feedbackElement.textContent = "현재 닉네임입니다. 변경할 닉네임을 작성해주세요.";
+            feedbackElement.style.color = "gray";
+
             return;
         }
 
@@ -65,17 +92,31 @@ document.addEventListener("DOMContentLoaded", function () {
 
             if (data.exists) {
                 feedbackElement.textContent = "이미 사용 중인 닉네임입니다.";
-                feedbackElement.style.color = "red";
+                feedbackElement.style.color = "blue";
+                saveButton.disabled = true;
             } else {
                 feedbackElement.textContent = "사용 가능한 닉네임입니다.";
-                feedbackElement.style.color = "green";
+                feedbackElement.style.color = "blue";
+                saveButton.disabled = false
             }
         } catch (error) {
             console.error("Error checking nickname:", error);
             feedbackElement.textContent = "서버 오류가 발생했습니다.";
             feedbackElement.style.color = "red";
+            saveButton.disabled = true;
         }
     });
+});
+
+document.getElementById('id_profile').addEventListener('change', function(event) {
+    let file = event.target.files[0];
+    if (file) {
+        let reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('profileImage').src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
 });
 </script>
 
