@@ -159,12 +159,11 @@
     border: 1px solid #ddd;  /* ✅ 테두리 적용 */
     border-radius: 8px;  /* ✅ 모서리를 둥글게 */
     overflow: hidden;  /* ✅ 넘치는 내용 숨김 */
-    text-align: center;  /* ✅ 내부 텍스트 중앙 정렬 */
+    text-align: left;  /* ✅ 내부 텍스트 중앙 정렬 */
     background: white;  /* ✅ 배경색 흰색 */
     padding: 10px;  /* ✅ 내부 여백 */
     white-space: normal;  /* ✅ 줄 바꿈 허용 */
 }
-
 
 .product-card img {
     width: 100%;
@@ -173,23 +172,38 @@
 }
 
 .card-body {
-    text-align: left; /* 상품명 왼쪽 정렬 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* ✅ 텍스트 왼쪽 정렬 */
+    width: 100%;
+    margin-top: 10px; /* ✅ 이미지와 간격 추가 */
+    justify-content: space-between; /* ✅ 내부 요소를 동일한 위치에 배치 */
+    flex-grow: 1; /* ✅ 텍스트 영역을 동일한 높이로 맞춤 */
 }
 
 .card-title {
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     color: #999;
+    text-align: left; /* ✅ 왼쪽 정렬 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* ✅ 기본 두 줄 유지 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* ✅ 두 줄 초과 시 '...' 처리 */
+    max-height: 3.2em; /* ✅ 두 줄 높이 제한 (줄 간격 1.6em 기준) */
+    line-height: 1.6em;
+    width: 100%;
+
 }
 
-.card-store-name {
-    font-size: 16px;
-    color: #999;
-}
-
+.card-store-name,
 .card-price {
+    text-align: left;  /* ✅ 왼쪽 정렬 */
     font-size: 16px;
-    color: #999;
+    color: gray;
+    width: 100%;
+    margin-top: auto;
 }
 
 .product-link {
@@ -216,6 +230,7 @@
     justify-content: center; /* 세로 중앙 정렬 (필요 시 조정) */
     text-align: center; /* 텍스트 요소 정렬 */
     width: 100%; /* 부모 요소에 맞춤 */
+    gap: 10px;
 }
 
 
@@ -234,31 +249,108 @@
 }
 
 .userprofile {
-    width: 150px;
-    height: 150px;
+    width: 250px;
+    height: 250px;
+    border-radius: 999px;
+
 }
 
-.likes_prod {
+.product-link {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: inherit; /* 링크 색상 유지 */
+    display: block; /* 블록 요소로 만들어 카드 전체 클릭 가능 */
+}
+
+
+.likes-prod-card:hover {
+    transform: scale(1.05);
+}
+
+.likes-prod {
     padding: 2rem 0rem;
-
 }
 
+/* ✅ 이미지 감싸는 컨테이너 (이미지 중앙 정렬) */
+.image-container {
+    display: flex;
+    justify-content: center; /* ✅ 가로 중앙 정렬 */
+    align-items: center; /* ✅ 세로 중앙 정렬 */
+    width: 180px;
+    height: 150px; /* ✅ 이미지 컨테이너 높이 고정 */
+    overflow: hidden; /* ✅ 넘치는 부분 숨김 */
+}
+
+/* ✅ 이미지 크기 설정 */
 .likes-prod-image {
-    width: 150px;
-    height: 150px;
+    width: auto;
+    height: 100%;
+    object-fit: contain; /* ✅ 비율 유지하며 크기 맞춤 */
+    display: block;
 }
 
-.likes_prod-card {
-    flex: 0 0 auto;  /* flex 컨테이너에서 크기 자동 조정 */
-    width: 250px;  /* ✅ 현재 카드 너비 (200px) */
-    height: 300px;
-    border: 1px solid #ddd;  /* ✅ 테두리 적용 */
-    border-radius: 8px;  /* ✅ 모서리를 둥글게 */
-    overflow: hidden;  /* ✅ 넘치는 내용 숨김 */
-    text-align: center;  /* ✅ 내부 텍스트 중앙 정렬 */
-    background: white;  /* ✅ 배경색 흰색 */
-    padding: 10px;  /* ✅ 내부 여백 */
-    white-space: normal;  /* ✅ 줄 바꿈 허용 */
+.likes-prod-list {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* 한 줄에 5개씩 정렬 */
+    gap: 20px; /* 카드 간 간격 */
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 3rem;
+}
+
+.likes-prod-card {
+    display: flex;  /* 내부 요소 정렬을 위한 flex 설정 */
+    flex-direction: column;  /* 내부 요소를 세로로 정렬 */
+    align-items: flex-start;  /* 이미지와 텍스트 중앙 정렬 */
+    justify-content: flex-start;  /* 상하 정렬 균등하게 배치 */
+
+    width: 100%; /* ✅ 그리드 셀을 꽉 채우도록 설정 */
+    height: 100%; /* ✅ 카드 높이도 균등하게 설정 */
+    /*min-width: 200px;*/
+    padding: 10px;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    text-align: left;
+    white-space: normal;
+}
+
+
+
+/* ✅ 텍스트 컨테이너 추가 */
+.likes-card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* ✅ 텍스트 왼쪽 정렬 */
+    justify-content: space-between; /* ✅ 내부 요소를 동일한 위치에 배치 */
+    flex-grow: 1; /* ✅ 텍스트 영역을 동일한 높이로 맞춤 */
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* ✅ 상품명 2줄 고정 */
+.likes-card-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* ✅ 항상 두 줄 유지 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 3.2em; /* ✅ 두 줄 높이 강제 */
+    line-height: 1.6em;
+    width: 100%;
+}
+
+/* ✅ 편의점명과 가격을 항상 같은 위치에 배치 */
+.likes-card-store-name,
+.likes-card-price {
+    text-align: left;
+    font-size: 14px;
+    color: gray;
+    width: 100%;
+    margin-top: auto; /* ✅ 항상 하단에 정렬 */
 }
 
 /* -----------------------mypage end--------------------- */
