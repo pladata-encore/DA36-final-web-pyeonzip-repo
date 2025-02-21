@@ -65,5 +65,4 @@ class CommunityRepositoryImpl(CommunityRepository):
         community.products.set(products)
 
     def add_vote(self, community, user):
-        is_voted = community.add_vote(user)  # ✅ 중간 테이블에 직접 추가
-        return is_voted
+        return community.add_vote(user) # ✅ 중간 테이블에 직접 추가
