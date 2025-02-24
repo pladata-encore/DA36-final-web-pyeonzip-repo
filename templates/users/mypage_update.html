@@ -1,13 +1,13 @@
 {% extends '../layout/base.html' %}
 
 {% block content %}
-<div class="container text-center">    
-    <div class="update-title"><h2>프로필 수정</h2></div>
+<div class="container">    
+    <div class="profile-section"><div class="mypage-title">📥프로필 수정📥</div></div>
 
     <form method="POST" enctype="multipart/form-data" class="profile-form">
         {% csrf_token %}
         
-        <div class="profile-section">
+        <div class="profile-content">
             <div class="image-container" onclick="document.getElementById('id_profile').click();">
             {%  if user_detail.profile %}
                 <img src="{{ user_detail.profile.url }}" alt="프로필 이미지 사진" class="userprofile" id="profileImage">
