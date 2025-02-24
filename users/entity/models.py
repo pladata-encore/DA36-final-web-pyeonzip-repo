@@ -38,7 +38,7 @@ class MypageUpdateForm(forms.ModelForm):
     def clean_nickname(self):
         nickname = self.cleaned_data.get('nickname').strip()
 
-        if not re.match('^[A-Za-z0-9]+$',nickname):
+        if not re.match('^[A-Za-z0-9_]+$',nickname):
             raise forms.ValidationError("닉네임은 영어 대소문자, 숫자, _만 사용 가능합니다.")
 
         if len(nickname) < 8 or len(nickname) > 20:
