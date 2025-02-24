@@ -44,7 +44,10 @@
                     <span class="author-name">{{ review.author.nickname }}</span>
                     <span class="review-date">{{ review.created_at|date:"Y.m.d" }}</span>
                 </div>
-
+                <div class="recommend" data-uri="{% url 'review:review_recommend' review.reviewId %}">
+                    <ion-icon id="thumbs-icon" size="large" name="{% if recommended %}thumbs-up{% else %}thumbs-up-outline{% endif %}" ></ion-icon>
+                    <span class="badge rounded-pill bg-success" id="recommend_count">{{ review.recommended.count }}</span>
+                </div>
 
                 <div class="review-content">
                     <div class="review-item">
@@ -62,10 +65,6 @@
                         <span>{{ review.convenienceContent }}</span>
                     </div>
 
-                   <div class="recommend" data-uri="{% url 'review:review_recommend' review.reviewId %}">
-                        <ion-icon id="thumbs-icon" size="large" name="{% if recommended %}thumbs-up{% else %}thumbs-up-outline{% endif %}" ></ion-icon>
-                        <span class="text" id="recommend_count">🗯️ 리뷰 추천 ㅌ개수:{{ review.recommended.count }}</span>
-                    </div>
                     <div>
 
                     </div>
