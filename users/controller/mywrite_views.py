@@ -17,8 +17,14 @@ def my_review(request):
     my_reviews = review_service.find_by_user_id(request.user.id)
     for review in my_reviews:
         review.recommend_count = review.recommender.count()
+        review.author_nickname = review.author.userdetail.nickname if review.author.userdetail else "익명"
+        review.author_profile = review.author.userdetail.profile.url if review.author.userdetail and review.author.userdetail.profile else None
+
+    # user = UserDetail.objects.filter(user_id=request.user.id).first()
+    # user_profile = user.profile.url if user and user.profile else None
 
     return render(request, 'users/my_review.html', {'my_reviews': my_reviews})
+
 @login_required()
 def review_delete(request, review_id):
     del_review = review_service.delete(review_id)
