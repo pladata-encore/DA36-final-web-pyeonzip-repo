@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from review.entity.models import Review
+from users.entity.models import UserDetail
 from django.db.models import Q
 
 class ReviewRepository(ABC):
@@ -21,8 +22,13 @@ class ReviewRepository(ABC):
         pass
 
     @abstractmethod
-    def review_recommenders(self, review_id):
+    def review_recommenders(self, review,recommender):
         pass
+
+    @abstractmethod
+    def create(self, form):
+        pass
+
 
 class ReviewRepositoryImpl(ReviewRepository):
     __instance = None
@@ -50,11 +56,19 @@ class ReviewRepositoryImpl(ReviewRepository):
         return review
 
     def find_by_review_id(self,review_id):
-        return Review.objects.get(review_id=review_id)
+        return Review.objects.get(reviewId=review_id)
 
-    def review_recommenders(self, review, recommenders):
-        if review.recommenders.filter(id=recommenders.id).exists():
-            review.recommenders.remove(recommenders)
+    def review_recommenders(self, review, recommender):
+
+        if review.recommender.filter(id=recommender.id).exists():
+            review.recommender.remove(recommender)
+            return False
         else:
-            review.recommenders.add(recommenders)
+            review.recommender.add(recommender)
             return True
+
+    def create(self, form):
+        form.save()
+        return form
+
+

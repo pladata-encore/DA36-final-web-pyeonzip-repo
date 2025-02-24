@@ -36,7 +36,8 @@
                     <div class="delete-btn">
                         <button class="btn btn-secondary rounded-pill" onclick="confirmDelete({{ review.reviewId }})">삭제</button>
                     </div>
-    
+                <div>리뷰추천개수
+                    {{ review.recommend_count }}</div>
                     <!-- 상품 정보 -->
                     <div class="product-info">
                         {% if review.product %}

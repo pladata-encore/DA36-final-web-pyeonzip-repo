@@ -10,7 +10,7 @@ from users.entity.models import UserDetail
 
 class Review(models.Model):
     reviewId = models.AutoField(primary_key=True)  # okay
-    author = models.ForeignKey(UserDetail, null=True, blank=True,related_name='UserDetail_reviews',on_delete=SET_NULL)  # author_id, user_id [erd_cloud 통일]
+    author = models.ForeignKey(User, null=True, blank=True,related_name='User_reviews',on_delete=SET_NULL)  # author_id, user_id [erd_cloud 통일]
     product = models.ForeignKey(Product, null=True, blank=True, related_name='Product_reviews',on_delete=SET_NULL)
     tasteContent = models.TextField()
     priceContent = models.TextField()
