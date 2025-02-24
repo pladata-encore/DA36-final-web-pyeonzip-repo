@@ -14,8 +14,9 @@ def review_write(request):
     if request.method == 'POST':
         form = ReviewForm(request.POST, request.FILES)
         if form.is_valid():
-            form.save()
-            pass
+            review = form.save(commit=False)
+            review.author_id=request.user.id
+            review = review_service.create(review)
         else:
             print('form.errors=',form.errors)
     else:
@@ -24,20 +25,20 @@ def review_write(request):
     return render(request, 'review/review_form.html', {'ReviewForm': ReviewForm})
 
 
-def review_recommender(request, review_id):
-    review = get_object_or_404(Review, reviewId=review_id)
-    user = request.user
+@login_required(login_url='users:login')
+def review_recommend(request, review_id):
+    try:
+        review,recommended = review_service.add_remove_recommend(review_id, request.user)
+        recommender_count = review.recommender.count() if hasattr(review, 'recommender') else 0
 
-    existing_recommendation = ReviewRecommender.objects.filter(recommender=user, review=review)
-
-    if existing_recommendation.exists():
-        existing_recommendation.delete()
-        recommended = False
-    else:
-        ReviewRecommender.objects.create(recommender=user, review=review)
-        recommended = True
-
-    return JsonResponse({
-        "recommended": recommended,
-        "recommend_count": review.recommender.count()
-    })
+        print('product.recommender_count() =', recommender_count)
+        return JsonResponse({
+            'result': 'success',
+            'recommender_count': recommender_count,
+            'recommended':recommended
+        })
+    except Exception as e:
+        return JsonResponse({
+            'result': 'error',
+            'message': str(e)
+        }, status=400)

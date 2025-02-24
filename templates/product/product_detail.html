@@ -29,7 +29,7 @@
                 <span class="badge rounded-pill bg-success">{{ product.likes.count }}</span>
             </div>
             <div>
-                <span class="card-text"><small class="text-body-secondary">🗯️ 리뷰개수:{{ product.Product_reviews.count }}</small></span>
+                <span class="card-text">🗯️ 리뷰개수:{{ product.Product_reviews.count }}</span>
             </div>
         </div>
 
@@ -44,8 +44,8 @@
                     <span class="author-name">{{ review.author.nickname }}</span>
                     <span class="review-date">{{ review.created_at|date:"Y.m.d" }}</span>
                 </div>
-                
-                
+
+
                 <div class="review-content">
                     <div class="review-item">
                         <strong>맛</strong>
@@ -61,7 +61,14 @@
                         <strong>편리성</strong>
                         <span>{{ review.convenienceContent }}</span>
                     </div>
-                    <br>
+
+                   <div class="recommend" data-uri="{% url 'review:review_recommend' review.reviewId %}">
+                        <ion-icon id="thumbs-icon" size="large" name="{% if recommended %}thumbs-up{% else %}thumbs-up-outline{% endif %}" ></ion-icon>
+                        <span class="text" id="recommend_count">🗯️ 리뷰 추천 ㅌ개수:{{ review.recommended.count }}</span>
+                    </div>
+                    <div>
+
+                    </div>
                     {% if review.reviewImageUrl %}
                             <strong>리뷰 이미지</strong>
                             <div class="review-image">
@@ -86,15 +93,23 @@
         {# 제품 좋아요 기능 #}
         document.addEventListener("DOMContentLoaded", () => {
             const heartIcon = document.querySelector('#heart-icon');
+            const thumbIcon=document.querySelector('#thumb-icon');
             if (liked === 'true') {
                 heartIcon.setAttribute('name', 'heart');
             } else {
                 heartIcon.setAttribute('name', 'heart-outline');
             }
+            if (recommended === 'true'){
+                thumbIcon.setAttribute('name','thumbs-up')
+            } else {
+                thumbIcon.setAttribute('name','thumbs-up-outline')
+
+            }
         });
-        
+
         const recommend_elements = document.getElementsByClassName("recommend");
-        Array.from(recommend_elements).forEach((element) => {
+        console.log(recommend_elements)
+        Array.from(recommend_elements).forEach((element,index) => {
         // js의 비동기처리를 지원하는 async..await을 사용
         element.addEventListener('click', async (e) => {
             {% if not user.is_authenticated %}
@@ -109,82 +124,56 @@
             // dataset.uri는 data-uri 속성값 가져옴
             // ->  '?.' (Optional Chaining) 연산자로 dataset이 존재할 경우에만 uri를 접근 그렇지 않으면 undefined를 반환
 
-            // a태그 또는 자식span태그 클릭 대응
-            const url = e.target.dataset?.uri || e.target.parentElement.dataset.uri;
 
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}',
-                        },
-                body: JSON.stringify({'product_id': {{ product.product_id }}}),
-            });
-            const data = await response.json();
-            element.querySelector('span').textContent = data.likes_count;
+            if (index===0) {
+                const url = e.target.dataset?.uri || e.target.parentElement.dataset.uri;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: JSON.stringify({'product_id': {{ product.product_id }}}),
+                });
+                const data = await response.json();
+                console.log(data)
+                element.querySelector('span').textContent = data.likes_count;
 
-            const heartIcon = element.querySelector('#heart-icon');
-            if (data.liked) { // 서버에서 받은 좋아요 상태
-                heartIcon.setAttribute('name', 'heart'); // 채운 하트로 변경
-            } else {
-                heartIcon.setAttribute('name', 'heart-outline'); // 빈 하트로 변경
-            }
-            });
-        });
 
-    </script>
-    
-    
-    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
-    <script>
-        {# 제품 좋아요 기능 #}
-        document.addEventListener("DOMContentLoaded", () => {
-            const heartIcon = document.querySelector('#heart-icon');
-            if (liked === 'true') {
-                heartIcon.setAttribute('name', 'heart');
-            } else {
-                heartIcon.setAttribute('name', 'heart-outline');
-            }
-        });
-        
-        const recommend_elements = document.getElementsByClassName("review-recommender-btn");
-        Array.from(recommend_elements).forEach((element) => {
-        // js의 비동기처리를 지원하는 async..await을 사용
-        element.addEventListener('click', async (e) => {
-            {% if not user.is_authenticated %}
-                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
-                    location.href = "{% url 'users:login' %}?next={{ request.path }}";
+                const heartIcon = element.querySelector('#heart-icon');
+                if (data.liked) { // 서버에서 받은 좋아요 상태
+                    heartIcon.setAttribute('name', 'heart'); // 채운 하트로 변경
+                } else {
+                    heartIcon.setAttribute('name', 'heart-outline'); // 빈 하트로 변경
                 }
-                return false;
-            {% endif %}
-
-
-            {# dataset : data-* 속성에 접근 가능한 JavaScript DOM property #}
-            // dataset.uri는 data-uri 속성값 가져옴
-            // ->  '?.' (Optional Chaining) 연산자로 dataset이 존재할 경우에만 uri를 접근 그렇지 않으면 undefined를 반환
-
-            // a태그 또는 자식span태그 클릭 대응
-            const url = e.target.dataset?.uri || e.target.parentElement.dataset.uri;
-
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRFToken': '{{ csrf_token }}',
-                        },
-                body: JSON.stringify({'product_id': {{ product.product_id }}}),
-            });
-            const data = await response.json();
-            element.querySelector('span').textContent = data.likes_count;
-
-            const heartIcon = element.querySelector('#heart-icon');
-            if (data.liked) { // 서버에서 받은 좋아요 상태
-                heartIcon.setAttribute('name', 'heart'); // 채운 하트로 변경
-            } else {
-                heartIcon.setAttribute('name', 'heart-outline'); // 빈 하트로 변경
             }
-            });
+
+            else if (index===1) {
+             const url = e.target.dataset?.uri || e.target.parentElement.dataset.uri;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                });
+                const data = await response.json();
+                element.querySelector('span').textContent = data.recommender_count;
+
+
+                const thumbIcon = element.querySelector('#thumbs-icon');
+                console.log(thumbIcon)
+                if (data.recommended) {
+                    thumbIcon.setAttribute('name', 'thumbs-up'); // 채운 하트로 변경
+                } else {
+                    thumbIcon.setAttribute('name', 'thumbs-up-outline'); // 빈 하트로 변경
+                }
+            }
+        })
         });
 
     </script>
+
+
+
 {% endblock script %}

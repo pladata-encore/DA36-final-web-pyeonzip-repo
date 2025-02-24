@@ -5,6 +5,8 @@ from community.service.community_service import CommunityServiceImpl
 from review.service.review_service import ReviewServiceImpl
 from users.entity.models import UserDetail
 from django.contrib import messages
+from django.http import JsonResponse
+
 
 
 
@@ -12,9 +14,9 @@ review_service = ReviewServiceImpl.get_instance()
 community_service = CommunityServiceImpl.get_instance()
 @login_required()
 def my_review(request):
-    author=UserDetail.objects.get(user_id=request.user.id)
-    my_reviews = review_service.find_by_user_id(author)
-    # liked = my_reviews.recommender.filter(review_id=my_reviews.review_id).count() ### 수정 필요 #####
+    my_reviews = review_service.find_by_user_id(request.user.id)
+    for review in my_reviews:
+        review.recommend_count = review.recommender.count()
 
     return render(request, 'users/my_review.html', {'my_reviews': my_reviews})
 @login_required()
