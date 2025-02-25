@@ -10,7 +10,7 @@
         <div class="p-5">
             <label for="productId" class="form-label">🔍연관 상품을 선택해주세요</label>
             <div class="d-flex">
-                <input type="text" class="form-control" id="searchProduct" placeholder="Search..." readonly>
+                <input type="text" class="form-control" id="searchProduct" placeholder="Search Product..." readonly>
                 <button type="button" class="btn btn-primary ms-2" onclick="openProductPopup()">+</button>
                 <input type="hidden" name="products" id="productsInput">
             </div>
@@ -20,7 +20,7 @@
 
         </div>
 
-         <!-- 2️⃣ 카테고리 선택 -->
+        <!-- 2️⃣ 카테고리 선택 -->
         <div class="p-5">
             <label class="form-label"><strong>카테고리</strong></label>
             <select class="form-select" aria-label="Default select example" id="category" name="category" onchange="checkFormCompletion()">
@@ -71,7 +71,7 @@
         let selectedProducts = [];
 
         function openProductPopup() {
-            window.open("{% url 'product:select_product' %}", "제품 선택", "width=600,height=500");
+            window.open("{% url 'product:select_product' %}", "제품 선택", "width=800,height=600");
         }
 
         function setSelectedProduct(productId, productName, productImage) {

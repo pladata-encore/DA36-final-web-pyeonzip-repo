@@ -21,7 +21,7 @@ class ReviewService(ABC):
     def add_remove_recommend(self, review_id,recommenders):
         pass
     @abstractmethod
-    def create(self,form):
+    def create(self,review):
         pass
 
     @abstractmethod
@@ -64,8 +64,8 @@ class ReviewServiceImpl(ReviewService):
         recommended = self.__review_repository.review_recommenders(review, recommenders)
         return review, recommended
 
-    def create(self,form):
-        return self.__review_repository.create(form)
+    def create(self,review):
+        return self.__review_repository.create(review)
 
     def user_detail_id(self, user_id):
         return self.__review_repository.user_detail_id(user_id)

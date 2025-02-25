@@ -16,13 +16,19 @@ def review_write(request):
         if form.is_valid():
             review = form.save(commit=False)
             review.author_id=request.user.id
-            review = review_service.create(review)
+
+            product_id = request.POST.get("product_id")
+            if product_id:
+                review.product_id = product_id
+
+            review_service.create(review)
+            return redirect('review:review_main')
         else:
             print('form.errors=',form.errors)
     else:
         form = ReviewForm()
 
-    return render(request, 'review/review_form.html', {'ReviewForm': ReviewForm})
+    return render(request, 'review/review_form.html', {'form': form})
 
 
 @login_required(login_url='users:login')
@@ -42,3 +48,6 @@ def review_recommend(request, review_id):
             'result': 'error',
             'message': str(e)
         }, status=400)
+
+
+

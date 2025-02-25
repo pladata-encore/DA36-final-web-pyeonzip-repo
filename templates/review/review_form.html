@@ -1,36 +1,109 @@
 {% extends '../layout/base.html' %}
+{% load static %}
 
 {% block content %}
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-
-        <div class="p-5">
-          <label for="tasteContent" class="form-label">맛</label>
-            <br>
-            <textarea class="form-control" id="tasteContent" rows="3" name="tasteContent"></textarea>
-        </div>
         
+        <!-- 1️⃣ 연관 상품 선택 -->
         <div class="p-5">
-          <label for="priceContent" class="form-label">가격</label>
-            <br>
-            <textarea class="form-control" id="priceContent" rows="3" name="priceContent"></textarea>
-        </div>
-        
-        <div class="p-5">
-          <label for="convenienceContent" class="form-label">편의성</label>
-            <br>
-            <textarea class="form-control" id="convenienceContent" name="convenienceContent" rows="3"></textarea>
-        </div>
-        
-        
-        <div class="p-5">
-          <label for="reviewImageUrl" class="form-label">사진 뿅</label>
-            <br>
-          <input class="form-control" type="file" id="reviewImageUrl" name="reviewImageUrl">
+            <label for="selectedProduct" class="form-label"><strong>🪙 해당 상품에 대한 리뷰를 남기고 포인트 받아가세요~ 🪙</strong></label>
+            <div id="selectedProductContainer" class="mb-3"></div>
+            <input type="hidden" id="selectedProductId" name="product_id" required>
+            <button type="button" id="selectProductBtn" class="btn btn-primary" onclick="openProductPopup()">상품 선택</button>
         </div>
 
-        <button>저장</button>
+        <!-- 2️⃣ 맛 리뷰 작성 -->
+        <div class="p-5">
+            <label for="tasteContent" class="form-label"><strong>🍽️ 맛은 어떠셨나요?</strong></label>
+            <textarea class="form-control" name="tasteContent" id="tasteContent" placeholder="맛에 대한 전반적인 평가를 작성해주세요 (20자 이상)" rows="10" minlength="20" maxlength="200" oninput="updateCharCount('tasteContent', 'charCountTaste'); checkFormCompletion();"></textarea>
+            <div class="text-end"><span id="charCountTaste">0</span>/200</div>
+        </div>
+
+        <!-- 3️⃣ 가격 리뷰 작성 -->
+        <div class="p-5">
+            <label for="priceContent" class="form-label"><strong>💸 가격은 어떠셨나요?</strong></label>
+            <textarea class="form-control" name="priceContent" id="priceContent" placeholder="가격에 대한 전반적인 평가를 작성해주세요 (20자 이상)" rows="10" minlength="20" maxlength="200" oninput="updateCharCount('priceContent', 'charCountPrice'); checkFormCompletion();"></textarea>
+            <div class="text-end"><span id="charCountPrice">0</span>/200</div>
+        </div>
+
+        <!-- 4️⃣ 편의성 리뷰 작성 -->
+        <div class="p-5">
+            <label for="convenienceContent" class="form-label"><strong>💡 편의성은 어떠셨나요?</strong></label>
+            <textarea class="form-control" name="convenienceContent" id="convenienceContent" placeholder="편의성, 패키지/디자인, 재구매에 대한 전반적인 평가를 작성해주세요 (20자 이상)" rows="10" minlength="20" maxlength="200" oninput="updateCharCount('convenienceContent', 'charCountConvenience'); checkFormCompletion();"></textarea>
+            <div class="text-end"><span id="charCountConvenience">0</span>/200</div>
+        </div>
+
+        <div class="p-5">
+            <label for="reviewImageUrl" class="form-label">📷 리뷰 사진</label>
+            <input class="form-control" type="file" id="reviewImageUrl" name="reviewImageUrl">
+        </div>
+
+        <!-- 등록 버튼 -->
+        <div class="p-5 text-end">
+            <button type="submit" id="submitBtn" class="btn btn-secondary" disabled>등록</button>
+        </div>
     </form>
-    
 
+    <script>
+        function openProductPopup() {
+            if (document.getElementById("selectedProductId").value) {
+                alert("이미 선택된 상품이 있습니다. 삭제 후 다시 선택하세요.");
+                return;
+            }
+            window.open("{% url 'product:select_product' %}", "productPopup", "width=800,height=600");
+        }
+        
+        function setSelectedProduct(productId, productName, productImageUrl, productPrice, productStore, productCategory) {
+            if (document.getElementById("selectedProductId").value) {
+                alert("이미 선택된 상품이 있습니다. 삭제 후 다시 선택하세요.");
+                return;
+            }
+            document.getElementById("selectedProductId").value = productId;
+            document.getElementById("selectedProductContainer").innerHTML = `
+                <div class="d-flex align-items-center border p-3 rounded">
+                    <img src="${productImageUrl}" class="rounded" alt="${productName}" style="width: 100px; height: 100px; object-fit: cover; margin-right: 15px;">
+                    <div>
+                        <p class="mb-1"><strong>${productName}</strong></p>
+                        <p class="text-muted mb-1">💰 ${productPrice}원 | 🏪 ${productStore} | 🏷️ ${productCategory} </p>
+                        <button type="button" class="btn btn-danger btn-sm" onclick="removeProduct()">삭제</button>
+                    </div>
+                </div>
+            `;
+            document.getElementById("selectProductBtn").disabled = true;
+            checkFormCompletion();
+        }
+
+        function removeProduct() {
+            document.getElementById("selectedProductId").value = "";
+            document.getElementById("selectedProductContainer").innerHTML = "";
+            document.getElementById("selectProductBtn").disabled = false;
+            checkFormCompletion();
+        }
+        
+        function updateCharCount(textareaId, counterId) {
+            const textarea = document.getElementById(textareaId);
+            document.getElementById(counterId).innerText = textarea.value.length;
+        }
+        
+        // 폼 입력 완료 여부 확인 (모든 조건 충족 시 버튼 활성화)
+        function checkFormCompletion() {
+            const taste = document.getElementById("tasteContent").value.trim().length >= 20;
+            const price = document.getElementById("priceContent").value.trim().length >= 20;
+            const convenience = document.getElementById("convenienceContent").value.trim().length >= 20;
+            const productSelected = document.getElementById("selectedProductId").value !== "";
+            const submitBtn = document.getElementById("submitBtn");
+            
+            if (taste && price && convenience && productSelected) {
+                submitBtn.disabled = false;
+                submitBtn.classList.remove("btn-secondary");
+                submitBtn.classList.add("btn-success");
+            } else {
+                submitBtn.disabled = true;
+                submitBtn.classList.remove("btn-success");
+                submitBtn.classList.add("btn-secondary");
+            }
+        }
+        
+    </script>
 {% endblock content %}

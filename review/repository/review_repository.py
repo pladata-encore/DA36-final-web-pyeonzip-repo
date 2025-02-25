@@ -26,7 +26,7 @@ class ReviewRepository(ABC):
         pass
 
     @abstractmethod
-    def create(self, form):
+    def create(self, review):
         pass
 
 
@@ -67,8 +67,8 @@ class ReviewRepositoryImpl(ReviewRepository):
             review.recommender.add(recommender)
             return True
 
-    def create(self, form):
-        form.save()
-        return form
+    def create(self, review):
+        review.save()
+        return review
 
 
