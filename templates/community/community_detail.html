@@ -32,7 +32,9 @@
         {% for product in community.products.all %}
         <div class="product-card me-3">
             <img src="{{ product.product_image_url }}" alt="{{ product.product_name }}" class="product-item img">
-           <p class="product-name"><strong>{{ product.product_name }}</strong></p>
+            <a href="{% url 'product:product_detail' product.product_id %}">
+                {{ product.product_name }}
+            </a>
             <div class="product-tags">
                 <span class="tag">{{ product.product_price }}원</span>
                 <span class="tag">{{ product.convenient_store_name }}</span>

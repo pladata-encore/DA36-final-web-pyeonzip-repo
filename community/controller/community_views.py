@@ -12,11 +12,13 @@ community_service = CommunityServiceImpl()
 
 def community_list(request):
     communities = community_service.find_all().order_by('-created_at')
+    left_post, right_post = community_service.get_random_unvoted_posts(request.user)
 
     for community in communities:
         community.is_expired = community.deadline < now().date()  # 마감 여부 계산
 
-    return render(request, 'community/community_list.html', {'communities': communities })
+    return render(request, 'community/community_list.html', {'communities': communities, 'left_post': left_post,
+        'right_post': right_post })
 
 @login_required(login_url='users:login')
 def community_write(request):

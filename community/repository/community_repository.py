@@ -30,6 +30,10 @@ class CommunityRepository(ABC):
     def add_vote(self, community, user):
         pass
 
+    @abstractmethod
+    def find_unvoted_communities(self, user):
+        pass
+
 class CommunityRepositoryImpl(CommunityRepository):
     __instance = None
 
@@ -66,3 +70,7 @@ class CommunityRepositoryImpl(CommunityRepository):
 
     def add_vote(self, community, user):
         return community.add_vote(user) # ✅ 중간 테이블에 직접 추가
+
+    def find_unvoted_communities(self, user):
+        """현재 로그인한 유저가 아직 투표하지 않은 글 가져오기"""
+        return Community.objects.exclude(voter=user)
