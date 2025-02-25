@@ -40,8 +40,8 @@
         <div class="review-container">
             <div class="review-card">
                 <div class="review-author">
-                    <img class="profile-pic" src="{{ review.author.profile.url }}" alt="{{ review.author.nickname }}">
-                    <span class="author-name">{{ review.author.nickname }}</span>
+                    <img class="profile-pic" src="{{ review.author.userdetail.profile.url }}" alt="{{ review.author.userdetail.nickname }}">
+                    <span class="author-name">{{ review.author.userdetail.nickname }}</span>
                     <span class="review-date">{{ review.created_at|date:"Y.m.d" }}</span>
                 </div>
                 <div class="recommend" data-uri="{% url 'review:review_recommend' review.reviewId %}">
