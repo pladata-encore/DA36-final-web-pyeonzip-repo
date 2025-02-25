@@ -1,0 +1,96 @@
+{% extends '../layout/base.html' %}
+
+{% load static %}
+{% block css %}
+    <link rel="stylesheet" href="{% static 'css/product.css' %}">
+{% endblock css %}
+
+
+{% block content %}
+<div class="container">
+    <section class="product-search my-5">
+    <!-- 🔍 장고 검색 기능 추가 -->
+    <form method="get" action="{% url 'product:product_search' %}">
+        <div class="input-group">
+            <input type="text" name="q" class="form-control" placeholder="제품을 검색하세요..." value="{{ query|default:'' }}">
+            <button type="submit" class="btn btn-primary">검색🔍</button>
+        </div>
+    </form>
+    </section>
+    <!-- 📜 검색된 제품 목록 -->
+    {% if page_obj.object_list %}
+    <div class="search-product-list" id="productList">
+        {% for p in page_obj.object_list %}
+            <div class="product-item">
+    {#                <span>{{ forloop.counter }}</span> <!-- 순번 추가 -->#}
+                <a href="{% url 'product:product_detail' p.product_id %}" class="product-link">
+                   <div class="search-product-card">
+                        <div class="image-container">
+                        <img src="{{ p.product_image_url }}" alt="제품 이미지">
+                        </div>   
+                        <p class="product-name"><strong>{{ p.product_name }}</strong></p>
+                        <div class="product-tags">
+                            <span class="tag">{{ p.product_price }}원</span>
+                            <span class="tag">{{ p.convenient_store_name }}</span>
+                            <span class="tag">{{ p.product_category_name }}</span>
+                        </div>
+                    </div> 
+                </a>    
+            </div>
+        {% endfor %}
+    </div>
+        
+        <!--페이지네이션 네비게이션-->
+        {% if page_obj.has_other_pages %}
+            <nav aria-label="page navigation">
+                <ul class="pagination justify-content-center">
+    
+                    <!--이전 블록으로 이동-->
+                    {% if page_range|first > 1 %}
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&page={{ page_range|first|add:'-1' }}">&laquo; 이전 블록</a> 
+                        </li>
+                    {% endif %}
+            
+                    <!--이전 페이지 -->
+                    {%  if page_obj.has_previous %}
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&page={{ page_obj.previous_page_number }}" aria-label="Previous page">
+                            &laquo;</a>
+                        </li>
+                    {% endif %}    
+                
+                    <!-- 실제 페이지 번호 출력 -->
+                    {% for num in page_range %}
+                        {% if num == page_obj.number %}
+                            <li class=" page-item active"><span class="page-link">{{ num }}</span></li>
+                        {% else %}
+                            <li class="page-item">
+                                <a class="page-link" href="?q={{ query }}&page={{ num }}">{{ num }}</a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+    
+                    <!-- 다음 페이지 (단일 페이지 이동) -->
+                    {% if page_obj.has_next %}
+                        <li class="page=item">
+                            <a class="page-link" href="?q={{ query }}&page={{ page_obj.next_page_number }}">다음 페이지 &rsaquo;</a>
+                        </li>
+                    {% endif %}
+    
+                    <!-- 다음 블록으로 이동 (예: 1~10 블록에서 "다음"을 누르면 11~20 블록으로) -->
+                    {% if page_range|last < page_obj.paginator.num_pages %}
+                        <!-- 다음 블록의 첫 페이지는 현재 블록의 마지막 페이지 + 1 -->
+                        <li class="page-item">
+                            <a class="page-link" href="?q={{ query }}&page={{ page_range|last|add:'1' }}">다음 블록 &raquo;</a>
+                        </li>
+                    {% endif %}
+                        
+                </ul>
+            </nav>
+        {% endif %}
+    {% else %}    
+        <p>검색 결과가 존재하지 않습니다.</p>
+    {%  endif %}
+</div>
+{% endblock %}

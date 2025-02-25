@@ -19,7 +19,7 @@ from django.conf.urls.static import static
 from django.urls import path, include
 from django.conf import settings
 from django.views.generic import RedirectView
-from product.controller import views, select_product_views
+from product.controller import views, select_product_views, search_product_views
 from product.controller.select_product_views import select_product_list
 
 app_name='product'
@@ -29,5 +29,6 @@ urlpatterns = [
     path("product_detail/<int:product_id>/",views.product_detail,name="product_detail"),
     path("product_likes/<int:product_id>/",views.product_likes,name="product_likes"),
     path("filter_products/<str:store>/<str:category>/<str:tab>/<int:page>/", views.filter_products, name="filter_products"),
+    path("product_search/", search_product_views.product_search, name="product_search"),
 
 ]
