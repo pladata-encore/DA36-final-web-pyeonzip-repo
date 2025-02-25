@@ -11,6 +11,8 @@ def review_main(request):
 
 @login_required(login_url='users:login')
 def review_write(request):
+    product_id = request.GET.get("product_id", "")  # GET 요청에서 product_id 가져오기
+
     if request.method == 'POST':
         form = ReviewForm(request.POST, request.FILES)
         if form.is_valid():
@@ -28,7 +30,7 @@ def review_write(request):
     else:
         form = ReviewForm()
 
-    return render(request, 'review/review_form.html', {'form': form})
+    return render(request, 'review/review_form.html', {'form': form, 'product_id': product_id})
 
 
 @login_required(login_url='users:login')

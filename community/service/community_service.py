@@ -1,5 +1,6 @@
 from abc import ABC, abstractmethod
 from django.utils.timezone import now
+import random
 
 from community.entity.models import Community
 from community.repository.community_repository import CommunityRepositoryImpl
@@ -21,7 +22,12 @@ class CommunityService(ABC):
     def create_community(self, data, product_ids, author):
         pass
 
+    @abstractmethod
     def add_vote(self, community_id, user):
+        pass
+
+    @abstractmethod
+    def get_random_unvoted_posts(self, user):
         pass
 
 
@@ -72,3 +78,9 @@ class CommunityServiceImpl(CommunityService):
             return False  # 투표 기간이 종료된 경우 False 반환
 
         return self.__community_repository.add_vote(community, user)
+
+    def get_random_unvoted_posts(self, user):
+        unvoted_communities = self.__community_repository.find_unvoted_communities(user)
+        if unvoted_communities.count() < 2:
+            return None, None
+        return random.sample(list(unvoted_communities), 2)

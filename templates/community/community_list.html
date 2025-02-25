@@ -1,34 +1,70 @@
 {% extends '../layout/base.html' %}
 {% load static %}
 
-
 {% block title %} Community List {% endblock %}
 
 {% block content %}
 
-        <!-- 📌 커뮤니티 목록 -->
+<div class="container mt-4">
+    <!-- 🎯 투표 안내 문구 -->
+    <h2 class="text-center">🎯 둘 중 더 맘에 드는 아이디어 or 꿀조합은? </h2>
+
+    <!-- 랜덤 투표 UI -->
+    <div class="d-flex justify-content-center my-4">
+        {% if left_post and right_post %}
+        <div class="card text-center mx-2 p-3 shadow-sm" style="width: 45%;">
+{#            <span class="badge bg-primary">{{ left_post.category.categoryName }}</span>#}
+            <h4>{{ left_post.communityTitle }}</h4>
+            <p class="text-secondary">{{ left_post.communityContent|truncatewords:30 }}</p>
+            <div class="d-flex align-items-center justify-content-between">
+                <img src="{{ left_post.author.profile.url }}" class="rounded-circle" width="30">
+                <small class="text-muted">📅 {{ left_post.created_at|date:"Y-m-d" }} ~ {{ left_post.deadline|date:"Y-m-d" }}</small>
+            </div>
+            <button class="btn btn-outline-success mt-2 vote-btn" 
+                    onclick="vote('{{ left_post.communityId }}')">🗳️ +{{ left_post.voter.count }}</button>
+        </div>
+
+        <h3 class="align-self-center">VS</h3>
+
+        <div class="card text-center mx-2 p-3 shadow-sm" style="width: 45%;">
+{#            <span class="badge bg-primary">{{ right_post.category.categoryName }}</span>#}
+            <h4>{{ right_post.communityTitle }}</h4>
+            <p class="text-secondary">{{ right_post.communityContent|truncatewords:30 }}</p>
+            <div class="d-flex align-items-center justify-content-between">
+                <img src="{{ right_post.author.profile.url }}" class="rounded-circle" width="30">
+                <small class="text-muted">📅 {{ right_post.created_at|date:"Y-m-d" }} ~ {{ right_post.deadline|date:"Y-m-d" }}</small>
+            </div>
+            <button class="btn btn-outline-success mt-2 vote-btn" 
+                    onclick="vote('{{ right_post.communityId }}')">🗳️ +{{ right_post.voter.count }}</button>
+        </div>
+        {% else %}
+            <p class="text-center text-muted">🎉 모든 커뮤니티 글에 투표 완료했습니다!</p>
+        {% endif %}
+    </div>
+
+    <!-- 📌 커뮤니티 목록 -->
     {% for community in communities %}
-    <div class="card mb-3">
-        <div class="card-header">
-            <span class="badge bg-primary">{{ community.category.categoryName }}</span>
-{#            <strong>{{ community.communityTitle|truncatewords:20 }}</strong>#}
-            <a href="{% url 'community:community_detail' community.communityId %}">
+    <div class="card mb-4 mx-auto shadow-sm" style="max-width: 800px;">
+        <div class="card-header bg-light d-flex align-items-center">
+            <span class="badge bg-primary me-2">{{ community.category.categoryName }}</span>
+            <a href="{% url 'community:community_detail' community.communityId %}" class="fw-bold text-dark text-decoration-none">
                 {{ community.communityTitle|truncatewords:20 }}
             </a>
         </div>
+        
         <div class="card-body">
-            <p>{{ community.communityContent|truncatewords:100 }}</p>
+            <p class="text-secondary">{{ community.communityContent|truncatewords:100 }}</p>
         </div>
+        
         <div class="card-footer d-flex justify-content-between align-items-center">
-            <div>
-                <img src="{{ community.author.profile.url }}" alt="User" width="20">
-                <span>{{ community.author.user.username }}</span>
-                
+            <div class="d-flex align-items-center">
+                <img src="{{ community.author.profile.url }}" alt="User" class="rounded-circle me-2" width="30" height="30">
+                <span class="fw-semibold">{{ community.author.user.username }}</span>
             </div>
-            <div>
-                <small class="text-muted">투표기간: {{ community.created_at|date:"Y-m-d" }}~{{ community.deadline|date:"Y-m-d" }} </small>
-                <button class="btn btn-outline-success btn-sm" 
-                        onclick="voteCommunity({{ community.communityId }})" 
+            <div class="text-end">
+                <small class="text-muted">📅 {{ community.created_at|date:"Y-m-d" }} ~ {{ community.deadline|date:"Y-m-d" }}</small>
+                <button class="btn btn-outline-success btn-sm mt-2"
+                        onclick="voteCommunity({{ community.communityId }})"
                         {% if community.is_expired %}disabled{% endif %}>
                     {% if community.is_expired %}
                         ⏳ 투표 기간 완료
@@ -40,6 +76,7 @@
         </div>
     </div>
     {% endfor %}
+</div>
 
 {% endblock %}
 
@@ -50,4 +87,3 @@
         var voteCommunityUrl = "{% url 'community:vote_community' %}";
     </script>
 {% endblock %}
-

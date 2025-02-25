@@ -30,5 +30,6 @@ urlpatterns = [
     path("product_likes/<int:product_id>/",views.product_likes,name="product_likes"),
     path("filter_products/<str:store>/<str:category>/<str:tab>/<int:page>/", views.filter_products, name="filter_products"),
     path("product_search/", search_product_views.product_search, name="product_search"),
+    path("get_product/<int:product_id>/", views.get_product, name='get_product'),
 
 ]

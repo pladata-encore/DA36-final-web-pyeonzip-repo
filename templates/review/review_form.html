@@ -8,7 +8,19 @@
         <!-- 1️⃣ 연관 상품 선택 -->
         <div class="p-5">
             <label for="selectedProduct" class="form-label"><strong>🪙 해당 상품에 대한 리뷰를 남기고 포인트 받아가세요~ 🪙</strong></label>
-            <div id="selectedProductContainer" class="mb-3"></div>
+            <div id="selectedProductContainer" class="mb-3">
+                {% if product_id %}
+                    <script>
+                        window.onload = function() {
+                            fetch("{% url 'product:get_product' product_id %}")  // product_id에 해당하는 상품 정보 가져오기
+                                .then(response => response.json())
+                                .then(data => {
+                                    setSelectedProduct(data.id, data.name, data.image_url, data.price, data.store, data.category);
+                                });
+                        };
+                    </script>
+                {% endif %}
+            </div>
             <input type="hidden" id="selectedProductId" name="product_id" required>
             <button type="button" id="selectProductBtn" class="btn btn-primary" onclick="openProductPopup()">상품 선택</button>
         </div>

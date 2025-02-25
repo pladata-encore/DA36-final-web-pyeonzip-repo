@@ -4,7 +4,6 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/base.css' %}">
     
-    <h3>나의 커뮤니티</h3>
     <div class="community-container">
         <ul class="nav nav-tabs">
             <li class="nav-item">
@@ -19,16 +18,18 @@
             {% for community in my_communities %}
                 <div class="community-card">
                     <!-- 카테고리 -->
-                    <div class="community-category">{{ community.category_id }}</div>
+                    <div class="community-category">{{ community.category.categoryName }}</div>
     
                     <!-- 제목 -->
-                    <h3 class="community-title">{{ community.communityTitle }}</h3>
+                    <a href="{% url 'community:community_detail' community.communityId %}">
+                        {{ community.communityTitle }}
+                    </a>
     
                     <!-- 작성자 및 작성일 -->
                     <div class="community-meta">
                         <img class="profile-pic" src="{{ community.author.profile.url }}" alt="{{ community.author.nickname }}">
                         <span class="author-name">{{ community.author.nickname }}</span>
-                        <span class="community-date">{{ community.created_at|date:"Y.m.d H:i" }}</span>
+                        <span class="community-date">{{ community.created_at|date:"Y.m.d" }}</span>
                     </div>
     
                     <!-- 본문 -->

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
 import users.urls
 from product.entity.models import Product
@@ -73,4 +73,17 @@ def product_likes(request, product_id):
             'result': 'error',
             'message': str(e)
         }, status=400)
+
+
+def get_product(request, product_id):
+    product = get_object_or_404(Product, product_id=product_id)
+    data = {
+        "id": product.product_id,
+        "name": product.product_name,
+        "image_url": product.product_image_url,
+        "price": product.product_price,
+        "store": product.convenient_store_name,
+        "category": product.product_category_name
+    }
+    return JsonResponse(data)
 
