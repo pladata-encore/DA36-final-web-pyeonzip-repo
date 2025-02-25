@@ -9,10 +9,10 @@
         <div class="search-main-title">편의점 신상 리뷰, 여기 다 ZIP중!</div>
         <div class="search-main-sub-title">편ZIP</div>
         <div class="col-md-5">
-            <div class="input-group">
-                <input type="text" class="form-control" placeholder="검색할 상품을 입력해 주세요">
+            <a class="input-group" href="{% url 'product:product_search' %}" style="text-decoration: none !important;">
+                <span class="form-control disabled-input-like">검색할 상품을 입력해 주세요</span>
                 <button class="btn btn-primary">🔍</button>
-            </div>
+            </a>    
         </div>
     </div>    
 </section>

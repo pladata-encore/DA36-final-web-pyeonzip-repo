@@ -7,11 +7,26 @@
 
 
 {% block content %}
-
+    
 <div class="container">
+    <section class="search-product">
+        <a class="input-group my-5" href="{% url 'product:product_search' %}" style="text-decoration: none !important;">
+            <span class="form-control">검색할 상품을 입력해 주세요</span>
+            <button class="btn btn-primary">🔍</button>
+        </a>
+    </section>
+
+    <div id="product-tab-contents" class="product-tab mb-3">
+        <button class="product-tab-btn btn product-btn-primary" value="ALL" onclick="openTab('ALL')">ALL</button>
+        <button class="product-tab-btn btn" value="LATEST" onclick="openTab('LATEST')">LATEST</button>
+        <button class="product-tab-btn btn" value="AI" onclick="openTab('AI')">AI</button>
+    </div>
+
+<!-- 왼쪽 필터 / 오른쪽 상품으로 목록 구성-->
     <div class="row">
         <div class="col-md-2">
-            <div class="card mb-3" style="max-width: 100%; height: 130px;">
+            <div class="card mb-3">
+                <div class="card-header">편의점</div>
                 <div class="card-body">
                     <div><label>
                         <input type="radio" name="store" value="ALL" onclick="filterProducts()" checked>
@@ -29,9 +44,12 @@
                         <input type="radio" name="store" value="7-ELEVEN" onclick="filterProducts()">
                         7-ELEVEN
                     </label></div>
-                </div>
+                </div>    
             </div>
-            <div class="card mb-3" style="max-width: 100%; height: 130px;">
+        
+            <!--카테고리 필터 카드-->
+            <div class="card mb-3">
+                <div class="card-header">재품 카테고리</div>
                 <div class="card-body">
                     <div><label>
                         <input type="radio" name="category" value="ALL" onclick="filterProducts()" checked>
@@ -55,41 +73,47 @@
                     </label></div>
                 </div>
             </div>
-        </div>
+        </div> <!--col-md-2-->
+{#        <div class="col-md-10">#}
+{#            <div class="product-tab">#}
+{#                <button class="product-tab-btn btn product-btn-primary" value="ALL" onclick="openTab('ALL')">ALL</button>#}
+{#                <button class="product-tab-btn btn" value="LATEST" onclick="openTab('LATEST')">LATEST</button>#}
+{#                <button class="product-tab-btn btn" value="AI" onclick="openTab('AI')">AI</button>#}
+{#            </div>#}
 
+        <!--오른쪽 상품 목록-->
         <div class="col-md-10">
-            <div class="product-tab">
-                <button class="product-tab-btn btn product-btn-primary" value="ALL" onclick="openTab('ALL')">ALL</button>
-                <button class="product-tab-btn btn" value="LATEST" onclick="openTab('LATEST')">LATEST</button>
-                <button class="product-tab-btn btn" value="AI" onclick="openTab('AI')">AI</button>
-            </div>
-
-            <div id="product-tab-contents">
+            <div id="product-list" class="row row-cols-2 row-cols-sm-3 row-cols-md-4">
                 {% for product in page_obj %}
-                    <div class="product-card " >
-                       <button type="button" id="product-btn" class="btn">
-                            <a href="{% url 'product:product_detail' product_id=product.product_id %}" class="text-decoration-none">
-
+                    <div class="col">
+                        <div class="product-card mb-3" >
+    {#                       <button type="button" id="product-btn" class="btn">#}
+                                <a href="{% url 'product:product_detail' product_id=product.product_id %}" class="text-decoration-none">
                                     {% if product.product_image_url %}
-                                        <img src="{{ product.product_image_url }}"  style="width:100px; height:100px;" alt="...">
+                                        <img src="{{ product.product_image_url }}">
                                     {% else %}
-                                        <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
+                                        <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26">
                                     {% endif%}
-                                    <br><br>
-                                  <div class="card-body">
-                                    <h5 class="card-title">{{ product.product_name }}</h5>
-                                    <p class="card-text">{{ product.product_price }}원</p>
-                                    <p class="card-text"><small class="text-body-secondary">{{ product.convenient_store_name }}</small></p>
-                                    <span class="card-text"><small class="text-body-secondary">❤️:{{ product.likes.count }}</small></span>
-                                    <span class="card-text"><small class="text-body-secondary">🗯️:{{ product.Product_reviews.count }}</small></span>
-                                  </div>
-
-                            </a>
-                        </button>
+                                    <div class="card-body g-2">
+                                        <div class="card-title">{{ product.product_name }}</div>
+                                        <div class="product-tags">
+                                            <span class="tag">{{ product.product_price }}원</span>
+                                            <span class="tag">{{ product.convenient_store_name }}</span>
+                                            <span class="tag">{{ product.product_category_name }}</span>
+                                        </div>
+    {#                                    <div class="product-tag">#}
+                                            <span class="text-body-secondary">❤️:{{ product.likes.count }}</span>
+                                            <span class="text-body-secondary">🗯️:{{ product.Product_reviews.count }}</span>
+    {#                                    </div>#}
+                                    </div>
+                                </a>
+    {#                        </button>#}
+                        </div>
                     </div>
                 {% endfor %}
+            
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination justify-content-center">
+                    <ul class="pagination">
                         <!-- 이전페이지 영역 시작 -->
                         {% if page_obj.previous_page_number|add:-4 >= 0 %}
                             <li class="page-item">
@@ -127,7 +151,7 @@
             </div>
         </div>
     </div>
-</div>
+</div>    
 
 {% endblock content %}
 {% block script %}
@@ -155,11 +179,11 @@
             .then(response => response.text())
             .then(html => {
                 // 선택된 탭에 HTML 코드 삽입
-                document.getElementById("product-tab-contents").innerHTML = html;
+                document.getElementById("product-list").innerHTML = html;
             })
             .catch(error => {
                 console.error('Error fetching HTML:', error);
-                document.getElementById(tabName).innerHTML = '<p>Failed to load content.</p>';
+                document.getElementById("product-list").innerHTML = '<p>Failed to load content.</p>';
             });
 
     }
@@ -174,7 +198,7 @@
     fetch(`/product/filter_products/${selectedStore}/${selectedCategory}/${tabname}/${page}`)
         .then(response => response.text())  // JSON이 아니라 HTML이므로 `.text()` 사용
         .then(html => {
-            document.getElementById("product-tab-contents").innerHTML = html;
+            document.getElementById("product-list").innerHTML = html;
 
             });
     }
