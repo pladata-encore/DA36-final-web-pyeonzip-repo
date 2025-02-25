@@ -17,9 +17,6 @@
         <div class="col-md-9">
             <br>
             <br>
-            <br>
-            <br>
-            <br>
             <div>상품명 : {{ product.product_name }}</div>
             <div>상품 카테고리 : {{ product.product_category_name }}</div>
 
@@ -31,6 +28,8 @@
             <div>
                 <span class="card-text">🗯️ 리뷰개수:{{ product.Product_reviews.count }}</span>
             </div>
+            <a href="{% url 'review:review_write' %}?product_id={{ product.product_id }}" class="btn btn-primary">리뷰 작성하기</a>
+
         </div>
 
     </div>
