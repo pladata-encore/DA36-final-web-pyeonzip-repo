@@ -80,7 +80,7 @@
                         <span class="tag">{{ p.product_category_name }}</span>
                     </div>
                 </div>
-                <button class="select-btn" onclick="selectProduct('{{ p.product_id }}', '{{ p.product_name }}', '{{ p.product_image_url }}')">선택</button>
+                <button class="select-btn" onclick="selectProduct('{{ p.product_id }}', '{{ p.product_name }}', '{{ p.product_image_url }}','{{ p.product_price }}', '{{ p.convenient_store_name }}', '{{ p.product_category_name }}')">선택</button>
             </div>
         {% empty %}
             <p>검색 결과가 존재하지 않습니다.</p>
@@ -88,8 +88,8 @@
     </div>
 
     <script>
-    function selectProduct(productId, productName, productImageUrl) {
-        window.opener.setSelectedProduct(productId, productName, productImageUrl);  // 부모 창의 함수 호출
+    function selectProduct(productId, productName, productImageUrl, productPrice, productStore, productCategory) {
+        window.opener.setSelectedProduct(productId, productName, productImageUrl, productPrice, productStore, productCategory);  // 부모 창의 함수 호출
         window.close();  // 팝업 닫기
     }
     </script>
