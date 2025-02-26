@@ -12,31 +12,49 @@
     <!-- 랜덤 투표 UI -->
     <div class="d-flex justify-content-center my-4">
         {% if left_post and right_post %}
-        <div class="card text-center mx-2 p-3 shadow-sm" style="width: 45%;">
-{#            <span class="badge bg-primary">{{ left_post.category.categoryName }}</span>#}
-            <h4>{{ left_post.communityTitle }}</h4>
-            <p class="text-secondary">{{ left_post.communityContent|truncatewords:30 }}</p>
-            <div class="d-flex align-items-center justify-content-between">
-                <img src="{{ left_post.author.profile.url }}" class="rounded-circle" width="30">
-                <small class="text-muted">📅 {{ left_post.created_at|date:"Y-m-d" }} ~ {{ left_post.deadline|date:"Y-m-d" }}</small>
+            <div class="card vote-card text-center mx-2 p-3">
+                <div class="d-flex align-items-center mb-2">
+                    <span class="badge bg-primary me-2 px-3 py-2">{{ left_post.category.categoryName }}</span>
+                    <h4 class="mb-0 text-truncate" style="max-width: 80%;">{{ left_post.communityTitle }}</h4>
+                </div>
+            
+                <p class="text-secondary">{{ left_post.communityContent|truncatewords:30 }}</p>
+                
+                <div class="d-flex align-items-center justify-content-between">
+                    <img src="{{ left_post.author.profile.url }}" class="rounded-circle me-2 border" width="40" height="40">
+                    <span class="fw-semibold text-dark">{{ left_post.author.user.username }}</span>
+                    <small class="text-muted">📅 {{ left_post.created_at|date:"Y-m-d" }} ~ {{ left_post.deadline|date:"Y-m-d" }}</small>
+                </div>
+            
+                <button class="btn btn-outline-success mt-2 vote-btn"
+                        onclick="voteCommunity({{ left_post.communityId }})">
+                    🗳️ +{{ left_post.voter.count }}
+                </button>
             </div>
-            <button class="btn btn-outline-success mt-2 vote-btn" 
-                    onclick="vote('{{ left_post.communityId }}')">🗳️ +{{ left_post.voter.count }}</button>
-        </div>
 
-        <h3 class="align-self-center">VS</h3>
 
-        <div class="card text-center mx-2 p-3 shadow-sm" style="width: 45%;">
-{#            <span class="badge bg-primary">{{ right_post.category.categoryName }}</span>#}
-            <h4>{{ right_post.communityTitle }}</h4>
-            <p class="text-secondary">{{ right_post.communityContent|truncatewords:30 }}</p>
-            <div class="d-flex align-items-center justify-content-between">
-                <img src="{{ right_post.author.profile.url }}" class="rounded-circle" width="30">
-                <small class="text-muted">📅 {{ right_post.created_at|date:"Y-m-d" }} ~ {{ right_post.deadline|date:"Y-m-d" }}</small>
+            <h3 class="align-self-center">VS</h3>
+    
+            <div class="card vote-card text-center mx-2 p-3">
+                <div class="d-flex align-items-center mb-2">
+                    <span class="badge bg-primary me-2 px-3 py-2">{{ right_post.category.categoryName }}</span>
+                    <h4 class="mb-0 text-truncate" style="max-width: 80%;">{{ right_post.communityTitle }}</h4>
+                </div>
+            
+                <p class="text-secondary">{{ right_post.communityContent|truncatewords:30 }}</p>
+            
+                <div class="d-flex align-items-center justify-content-between">
+                    <img src="{{ right_post.author.profile.url }}" class="rounded-circle me-2 border" width="40" height="40">
+                    <span class="fw-semibold text-dark">{{ right_post.author.user.username }}</span>
+                    <small class="text-muted">📅 {{ right_post.created_at|date:"Y-m-d" }} ~ {{ right_post.deadline|date:"Y-m-d" }}</small>
+                </div>
+        
+                <button class="btn btn-outline-success mt-2 vote-btn"
+                        onclick="voteCommunity({{ right_post.communityId }})">
+                    🗳️ +{{ right_post.voter.count }}
+                </button>
             </div>
-            <button class="btn btn-outline-success mt-2 vote-btn" 
-                    onclick="vote('{{ right_post.communityId }}')">🗳️ +{{ right_post.voter.count }}</button>
-        </div>
+
         {% else %}
             <p class="text-center text-muted">🎉 모든 커뮤니티 글에 투표 완료했습니다!</p>
         {% endif %}
@@ -44,7 +62,7 @@
 
     <!-- 📌 커뮤니티 목록 -->
     {% for community in communities %}
-    <div class="card mb-4 mx-auto shadow-sm" style="max-width: 800px;">
+    <div class="card mb-4 mx-auto shadow-sm" style="max-width: 80%;">
         <div class="card-header bg-light d-flex align-items-center">
             <span class="badge bg-primary me-2">{{ community.category.categoryName }}</span>
             <a href="{% url 'community:community_detail' community.communityId %}" class="fw-bold text-dark text-decoration-none">
@@ -77,6 +95,7 @@
     </div>
     {% endfor %}
 </div>
+    
 
 {% endblock %}
 
@@ -86,4 +105,43 @@
     <script>
         var voteCommunityUrl = "{% url 'community:vote_community' %}";
     </script>
+
+    <style>
+        .vote-card {
+            width: 45%;
+            height: 320px;
+            max-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s;
+        }
+        
+        .vote-card:hover {
+            transform: scale(1.02);
+        }
+        
+        .profile-section {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;  /* 왼쪽 정렬 */
+            gap: 10px; /* 프로필과 이름 간격 조정 */
+        }
+
+        .profile-img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 2px solid #ddd;
+        }
+        
+        .username {
+            font-weight: 600;
+            color: #333;
+        }
+    </style>
 {% endblock %}
