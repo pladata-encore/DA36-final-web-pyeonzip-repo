@@ -52,7 +52,12 @@ def filter_products(request,store="ALL",category="ALL",tab="ALL",page=1):
 def product_detail(request,product_id):
         product = product_service.find_by_id(product_id)
         # 각 product에 대한 리뷰 개수를 함께 조회
-        reviews = review_service.find_by_product_id(product_id)
+        reviews = review_service.find_by_product_id(product_id).prefetch_related('reviewrecommender_set')
+        # 각 리뷰의 좋아요 개수를 계산해서 추가
+        for review in reviews:
+            review.recommender_count = review.reviewrecommender_set.count()
+            review.recommended=review.recommender.filter(id=request.user.id).exists()
+
         liked=product.likes.filter(id=request.user.id).exists()
         return render(request, 'product/product_detail.html', context={'product':product,"reviews":reviews,"liked":liked})
 
