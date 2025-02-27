@@ -44,8 +44,8 @@
                     <span class="review-date">{{ review.created_at|date:"Y.m.d" }}</span>
                 </div>
                 <div class="recommend" data-uri="{% url 'review:review_recommend' review.reviewId %}">
-                    <ion-icon id="thumbs-icon" size="large" name="{% if recommended %}thumbs-up{% else %}thumbs-up-outline{% endif %}" ></ion-icon>
-                    <span class="badge rounded-pill bg-success" id="recommend_count">{{ review.recommended.count }}</span>
+                    <ion-icon id="thumbs-icon" size="large" name="{% if review.recommended %}thumbs-up{% else %}thumbs-up-outline{% endif %}" ></ion-icon>
+                    <span class="badge rounded-pill bg-success" id="recommend_count">{{ review.recommender_count }}</span>
                 </div>
 
                 <div class="review-content">
@@ -146,8 +146,9 @@
                 }
             }
 
-            else if (index===1) {
+            else if (index>=1) {
              const url = e.target.dataset?.uri || e.target.parentElement.dataset.uri;
+                console.log(url)
                 const response = await fetch(url, {
                     method: 'POST',
                     headers: {
@@ -162,9 +163,9 @@
                 const thumbIcon = element.querySelector('#thumbs-icon');
                 console.log(thumbIcon)
                 if (data.recommended) {
-                    thumbIcon.setAttribute('name', 'thumbs-up'); // 채운 하트로 변경
+                    thumbIcon.setAttribute('name', 'thumbs-up');
                 } else {
-                    thumbIcon.setAttribute('name', 'thumbs-up-outline'); // 빈 하트로 변경
+                    thumbIcon.setAttribute('name', 'thumbs-up-outline');
                 }
             }
         })
