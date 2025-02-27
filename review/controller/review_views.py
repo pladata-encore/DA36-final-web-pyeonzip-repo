@@ -4,6 +4,7 @@ from django.contrib.auth.decorators import login_required
 from review.entity.models import ReviewForm, Review, ReviewRecommender
 from review.service.review_service import ReviewServiceImpl
 from django.http import JsonResponse
+from django.contrib import messages
 
 review_service = ReviewServiceImpl()
 def review_main(request):
@@ -35,6 +36,11 @@ def review_write(request):
 
 @login_required(login_url='users:login')
 def review_recommend(request, review_id):
+    review = review_service.find_by_review_id(review_id)
+    if request.user.id == review.author_id:
+        return JsonResponse({
+            'result': 'false'
+        })
     try:
         review,recommended = review_service.add_remove_recommend(review_id, request.user)
         recommender_count = review.recommender.count() if hasattr(review, 'recommender') else 0
