@@ -7,7 +7,10 @@
 
 <div class="container mt-4">
     <!-- 🎯 투표 안내 문구 -->
+    <br>
     <h2 class="text-center">🎯 둘 중 더 맘에 드는 아이디어 or 꿀조합은? </h2>
+    <br>
+    <br>
 
     <!-- 랜덤 투표 UI -->
     <div class="d-flex justify-content-center my-4">
@@ -15,15 +18,21 @@
             <div class="card vote-card text-center mx-2 p-3">
                 <div class="d-flex align-items-center mb-2">
                     <span class="badge bg-primary me-2 px-3 py-2">{{ left_post.category.categoryName }}</span>
-                    <h4 class="mb-0 text-truncate" style="max-width: 80%;">{{ left_post.communityTitle }}</h4>
+                    <a href="{% url 'community:community_detail' left_post.communityId %}" class="fw-bold text-dark text-decoration-none">
+                        {{ left_post.communityTitle }}</a>
                 </div>
             
                 <p class="text-secondary">{{ left_post.communityContent|truncatewords:30 }}</p>
                 
                 <div class="d-flex align-items-center justify-content-between">
-                    <img src="{{ left_post.author.profile.url }}" class="rounded-circle me-2 border" width="40" height="40">
-                    <span class="fw-semibold text-dark">{{ left_post.author.user.username }}</span>
-                    <small class="text-muted">📅 {{ left_post.created_at|date:"Y-m-d" }} ~ {{ left_post.deadline|date:"Y-m-d" }}</small>
+                    <!-- 🏆 프로필 & 이름 (왼쪽 정렬) -->
+                    <div class="d-flex align-items-center">
+                        <img src="{{ left_post.author.profile.url }}" class="rounded-circle me-2 border" width="35" height="40">
+                        <span class="fw-semibold text-dark">{{ left_post.author.user.username }}</span>
+                    </div>
+                
+                    <!-- ⏳ 투표 기간 (오른쪽 정렬) -->
+                    <small class="text-muted text-end">📅 {{ left_post.created_at|date:"Y-m-d" }} ~ {{ left_post.deadline|date:"Y-m-d" }}</small>
                 </div>
             
                 <button class="btn btn-outline-success mt-2 vote-btn"
@@ -38,15 +47,21 @@
             <div class="card vote-card text-center mx-2 p-3">
                 <div class="d-flex align-items-center mb-2">
                     <span class="badge bg-primary me-2 px-3 py-2">{{ right_post.category.categoryName }}</span>
-                    <h4 class="mb-0 text-truncate" style="max-width: 80%;">{{ right_post.communityTitle }}</h4>
+                    <a href="{% url 'community:community_detail' right_post.communityId %}" class="fw-bold text-dark text-decoration-none">
+                        {{ right_post.communityTitle }}</a>
                 </div>
             
                 <p class="text-secondary">{{ right_post.communityContent|truncatewords:30 }}</p>
             
                 <div class="d-flex align-items-center justify-content-between">
-                    <img src="{{ right_post.author.profile.url }}" class="rounded-circle me-2 border" width="40" height="40">
-                    <span class="fw-semibold text-dark">{{ right_post.author.user.username }}</span>
-                    <small class="text-muted">📅 {{ right_post.created_at|date:"Y-m-d" }} ~ {{ right_post.deadline|date:"Y-m-d" }}</small>
+                    <!-- 🏆 프로필 & 이름 (왼쪽 정렬) -->
+                    <div class="d-flex align-items-center">
+                        <img src="{{ right_post.author.profile.url }}" class="rounded-circle me-2 border" width="35" height="40">
+                        <span class="fw-semibold text-dark">{{ right_post.author.user.username }}</span>
+                    </div>
+                
+                    <!-- ⏳ 투표 기간 (오른쪽 정렬) -->
+                    <small class="text-muted text-end">📅 {{ right_post.created_at|date:"Y-m-d" }} ~ {{ right_post.deadline|date:"Y-m-d" }}</small>
                 </div>
         
                 <button class="btn btn-outline-success mt-2 vote-btn"
@@ -59,6 +74,14 @@
             <p class="text-center text-muted">🎉 모든 커뮤니티 글에 투표 완료했습니다!</p>
         {% endif %}
     </div>
+    
+    <br>
+    <hr class="custom-divider">
+    <br>
+    <h2 class="text-center">👀 커뮤니티 글 확인하기 </h2>
+    <br>
+    <br>
+
 
     <!-- 📌 커뮤니티 목록 -->
     {% for community in communities %}

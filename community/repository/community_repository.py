@@ -1,5 +1,6 @@
 from abc import abstractmethod, ABC
 from django.db.models import Count
+from django.utils.timezone import now
 
 from community.entity.models import Community
 from product.entity.models import Product
@@ -72,5 +73,4 @@ class CommunityRepositoryImpl(CommunityRepository):
         return community.add_vote(user) # ✅ 중간 테이블에 직접 추가
 
     def find_unvoted_communities(self, user):
-        """현재 로그인한 유저가 아직 투표하지 않은 글 가져오기"""
-        return Community.objects.exclude(voter=user)
+        return Community.objects.exclude(voter=user).filter(deadline__gte=now().date())

@@ -5,6 +5,7 @@ from review.entity.models import ReviewForm, Review, ReviewRecommender
 from review.service.review_service import ReviewServiceImpl
 from django.http import JsonResponse
 from django.contrib import messages
+from django.urls import reverse
 
 review_service = ReviewServiceImpl()
 def review_main(request):
@@ -25,7 +26,7 @@ def review_write(request):
                 review.product_id = product_id
 
             review_service.create(review)
-            return redirect('review:review_main')
+            return redirect('product:product_detail', product_id=product_id)
         else:
             print('form.errors=',form.errors)
     else:

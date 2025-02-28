@@ -4,32 +4,31 @@
 
 
 {% block content %}
-    <div class="row">
-        <div class="col-md-3">
-                <img src="{{ product.product_image_url }}" class="img-fluid rounded-start" style="object-fit : cover;" alt="...">
+
+<div class="container">    
+    <div class="product-detail-container">
+        <div class="product-detail-image">
+                <img src="{{ product.product_image_url }}" alt="{{ product.product_name }}">
          </div>
 
-        <div class="col-md-9">
-            <br>
-            <br>
-            <div>상품명 : {{ product.product_name }}</div>
-            <div>상품 카테고리 : {{ product.product_category_name }}</div>
+        <div class="product-detail-info">
+            <div class="card-title">{{ product.product_name }}</div>
+            <div class="card-store-name">{{ product.product_category_name }}</div>
 
-            <div>상품 판매 편의점 : {{ product.convenient_store_name }}</div>
+            <div class="card-store-name">{{ product.convenient_store_name }}</div>
             <div class="recommend" data-uri="{% url 'product:product_likes' product.product_id %}">
                 <ion-icon id="heart-icon" size="large" name="{% if liked %}heart{% else %}heart-outline{% endif %}" ></ion-icon>
                 <span class="badge rounded-pill bg-success">{{ product.likes.count }}</span>
             </div>
             <div>
-                <span class="card-text">🗯️ 리뷰개수:{{ product.Product_reviews.count }}</span>
+                <span class="card-text">🗯️{{ product.Product_reviews.count }}</span>
             </div>
             <a href="{% url 'review:review_write' %}?product_id={{ product.product_id }}" class="btn btn-primary">리뷰 작성하기</a>
-
         </div>
-
     </div>
-
-
+        <hr>
+    
+    {% if reviews %}
         {% for review in reviews %}
         <div class="review-container">
             <div class="review-card">
@@ -37,43 +36,45 @@
                     <img class="profile-pic" src="{{ review.author.userdetail.profile.url }}" alt="{{ review.author.userdetail.nickname }}">
                     <span class="author-name">{{ review.author.userdetail.nickname }}</span>
                     <span class="review-date">{{ review.created_at|date:"Y.m.d" }}</span>
-                </div>
-                <div class="recommend" data-uri="{% url 'review:review_recommend' review.reviewId %}">
-                    <ion-icon id="thumbs-icon" size="large" name="{% if review.recommended %}thumbs-up{% else %}thumbs-up-outline{% endif %}" ></ion-icon>
-                    <span class="badge rounded-pill bg-success" id="recommend_count">{{ review.recommender_count }}</span>
+                    <div class="recommend ms-2" data-uri="{% url 'review:review_recommend' review.reviewId %}">
+                        <ion-icon id="thumbs-icon" size="large" name="{% if review.recommended %}thumbs-up{% else %}thumbs-up-outline{% endif %}" ></ion-icon>
+                        <span class="badge rounded-pill bg-success" id="recommend_count">{{ review.recommender_count }}</span>
+                    </div>
                 </div>
 
-                <div class="review-content">
-                    <div class="review-item">
-                        <strong>맛</strong>
-                        <span>{{ review.tasteContent }}</span>
-                    </div>
-                    <br>
-                    <div class="review-item">
-                        <strong>가격</strong>
-                        <span>{{ review.priceContent }}</span>
-                    </div>
-                    <br>
-                    <div class="review-item">
-                        <strong>편리성</strong>
-                        <span>{{ review.convenienceContent }}</span>
-                    </div>
-
-                    <div>
-
-                    </div>
-                    {% if review.reviewImageUrl %}
-                            <strong>리뷰 이미지</strong>
-                            <div class="review-image">
-                                <img src="{{ review.reviewImageUrl.url }}" alt="리뷰 이미지">
-                            </div>
-                    {% endif %}
+            <div class="review-content my-3">
+                <div class="review-item">
+                    <strong>맛</strong>
+                    <span>{{ review.tasteContent }}</span>
                 </div>
+                <br>
+                <div class="review-item">
+                    <strong>가격</strong>
+                    <span>{{ review.priceContent }}</span>
+                </div>
+                <br>
+                <div class="review-item">
+                    <strong>편리성</strong>
+                    <span>{{ review.convenienceContent }}</span>
+                </div>
+
+                <div>
+
+                </div>
+                {% if review.reviewImageUrl %}
+                        <strong>리뷰 이미지</strong>
+                        <div class="review-image">
+                            <img src="{{ review.reviewImageUrl.url }}" alt="리뷰 이미지">
+                        </div>
+                {% endif %}
             </div>
         </div>
-        {% endfor %}
-
-
+    </div>
+    {% endfor %}
+    {% else %}
+        <div class="no-review-message">등록된 리뷰가 없습니다.</div>
+    {% endif %}
+</div>
 
 
 

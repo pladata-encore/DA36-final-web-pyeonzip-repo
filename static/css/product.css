@@ -5,6 +5,55 @@
     overflow: hidden;  /* 카드 내용이 카드 밖으로 나가지 않도록 설정 */
     text-align: center;  /* 텍스트 중앙 정렬 */
 }
+
 .product-btn-primary {
     background:cornflowerblue;
+}
+
+
+.card-body{ text-align: center}
+#heart-icon {
+    color:red;
+}
+
+.product-detail-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+}
+
+.product-detail-image {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 50%;
+    min-height: 300px; /* 리뷰 컨테이너 크기에 맞추기 */
+}
+
+.product-detail-image img {
+    width: 500px;
+    height: 500px;
+}
+
+.product-detail-info {
+    flex: 1;
+    max-width: 50%;
+}
+
+/*.review-container {*/
+/*    max-width: 800px;*/
+/*    margin: auto;*/
+/*}*/
+
+.no-review-message {
+    text-align: center;
+    padding: 50px;
+    font-size: 18px;
+    color: gray;
+    min-height: 600px;
 }
