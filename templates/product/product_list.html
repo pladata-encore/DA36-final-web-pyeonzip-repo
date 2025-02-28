@@ -95,16 +95,16 @@
                                         <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26">
                                     {% endif%}
                                     <div class="card-body g-2">
-                                        <div class="card-title">{{ product.product_name }}</div>
-                                        <div class="product-tags">
+                                        <div class="card-title my-1">{{ product.product_name }}</div>
+                                        <div class="product-tags my-1">
                                             <span class="tag">{{ product.product_price }}원</span>
                                             <span class="tag">{{ product.convenient_store_name }}</span>
                                             <span class="tag">{{ product.product_category_name }}</span>
                                         </div>
-    {#                                    <div class="product-tag">#}
+                                        <div class="product-tag my-1">
                                             <span class="text-body-secondary">❤️:{{ product.likes.count }}</span>
                                             <span class="text-body-secondary">🗯️:{{ product.Product_reviews.count }}</span>
-    {#                                    </div>#}
+                                        </div>
                                     </div>
                                 </a>
     {#                        </button>#}
@@ -113,7 +113,7 @@
                 {% endfor %}
             
                 <nav aria-label="Page navigation example">
-                    <ul class="pagination">
+                    <ul class="pagination justify-content-center">
                         <!-- 이전페이지 영역 시작 -->
                         {% if page_obj.previous_page_number|add:-4 >= 0 %}
                             <li class="page-item">
@@ -126,9 +126,9 @@
 
                         <!-- 페이지넘버 영역 시작 -->
                         {% for page_number in page_obj.paginator.page_range %}
-                                            {% if page_number >= page_obj.number|add:-3 and page_number <= page_obj.number|add:3 %}
-                                                {% if page_number == page_obj.number %}
-                                                    <li class="pagination-link active"><a class="page-link" href="#">{{ page_number }}</a></li>
+                                {% if page_number >= page_obj.number|add:-3 and page_number <= page_obj.number|add:3 %}
+                                    {% if page_number == page_obj.number %}
+                                        <li class="pagination-link active"><a class="page-link" href="#">{{ page_number }}</a></li>
                                 {% else %}
                                     {# 현재 페이지가 아닌 경우 #}
                                     <li class="page-item">
@@ -144,7 +144,7 @@
                            <button class="page-link" onclick="filterProducts({{ page_obj.next_page_number|add:+3 }})">
                                     Next
                             </button>
-                          {% endif %}
+                        {% endif %}
                         <!-- 다음페이지 영역 끝 -->
                     </ul>
                 </nav>

@@ -48,98 +48,35 @@
 
 
 
-<section class="ai-main">            
-    <div class="ai-main-text">
-        <span>🤖 똑똑한 AI 리뷰 분석</span>
-    </div>
-    <div class="product-scroll-container" id="product-list">
-        <div class="btn-group my-2" role="group">
-            <button class="btn btn-outline-primary">전체</button>
-            <button class="btn btn-outline-primary">맛</button>
-            <button class="btn btn-outline-primary">가성비</button>
-            <button class="btn btn-outline-primary">편리성</button>
-        </div>
-    </div>
-    
-    <!--for문으로 수정 예정 test 중-->
+<section class="ai-main">
     <div class="container">
+        <div class="ai-main-text">
+            <span>🤖 똑똑한 AI 리뷰 분석</span>
+        </div>
+        <div class="product-scroll-container" id="product-list">
+            <div class="btn-group my-2" role="group">
+                <button class="btn btn-outline-primary">전체</button>
+                <button class="btn btn-outline-primary">맛</button>
+                <button class="btn btn-outline-primary">가성비</button>
+                <button class="btn btn-outline-primary">편리성</button>
+            </div>
+        </div>
         
         <!--상품목록 가로 스크롤-->
-        <div class="product-scroll-container" id="product-list">
-            <!--상품 카드 샘플-->
-            <div class="product-card">
-                <img src="#" alt="상품 이미지">
-                <h6>Green Tea</h6>
-                <p>CU</p>
-                <p>2700원</p>
-            </div>
-            <div class="product-card">
-                <img src="#" alt="상품 이미지">
-                <h6>White Tea</h6>
-                <p>GS</p>
-                <p>2900원</p>
-            </div>
-            <div class="product-card">
-                <img src="#" alt="상품 이미지">
-                <h6>Super Matcha</h6>
-                <p>7-Eleven</p>
-                <p>3200원</p>
-            </div>
-            <div class="product-card">
-                <img src="#" alt="상품 이미지">
-                <h6>Americano</h6>
-                <p>CU</p>
-                <p>1500원</p>
-            </div>
-            <div class="product-card">
-                <img src="#" alt="상품 이미지">
-                <h6>Strawberry Latte</h6>
-                <p>GS</p>
-                <p>2800원</p>
-            </div>
-            <div class="product-card">
-                <img src="#" alt="상품 이미지">
-                <h6>Vanilla Latte</h6>
-                <p>7-Eleven</p>
-                <p>3000원</p>
-            </div>
-            <div class="product-card">
-                <img src="#" alt="상품 이미지">
-                <h6>Energy Drink</h6>
-                <p>CU</p>
-                <p>2500원</p>
-            </div>
-            <div class="product-card">
-                <img src="#" alt="상품 이미지">
-                <h6>Banana Milk</h6>
-                <p>GS</p>
-                <p>1300원</p>
-            </div>
-            <div class="product-card">
-                <img src="#" alt="상품 이미지">
-                <h6>Chocolate Bar</h6>
-                <p>7-Eleven</p>
-                <p>1500원</p>
-            </div>
-            <div class="product-card">
-                <img src="#" alt="상품 이미지">
-                <h6>Chips</h6>
-                <p>CU</p>
-                <p>2200원</p>
-            </div>
-            <div class="product-card">
-                <img src="#" alt="상품 이미지">
-                <h6>Cookies</h6>
-                <p>GS</p>
-                <p>2400원</p>
-            </div>
-            <div class="product-card">
-                <img src="#" alt="상품 이미지">
-                <h6>Sandwich</h6>
-                <p>7-Eleven</p>
-                <p>3200원</p>
-            </div>
-        </div>
+    <div class="product-scroll-container" id="product-list">
+        {% for product in latest_product %}
+            <a href="{% url 'product:product_detail' product.product_id %}" class="product-link">
+                <div class="product-card">
+                    <img src="{{ product.product_image_url }}" alt="{{ product.product_name}}">
+                    <div class="card-body">
+                        <div class="card-title"><strong>[상품명]</strong>{{ product.product_name}}</div>
+                        <div class="card-store-name">{{product.convenient_store_name}}</div>
+                        <div class="card-price">{{ product.product_price }}원</div>
+                    </div>
+                </div>
+        </a>    
+        {% endfor %}
+    </div>
     </div>
     
     
