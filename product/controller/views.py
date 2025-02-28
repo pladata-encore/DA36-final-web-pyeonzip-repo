@@ -14,13 +14,29 @@ product_service=ProductServiceImpl.get_instance() # 객체 생성
 review_service=ReviewServiceImpl.get_instance()
 # Create your views here.
 
-def main(request):
+def main(request,tab="ALL"):
+
     products = product_service.find_all()
     page = request.GET.get('page', 1)
     paginator = Paginator(products, 20)
     page_obj = paginator.get_page(page)
     last_page = paginator.num_pages
-    return render(request,'product/product_list.html',context={'page_obj': page_obj,'last_page':last_page})
+
+    if tab == 'LATEST':
+        products = product_service.latest_product()
+        page = request.GET.get('page', 1)
+        paginator = Paginator(products, 20)
+        page_obj = paginator.get_page(page)
+        last_page = paginator.num_pages
+
+    elif tab=="AI":
+        products=product_service.ai_product()
+        page = request.GET.get('page', 1)
+        paginator = Paginator(products, 20)
+        page_obj = paginator.get_page(page)
+        last_page = paginator.num_pages
+
+    return render(request,'product/product_list.html',context={'page_obj': page_obj,'last_page':last_page,'tab':tab})
 
 def filter_products(request,store="ALL",category="ALL",tab="ALL",page=1):
 
@@ -32,7 +48,8 @@ def filter_products(request,store="ALL",category="ALL",tab="ALL",page=1):
         page = request.GET.get('page', page)
 
     elif tab == 'AI':
-        pass
+        products=product_service.ai_product()
+        page=request.GET.get('page', page)
 
     if category=="ALL":
         if store == "ALL":
