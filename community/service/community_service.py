@@ -80,7 +80,7 @@ class CommunityServiceImpl(CommunityService):
         return self.__community_repository.add_vote(community, user)
 
     def get_random_unvoted_posts(self, user):
-        unvoted_communities = self.__community_repository.find_unvoted_communities(user)
-        if unvoted_communities.count() < 2:
+        unvoted_communities = list(self.__community_repository.find_unvoted_communities(user))  # QuerySet → list 변환
+        if len(unvoted_communities) < 2:
             return None, None
-        return random.sample(list(unvoted_communities), 2)
+        return random.sample(unvoted_communities, 2)
