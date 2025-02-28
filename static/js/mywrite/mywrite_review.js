@@ -1,0 +1,1 @@
+console.log('mywrite_review.js loaded...');

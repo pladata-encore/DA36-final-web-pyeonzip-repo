@@ -4,7 +4,8 @@ from django.contrib import auth
 from django.dispatch import receiver
 from users.entity.models import UserDetail
 from django.contrib.auth.models import User
-
+from django.http import JsonResponse
+import re
 
 def login(request):
     return render(request, 'users/login.html')

@@ -1,0 +1,52 @@
+{% extends '../layout/base.html' %}
+{% load static %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/base.css' %}">
+    
+    <div class="community-container">
+        <ul class="nav nav-tabs">
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'users:my_review' %}">review</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="{% url 'users:my_community' %}">community</a>
+            </li>
+        </ul>
+    
+        {% if my_communities %}
+            {% for community in my_communities %}
+                <div class="community-card">
+                    <!-- 카테고리 -->
+                    <div class="community-category">{{ community.category.categoryName }}</div>
+    
+                    <!-- 제목 -->
+                    <a href="{% url 'community:community_detail' community.communityId %}">
+                        {{ community.communityTitle }}
+                    </a>
+    
+                    <!-- 작성자 및 작성일 -->
+                    <div class="community-meta">
+                        <img class="profile-pic" src="{{ community.author.profile.url }}" alt="{{ community.author.nickname }}">
+                        <span class="author-name">{{ community.author.nickname }}</span>
+                        <span class="community-date">{{ community.created_at|date:"Y.m.d" }}</span>
+                    </div>
+    
+                    <!-- 본문 -->
+                    <p class="community-content">{{ community.communityContent }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p class="no-community">작성한 커뮤니티 글이 없습니다.</p>
+        {% endif %}
+    </div>
+{% endblock content %}
+
+
+
+{% block script %}
+    <script src="{% static 'js/community/community.js' %}"></script>
+    <script>
+    console.log('community_list.html script...');
+    </script>
+{% endblock script %}

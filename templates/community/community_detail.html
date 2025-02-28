@@ -1,0 +1,77 @@
+{% extends '../layout/base.html' %}
+{% load static %}
+
+{% block style %} <link rel="stylesheet" href="{% static 'css/community.css' %}"> {% endblock style %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- 🔹 카테고리 & 제목 -->
+    <div class="mb-3">
+        <span class="badge bg-secondary">{{ community.category.categoryName }}</span>
+        <h2 class="mt-2">📢 {{ community.communityTitle }}</h2>
+    </div>
+
+    <!-- 🖊️ 작성자 & 날짜 -->
+    <div class="d-flex align-items-center mb-3">
+        <img src="{{ community.author.profile.url }}" alt="User" width="20">
+        <span class="ms-2">{{ community.author.user.username }}</span>
+        <small class="text-muted ms-3">{{ community.created_at|date:"Y.m.d H:i" }}</small>
+    </div>
+
+    <!-- 📌 게시글 본문 -->
+    <div class="card p-3">
+        <p>{{ community.communityContent }}</p>
+    </div>
+
+    <!-- 🛒 연관 상품 리스트 -->
+    <h5 class="mt-4">📌 연관 상품 보기</h5>
+    <div class="d-flex">
+        {% for product in community.products.all %}
+        <div class="product-card me-3">
+            <img src="{{ product.product_image_url }}" alt="{{ product.product_name }}" class="product-item img">
+            <a href="{% url 'product:product_detail' product.product_id %}">
+                {{ product.product_name }}
+            </a>
+            <div class="product-tags">
+                <span class="tag">{{ product.product_price }}원</span>
+                <span class="tag">{{ product.convenient_store_name }}</span>
+                <span class="tag">{{ product.product_category_name }}</span>
+            </div>
+        </div>
+        {% empty %}
+        <p> 연관 상품이 없습니다.</p>
+        {% endfor %}
+    </div>
+
+    <!-- 🗳️ 투표하기 버튼 -->
+    <div class="vote-section mt-4">
+        {% if request.user in community.voter.all %}
+            <div class="alert alert-warning d-flex align-items-center">
+                <span>이미 투표 완료한 게시물입니다!</span>
+                <button type="button" class="btn-close ms-auto" data-bs-dismiss="alert"></button>
+            </div>
+        {% endif %}
+    
+            <button id="voteButton" class="btn btn-lg btn-outline-success d-flex align-items-center px-3"
+                    onclick="voteCommunity({{ community.communityId }})"
+                    {% if community.is_expired %}disabled{% endif %}>
+                {% if community.is_expired %}
+                    ⏳ 투표 기간 완료
+                {% else %}
+                    🗳️ <span class="ms-2">+{{ community.voter.count }}</span>
+                {% endif %}
+            </button>
+    </div>
+
+</div>
+{% endblock content %}
+
+{% block script %}
+    <form id="csrf-form">{% csrf_token %}</form> 
+    <script src="{% static 'js/community/community.js' %}"></script>
+    <script>
+        var voteCommunityUrl = "{% url 'community:vote_community' %}";
+    </script>
+{% endblock script %}

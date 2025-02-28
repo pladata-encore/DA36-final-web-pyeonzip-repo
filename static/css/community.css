@@ -1,0 +1,149 @@
+.community-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 15px;
+    margin-bottom: 15px;
+    background-color: white;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+}
+
+.category-badge {
+    background-color: #ddd;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 14px;
+    margin-right: 10px;
+}
+
+.community-title {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.author-info {
+    display: flex;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.user-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.author-name {
+    font-weight: bold;
+    margin-right: 5px;
+}
+
+.post-date {
+    font-size: 12px;
+    color: gray;
+}
+
+.community-content {
+    background-color: #f3f3f3;
+    padding: 15px;
+    border-radius: 10px;
+    font-size: 16px;
+}
+
+.vote-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #eee;
+    padding: 10px;
+    border-radius: 10px;
+    min-width: 80px;
+}
+
+.vote-btn {
+    display: flex;
+    align-items: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.vote-btn img {
+    width: 25px;
+    height: 25px;
+    margin-right: 5px;
+}
+
+.product-item img {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+    margin-right: 15px;
+    border-radius: 5px;
+}
+
+.product-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.product-tags {
+    display: flex;
+    gap: 5px;
+    margin-top: 5px;
+}
+
+.tag {
+    background-color: #f1f1f1;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+}
+
+.vote-card {
+    width: 45%;
+    height: 320px;
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #f9f9f9;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.vote-card:hover {
+    transform: scale(1.02);
+}
+
+.profile-section {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;  /* 왼쪽 정렬 */
+    gap: 10px; /* 프로필과 이름 간격 조정 */
+}
+
+.profile-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+}
+
+.username {
+    font-weight: 600;
+    color: #333;
+}

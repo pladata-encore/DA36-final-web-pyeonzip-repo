@@ -20,16 +20,16 @@ from django.urls import path, include
 from django.conf import settings
 from django.views.generic import RedirectView
 from django.views.generic import TemplateView
-
+from .views import MainPageView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', TemplateView.as_view(template_name='main.html'), name='home'),
+    path("", MainPageView.as_view(), name="home"),  # 루트 URL에 연결
     path('review/',include('review.urls')),
     path('community/', include('community.urls')),
     path('product/', include('product.urls')),
     path('users/', include('users.urls')),
     path('accounts/', include('allauth.urls')),  # 추가
 
-
 ]
+urlpatterns+=static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

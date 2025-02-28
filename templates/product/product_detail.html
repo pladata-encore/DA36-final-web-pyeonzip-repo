@@ -1,0 +1,178 @@
+{% extends '../layout/base.html' %}
+
+{% load static %}
+
+{% block style %} <link rel="stylesheet" href="{% static 'css/product.css' %}"> {% endblock style %}
+
+{% block content %}
+
+<div class="container">    
+    <div class="product-detail-container">
+        <div class="product-detail-image">
+                <img src="{{ product.product_image_url }}" alt="{{ product.product_name }}"  style="max-width: 300px; max-height: 300px; width: 100%; height: auto;">
+         </div>
+
+        <div class="product-detail-info">
+            <div class="card-title">{{ product.product_name }}</div>
+            <div class="card-store-name">{{ product.product_category_name }}</div>
+
+            <div class="card-store-name">{{ product.convenient_store_name }}</div>
+            <div class="recommend" data-uri="{% url 'product:product_likes' product.product_id %}">
+                <ion-icon id="heart-icon" size="large" name="{% if liked %}heart{% else %}heart-outline{% endif %}" ></ion-icon>
+                <span class="badge rounded-pill bg-success">{{ product.likes.count }}</span>
+            </div>
+            <div>
+                <span class="card-text">🗯️{{ product.Product_reviews.count }}</span>
+            </div>
+            <a href="{% url 'review:review_write' %}?product_id={{ product.product_id }}" class="btn btn-primary">리뷰 작성하기</a>
+        </div>
+    </div>
+        <hr>
+    
+    {% if reviews %}
+        {% for review in reviews %}
+        <div class="review-container">
+            <div class="review-card">
+                <div class="review-author">
+                    <img class="profile-pic" src="{{ review.author.userdetail.profile.url }}" alt="{{ review.author.userdetail.nickname }}">
+                    <span class="author-name">{{ review.author.userdetail.nickname }}</span>
+                    <span class="review-date">{{ review.created_at|date:"Y.m.d" }}</span>
+                    <div class="recommend ms-2" data-uri="{% url 'review:review_recommend' review.reviewId %}">
+                        <ion-icon id="thumbs-icon" size="large" name="{% if review.recommended %}thumbs-up{% else %}thumbs-up-outline{% endif %}" ></ion-icon>
+                        <span class="badge rounded-pill bg-success" id="recommend_count">{{ review.recommender_count }}</span>
+                    </div>
+                </div>
+
+            <div class="review-content my-3">
+                <div class="review-item">
+                    <strong>맛</strong>
+                    <span>{{ review.tasteContent }}</span>
+                </div>
+                <br>
+                <div class="review-item">
+                    <strong>가격</strong>
+                    <span>{{ review.priceContent }}</span>
+                </div>
+                <br>
+                <div class="review-item">
+                    <strong>편리성</strong>
+                    <span>{{ review.convenienceContent }}</span>
+                </div>
+
+                <div>
+
+                </div>
+                {% if review.reviewImageUrl %}
+                        <strong>리뷰 이미지</strong>
+                        <div class="review-image">
+                            <img src="{{ review.reviewImageUrl.url }}" alt="리뷰 이미지">
+                        </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+    {% else %}
+        <div class="no-review-message">등록된 리뷰가 없습니다.</div>
+    {% endif %}
+</div>
+
+
+
+
+{% endblock content %}
+
+{% block script %}
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script>
+        {# 제품 좋아요 기능 #}
+        document.addEventListener("DOMContentLoaded", () => {
+            const heartIcon = document.querySelector('#heart-icon');
+            const thumbIcon=document.querySelector('#thumb-icon');
+            if (liked === 'true') {
+                heartIcon.setAttribute('name', 'heart');
+            } else {
+                heartIcon.setAttribute('name', 'heart-outline');
+            }
+            if (recommended === 'true'){
+                thumbIcon.setAttribute('name','thumbs-up')
+            } else {
+                thumbIcon.setAttribute('name','thumbs-up-outline')
+
+            }
+        });
+
+        const recommend_elements = document.getElementsByClassName("recommend");
+        console.log(recommend_elements)
+        Array.from(recommend_elements).forEach((element,index) => {
+        // js의 비동기처리를 지원하는 async..await을 사용
+        element.addEventListener('click', async (e) => {
+            {% if not user.is_authenticated %}
+                if (confirm('로그인이 필요합니다. 로그인 페이지로 이동하시겠습니까?')) {
+                    location.href = "{% url 'users:login' %}?next={{ request.path }}";
+                }
+                return false;
+            {% endif %}
+
+
+            {# dataset : data-* 속성에 접근 가능한 JavaScript DOM property #}
+            // dataset.uri는 data-uri 속성값 가져옴
+            // ->  '?.' (Optional Chaining) 연산자로 dataset이 존재할 경우에만 uri를 접근 그렇지 않으면 undefined를 반환
+
+
+            if (index===0) {
+                const url = e.target.dataset?.uri || e.target.parentElement.dataset.uri;
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                    body: JSON.stringify({'product_id': {{ product.product_id }}}),
+                });
+                const data = await response.json();
+                console.log(data)
+                element.querySelector('span').textContent = data.likes_count;
+
+
+                const heartIcon = element.querySelector('#heart-icon');
+                if (data.liked) { // 서버에서 받은 좋아요 상태
+                    heartIcon.setAttribute('name', 'heart'); // 채운 하트로 변경
+                } else {
+                    heartIcon.setAttribute('name', 'heart-outline'); // 빈 하트로 변경
+                }
+            }
+
+            else if (index>=1) {
+             const url = e.target.dataset?.uri || e.target.parentElement.dataset.uri;
+                console.log(url)
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-CSRFToken': '{{ csrf_token }}',
+                    },
+                });
+                const data = await response.json();
+                if (data.result==='false'){
+                    alert("자신의 리뷰는 추천이 불가합니다🚫🚫🚫");
+                }
+                else {
+                    element.querySelector('span').textContent = data.recommender_count;
+                    const thumbIcon = element.querySelector('#thumbs-icon');
+
+                    if (data.recommended) {
+                        thumbIcon.setAttribute('name', 'thumbs-up');
+                    } else {
+                        thumbIcon.setAttribute('name', 'thumbs-up-outline');
+                    }
+                }
+        }
+        })
+        });
+
+    </script>
+
+
+
+{% endblock script %}

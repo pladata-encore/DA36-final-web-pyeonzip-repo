@@ -1,0 +1,214 @@
+{% extends '../layout/base.html' %}
+
+{% load static %}
+
+{% block style %} <link rel="stylesheet" href="{% static 'css/product.css' %}"> {% endblock style %}
+
+{% block content %}
+
+<div class="container">
+    <section class="search-product">
+        <a class="input-group my-5" href="{% url 'product:product_search' %}" style="text-decoration: none !important;">
+            <span class="form-control">검색할 상품을 입력해 주세요</span>
+            <button class="btn btn-primary">🔍</button>
+        </a>
+    </section>
+
+    <div id="product-tab-contents" class="product-tab mb-3">
+        <button class="product-tab-btn btn {% if tab == 'ALL' %}product-btn-primary{% endif %}" value="ALL" onclick="openTab('ALL')">ALL</button>
+        <button class="product-tab-btn btn {% if tab == 'LATEST' %}product-btn-primary{% endif %}" value="LATEST" onclick="openTab('LATEST')">LATEST</button>
+        <button class="product-tab-btn btn {% if tab == 'AI' %}product-btn-primary{% endif %}" value="AI" onclick="openTab('AI')">AI</button>
+    </div>
+
+<!-- 왼쪽 필터 / 오른쪽 상품으로 목록 구성-->
+    <div class="row">
+        <div class="col-md-2">
+            <div class="card mb-3">
+                <div class="card-header">편의점</div>
+                <div class="card-body">
+                    <div><label>
+                        <input type="radio" name="store" value="ALL" onclick="filterProducts()" checked>
+                        ALL
+                    </label></div>
+                    <div><label>
+                        <input type="radio" name="store" value="CU" onclick="filterProducts()">
+                        CU
+                    </label></div>
+                    <div><label>
+                        <input type="radio" name="store" value="GS25" onclick="filterProducts()">
+                        GS25
+                    </label></div>
+                    <div> <label>
+                        <input type="radio" name="store" value="7-ELEVEN" onclick="filterProducts()">
+                        7-ELEVEN
+                    </label></div>
+                </div>    
+            </div>
+        
+            <!--카테고리 필터 카드-->
+            <div class="card mb-3">
+                <div class="card-header">재품 카테고리</div>
+                <div class="card-body">
+                    <div><label>
+                        <input type="radio" name="category" value="ALL" onclick="filterProducts()" checked>
+                        전체 상품
+                    </label></div>
+                    <div><label>
+                        <input type="radio" name="category" value="간편식" onclick="filterProducts()" >
+                        간편식품
+                    </label></div>
+                    <div><label>
+                        <input type="radio" name="category" value="과자" onclick="filterProducts()">
+                        과자류
+                    </label></div>
+                    <div><label>
+                        <input type="radio" name="category" value="아이스크림" onclick="filterProducts()">
+                        아이스크림
+                    </label></div>
+                    <div> <label>
+                        <input type="radio" name="category" value="음료" onclick="filterProducts()">
+                        음료
+                    </label></div>
+                </div>
+            </div>
+        </div> <!--col-md-2-->
+{#        <div class="col-md-10">#}
+{#            <div class="product-tab">#}
+{#                <button class="product-tab-btn btn product-btn-primary" value="ALL" onclick="openTab('ALL')">ALL</button>#}
+{#                <button class="product-tab-btn btn" value="LATEST" onclick="openTab('LATEST')">LATEST</button>#}
+{#                <button class="product-tab-btn btn" value="AI" onclick="openTab('AI')">AI</button>#}
+{#            </div>#}
+
+        <!--오른쪽 상품 목록-->
+        <div class="col-md-10">
+            <div id="product-list" class="row row-cols-2 row-cols-sm-3 row-cols-md-4">
+                {% for product in page_obj %}
+                    <div class="col">
+                        <div class="product-card mb-3" >
+    {#                       <button type="button" id="product-btn" class="btn">#}
+                                <a href="{% url 'product:product_detail' product_id=product.product_id %}" class="text-decoration-none">
+                                    {% if product.product_image_url %}
+                                        <img src="{{ product.product_image_url }}">
+                                    {% else %}
+                                        <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26">
+                                    {% endif%}
+                                    <div class="card-body">
+                                        <div class="card-title my-1">{{ product.product_name }}</div>
+                                        <div class="product-tags my-1">
+                                            <span class="tag">{{ product.product_price }}원</span>
+                                            <span class="tag">{{ product.convenient_store_name }}</span>
+                                            <span class="tag">{{ product.product_category_name }}</span>
+                                        </div>
+                                        <div class="product-tag my-1">
+                                            <span class="text-body-secondary">❤️:{{ product.likes.count }}</span>
+                                            <span class="text-body-secondary">🗯️:{{ product.Product_reviews.count }}</span>
+                                        </div>
+                                    </div>
+                                </a>
+    {#                        </button>#}
+                        </div>
+                    </div>
+                {% endfor %}
+            
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-center">
+                        <!-- 이전페이지 영역 시작 -->
+                        {% if page_obj.previous_page_number|add:-4 >= 0 %}
+                            <li class="page-item">
+                                <button class="page-link" onclick="filterProducts({{ page_obj.previous_page_number|add:-3 }})">
+                                    Previous
+                                </button>
+                            </li>
+                        {% endif %}
+                        <!-- 이전페이지 영역 끝 -->
+
+                        <!-- 페이지넘버 영역 시작 -->
+                        {% for page_number in page_obj.paginator.page_range %}
+                                {% if page_number >= page_obj.number|add:-3 and page_number <= page_obj.number|add:3 %}
+                                    {% if page_number == page_obj.number %}
+                                        <li class="pagination-link active"><a class="page-link" href="#">{{ page_number }}</a></li>
+                                {% else %}
+                                    {# 현재 페이지가 아닌 경우 #}
+                                    <li class="page-item">
+                                        <button class="page-link" onclick="filterProducts({{ page_number }})">{{ page_number }}</button>
+                                    </li>
+                                {% endif %}
+                            {% endif %}
+                        {% endfor %}
+                        <!-- 페이지넘버 영역 끝 -->
+
+                        <!-- 다음페이지 영역 시작 -->
+                        {% if last_page >= page_obj.number|add:4 %}
+                           <button class="page-link" onclick="filterProducts({{ page_obj.next_page_number|add:+3 }})">
+                                    Next
+                            </button>
+                        {% endif %}
+                        <!-- 다음페이지 영역 끝 -->
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>    
+
+{% endblock content %}
+{% block script %}
+<script>
+
+    function openTab(tabName='all') {
+
+        // 모든 버튼에서 active 클래스를 제거
+        let tabButtons = document.getElementsByClassName("product-tab-btn");
+        console.log(tabButtons)
+        for (let i = 0; i < tabButtons.length; i++) {
+            tabButtons[i].classList.remove("product-btn-primary");
+            tabButtons[i].classList.add("btn");
+
+            console.log(tabButtons[i].classList)
+        }
+
+        let selectedButton = document.querySelector(`button[onclick="openTab('${tabName}')"]`);
+
+        selectedButton.classList.add("product-btn-primary");
+
+
+        // AJAX 요청을 통해 HTML 코드 조각 받아오기
+        fetch(`/product/filter_products/ALL/ALL/${tabName}/1`)
+            .then(response => response.text())
+            .then(html => {
+                // 선택된 탭에 HTML 코드 삽입
+                document.getElementById("product-list").innerHTML = html;
+            })
+            .catch(error => {
+                console.error('Error fetching HTML:', error);
+                document.getElementById("product-list").innerHTML = '<p>Failed to load content.</p>';
+            });
+
+    }
+
+    function filterProducts(page=1) {
+    // 선택된 스토어와 카테고리 값을 가져옴
+    const selectedStore = document.querySelector("input[name='store']:checked").value;
+    console.log(selectedStore)
+    const selectedCategory = document.querySelector("input[name='category']:checked").value;
+    tabname=document.getElementsByClassName("product-btn-primary")[0].value;
+    // fetch 요청으로 필터링된 제품 가져오기
+    fetch(`/product/filter_products/${selectedStore}/${selectedCategory}/${tabname}/${page}`)
+        .then(response => response.text())  // JSON이 아니라 HTML이므로 `.text()` 사용
+        .then(html => {
+            document.getElementById("product-list").innerHTML = html;
+
+            });
+    }
+
+    if (document.addEventListener) {
+      window.addEventListener('pageshow', function(event) {
+        if (event.persisted || performance.getEntriesByType("navigation")[0].type === 'back_forward') {
+          location.reload();
+        }
+      }, false);
+    }
+
+</script>
+
+{% endblock script %}

@@ -1,14 +1,128 @@
 {% extends 'layout/base.html'%}
+{% load static %}
 {% block content %}
-    <h1>pyeonzip</h1>
-    <div><button type="button"  ><a href="{%  url 'product:all_product_list' %}">전체 제품 보기</a></button></div>
-    <br>
-    <br>
-    <div><button type="button"  ><a href="{%  url 'product:all_product_list' %}">최신 상품 보기</a></button></div>
-    <br>
-    <br>
-    <div><button type="button"  ><a href="{% url 'review:review_main' %}">AI 리뷰 보기</a></button></div>
-    <br>
-    <br>
 
+
+<!-- 검색바-->
+<section class="search-main">
+    <div class="container">
+        <div class="search-main-title">편의점 신상 리뷰, 여기 다 ZIP중!</div>
+        <div class="search-main-sub-title">편ZIP</div>
+        <div class="col-md-5">
+            <a class="input-group" href="{% url 'product:product_search' %}" style="text-decoration: none !important;">
+                <span class="form-control disabled-input-like">검색할 상품을 입력해 주세요</span>
+                <button class="btn btn-primary">🔍</button>
+            </a>    
+        </div>
+    </div>    
+</section>
+
+
+
+<section class="latest-main">
+    <div class="latest-main-text">
+        <span>🔥 최신 제품을 확인해 보세요!</span>
+    </div>
+    <div class="container">
+    <div class="product-scroll-container" id="product-list">
+        {% for product in latest_product %}
+            <a href="{% url 'product:product_detail' product.product_id %}" class="product-link">
+                <div class="product-card">
+                    <img src="{{ product.product_image_url }}" alt="{{ product.product_name}}">
+                    <div class="card-body">
+                        <div class="card-title">{{ product.product_name}}</div>
+                        <div class="card-store-name">{{product.convenient_store_name}}</div>
+                        <div class="card-price">{{ product.product_price }}원</div>
+                    </div>
+                </div>
+        </a>    
+        {% endfor %}
+    </div>
+    </div>
+    
+
+    <div class="text-center mt-3 mb-3">
+        <button class="btn btn-outline-secondary" type="button"><a href="{% url 'product:main' tab="LATEST"   %}">더보기 ▶</a></button>
+    </div>
+</section>    
+
+    <!--for문으로 수정 예정 test 중-->
+<section class="ai-main">
+    <div class="container">
+        <div class="ai-main-text">
+            <span>🤖 똑똑한 AI 리뷰 분석</span>
+        </div>
+        <div class="product-scroll-container" id="product-list">
+            <div class="btn-group my-2" role="group">
+                <button class="btn btn-outline-primary">전체</button>
+                <button class="btn btn-outline-primary">맛</button>
+                <button class="btn btn-outline-primary">가성비</button>
+                <button class="btn btn-outline-primary">편리성</button>
+            </div>
+        </div>
+        
+        <!--상품목록 가로 스크롤-->
+    <div class="product-scroll-container" id="product-list">
+        {% for product in latest_product %}
+            <a href="{% url 'product:product_detail' product.product_id %}" class="product-link">
+                <div class="product-card">
+                    <img src="{{ product.product_image_url }}" alt="{{ product.product_name}}">
+                    <div class="card-body">
+                        <div class="card-title"><strong></strong>{{ product.product_name}}</div>
+                        <div class="card-store-name">{{product.convenient_store_name}}</div>
+                        <div class="card-price">{{ product.product_price }}원</div>
+                    </div>
+                </div>
+        </a>    
+        {% endfor %}
+    </div>
+    </div>
+    
+    
+    <div class="text-center mt-3 mb-3">
+        <button class="btn" type="button"><a href="{% url 'product:main' tab="AI" %}">더보기 ▶</a></button>
+    </div>
+    
+</section>
 {% endblock content %}
+
+{% block script %}
+<!-- JavaScript (드래그 스크롤 기능 추가) -->
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const scrollContainer = document.getElementById("product-list");
+    
+        let isDown = false;
+        let startX;
+        let scrollLeft;
+        
+
+    scrollContainer.addEventListener("mousedown", (e) => {
+        isDown = true;
+        scrollContainer.classList.add("active");
+        startX = e.pageX - scrollContainer.offsetLeft;
+        scrollLeft = scrollContainer.scrollLeft;
+    });
+
+    scrollContainer.addEventListener("mouseleave", () => {
+        isDown = false;
+        scrollContainer.classList.remove("active");
+    });
+
+    scrollContainer.addEventListener("mouseup", () => {
+        isDown = false;
+        scrollContainer.classList.remove("active");
+    });
+
+    scrollContainer.addEventListener("mousemove", (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - scrollContainer.offsetLeft;
+        const walk = (x - startX) * 2; // 스크롤 속도 조절
+        scrollContainer.scrollLeft = scrollLeft - walk;
+    });
+});
+        
+
+</script>
+{% endblock script %}

@@ -32,25 +32,674 @@
 
 /* ✅ 네비게이션 바 hover 효과 */
 .navbar-nav .btn:hover {
-    background-color: #ff4500; /* 진한 오렌지색 */
+    background-color: #FFEB3B; /* 진한 오렌지색 */
     transform: scale(1.05);  /* 버튼 살짝 확대 */
 }
 
 /* ✅ Login 버튼 스타일 */
 .navbar-nav .btn {
-    background-color: #ff7f50;  /* 연한 오렌지색 */
+    background-color: #00BCD4;  /* 연한 오렌지색 */
     border-radius: 20px;
     border: none;
     padding: 8px 20px;
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-/* ✅ 컨텐츠가 헤더 밑으로 가도록 여백 추가 */
-/*.container {*/
-/*    margin-top: 60px;*/
-/*}*/
+
+/* -----------------------main--------------------- */
+
+.disabled-input-like {
+    background-color: #fff;
+    border: none;
+    border-radius: 4px;
+    color: #999;
+    text-align: left;
+  /* 필요 시 더 꾸미기 */
+}
+
+.section {
+    padding-top: 90px;
+    padding-bottom: 90px;
+    position: relative;
+}
+
+.search-main {
+    width: 100vw;
+    max-width: 100%;
+    height: 500px; /* 배너 높이 조정 */
+    padding: 20px 16px; /* 기본 패딩 유지 */
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 왼쪽 정렬 */
+    justify-content: center;
+    background: url('/static/images/bg.png') no-repeat center center;
+    background-size: cover;
+    color: black;
+    text-align: center;
+    position: relative;
+}
+
+/*버튼 그룹 고정시키키*/
+.search-main .input-group button {
+    width: 50px;
+    height: 38px;
+}
 
 
+/*서치 그룹 고정시키기*/
+.search-main .input-group {
+    max-width: 500px; /* 검색창 최대 크기 제한 */
+    width: 100%;
+    background: rgba(255, 255, 255, 0.8); /* 투명한 배경 */
+    border-radius: 8px;
+}
+
+.search-main-title {
+    font-family: "Noto Sans KR Bold";
+    font-size: 32px;
+    font-weight: 500;
+    padding: 8px 0px;
+    color: black;
+    text-align: left;
+
+}
+
+.search-main-sub-title {
+    font-family: "Noto Sans KR ExtraBold";
+    font-size: 48px;
+    font-weight: 500;
+    padding: 8px 0px;
+    color: black;
+    text-align: left;
+}
+
+.latest-main {
+    background-color: #f8f8f8;
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 16px;
+}
+
+.ai-main {
+    width: 100%;
+    max-width: 100%;
+    padding: 20px 16px;
+}
+
+.latest-main-text {
+    font-family: "Noto Sans KR ExtraBold";
+    font-size: 36px;
+    font-weight: 500;
+    padding: 32px 0px;
+    text-align: center;
+}
+
+.ai-main-text {
+    font-family: "Noto Sans KR ExtraBold";
+    font-size: 36px;
+    font-weight: 500;
+    padding: 32px 0px;
+    text-align: center;
+}
+
+.product-scroll-container {
+    display: flex;
+    flex-wrap: nowrap; /* 한 줄에 배치 */
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    gap: 16px; /* 카드 사이 간격 */
+    padding: 10px;
+    white-space: nowrap;
+    cursor: grab; /* 마우스 커서 변경 */
+}
+
+/* 스크롤바 숨기기 */
+.product-scroll-container::-webkit-scrollbar {
+    display: none; /* 웹킷 브라우저(크롬, 사파리)에서 스크롤바 숨기기 */
+}
+
+/* Firefox (스크롤바 숨기기) */
+.product-scroll-container {
+    scrollbar-width: none; /* Firefox에서 스크롤바 숨김 */
+}
+
+.product-card {
+    flex: 0 0 auto;  /* flex 컨테이너에서 크기 자동 조정 */
+    width: 250px;  /* ✅ 현재 카드 너비 (200px) */
+    height: 300px;
+    border: 1px solid #ddd;  /* ✅ 테두리 적용 */
+    border-radius: 8px;  /* ✅ 모서리를 둥글게 */
+    overflow: visible;  /* ✅ 넘치는 내용 숨김 */
+    text-align: left;  /* ✅ 내부 텍스트 중앙 정렬 */
+    background: white;  /* ✅ 배경색 흰색 */
+    padding: 10px;  /* ✅ 내부 여백 */
+    white-space: normal;  /* ✅ 줄 바꿈 허용 */
+}
+
+.product-card img {
+    width: 100%;
+    height: 150px;
+    background: #ccc;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* ✅ 텍스트 왼쪽 정렬 */
+    width: 100%;
+    padding-top: 10px; /* ✅ 이미지와 간격 추가 */
+    padding-bottom: 10px; /* ✅ 이미지와 간격 추가 */
+    justify-content: space-between; /* ✅ 내부 요소를 동일한 위치에 배치 */
+    flex-grow: 1; /* ✅ 텍스트 영역을 동일한 높이로 맞춤 */
+}
+
+.card-title {
+    font-size: 18px;
+    font-weight: bold;
+    color: #00BCD4;
+    text-align: left; /* ✅ 왼쪽 정렬 */
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* ✅ 기본 두 줄 유지 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis; /* ✅ 두 줄 초과 시 '...' 처리 */
+    max-height: 3.2em; /* ✅ 두 줄 높이 제한 (줄 간격 1.6em 기준) */
+    line-height: 1.6em;
+    width: 100%;
+
+}
+
+.card-store-name,
+.card-price {
+    text-align: left;  /* ✅ 왼쪽 정렬 */
+    font-size: 16px;
+    color: gray;
+    width: 100%;
+    margin-top: auto;
+}
+
+/* -----------------------main end--------------------- */
+
+/* -----------------------mypage start--------------------- */
+.mypage-title {
+    font-family: "Noto Sans KR SemiBold";
+    font-size: 48px;
+    font-weight: 500;
+    text-align: center;
+    padding: 2rem 2rem;
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: column; /* 세로 정렬 */
+    align-items: center; /* 가로 중앙 정렬 */
+    justify-content: center; /* 세로 중앙 정렬 (필요 시 조정) */
+    text-align: center; /* 텍스트 요소 정렬 */
+    width: 100%; /* 부모 요소에 맞춤 */
+    gap: 10px;
+}
+
+
+.mypage-nickname {
+    font-family: "Noto Sans KR";
+    font-size: 24px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.mypage-email {
+    font-family: "Noto Sans KR";
+    font-size: 18px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.userprofile {
+    width: 250px;
+    height: 250px;
+    border-radius: 999px;
+
+}
+
+.product-link {
+    text-decoration: none; /* 링크 밑줄 제거 */
+    color: inherit; /* 링크 색상 유지 */
+    display: block; /* 블록 요소로 만들어 카드 전체 클릭 가능 */
+}
+
+
+.likes-prod-card:hover {
+    transform: scale(1.05);
+}
+
+.likes-prod {
+    padding: 2rem 0rem;
+}
+
+/* ✅ 이미지 감싸는 컨테이너 (이미지 중앙 정렬) */
+.image-container {
+    display: flex;
+    justify-content: center; /* ✅ 가로 중앙 정렬 */
+    align-items: center; /* ✅ 세로 중앙 정렬 */
+    width: 180px;
+    height: 150px; /* ✅ 이미지 컨테이너 높이 고정 */
+    overflow: hidden; /* ✅ 넘치는 부분 숨김 */
+}
+
+/* ✅ 이미지 크기 설정 */
+.likes-prod-image {
+    width: auto;
+    height: 100%;
+    object-fit: contain; /* ✅ 비율 유지하며 크기 맞춤 */
+    display: block;
+}
+
+.likes-prod-list,
+.search-product-list {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* 한 줄에 4개씩 정렬 */
+    gap: 20px; /* 카드 간 간격 */
+    width: 100%;
+    padding-top: 1rem;
+    padding-bottom: 3rem;
+}
+
+.likes-prod-card,
+.search-product-card {
+    display: flex;  /* 내부 요소 정렬을 위한 flex 설정 */
+    flex-direction: column;  /* 내부 요소를 세로로 정렬 */
+    align-items: flex-start;  /* 이미지와 텍스트 중앙 정렬 */
+    justify-content: flex-start;  /* 상하 정렬 균등하게 배치 */
+
+    width: 100%; /* ✅ 그리드 셀을 꽉 채우도록 설정 */
+    height: 100%; /* ✅ 카드 높이도 균등하게 설정 */
+    /*min-width: 200px;*/
+    padding: 10px;
+
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background: white;
+    text-align: left;
+    white-space: normal;
+}
+
+
+.tag {
+    background-color: #f1f1f1;
+    padding: 5px 10px;
+    border-radius: 10px;
+    font-size: 12px;
+    }
+
+/* ✅ 텍스트 컨테이너 추가 */
+.likes-card-body {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* ✅ 텍스트 왼쪽 정렬 */
+    justify-content: space-between; /* ✅ 내부 요소를 동일한 위치에 배치 */
+    flex-grow: 1; /* ✅ 텍스트 영역을 동일한 높이로 맞춤 */
+    width: 100%;
+    margin-top: 10px;
+}
+
+/* ✅ 상품명 2줄 고정 */
+.likes-card-title {
+    font-size: 18px;
+    font-weight: bold;
+    text-align: left;
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* ✅ 항상 두 줄 유지 */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    height: 3.2em; /* ✅ 두 줄 높이 강제 */
+    line-height: 1.6em;
+    width: 100%;
+}
+
+/* ✅ 편의점명과 가격을 항상 같은 위치에 배치 */
+.likes-card-store-name,
+.likes-card-price {
+    text-align: left;
+    font-size: 14px;
+    color: gray;
+    width: 100%;
+    margin-top: auto; /* ✅ 항상 하단에 정렬 */
+}
+
+button a {
+  text-decoration: none;
+}
+
+a:link,
+a:visited,
+a:hover,
+a:active {
+    color: #555555 /* 원하는 색상으로 변경 */
+}
+
+
+/* 전체 폼 스타일 */
+.profile-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+/* 프로필 섹션 */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+/* 프로필 이미지 원형 표시 */
+.image-container {
+    width: 250px;
+    height: 250px;
+    border-radius: 999px;
+    overflow: hidden;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.image-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+
+/* 닉네임 입력 섹션 */
+.nickname-section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px;
+}
+
+.nickname-section label {
+    font-weight: bold;
+}
+
+.nickname-input {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 200px;
+}
+
+
+/* 저장 / 취소 버튼 정렬 */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin: 15px;
+}
+
+.save-btn, .cancel-btn {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.check-btn {
+    background-color: #ccc;
+    color: black;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.save-btn {
+    background-color: blue;
+    color: white;
+}
+
+.cancel-btn {
+    background-color: #ccc;
+    color: black;
+}
+
+.image-container:hover {
+    transform: scale(1.05);
+}
+
+/* -----------------------mypage end--------------------- */
+
+
+/* -----------------------mywrite_review--------------------- */
+
+
+/* 탭 스타일 */
+.nav-tabs {
+    margin-bottom: 20px;
+}
+
+.nav-tabs .nav-link {
+    color: #888;
+    font-size: 16px;
+}
+
+.nav-tabs .nav-link.active {
+    color: #4169E1;
+    font-weight: bold;
+    border-bottom: 2px solid #4169E1;
+}
+.review-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+.product-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    text-align: left;
+    justify-content: left;
+    flex-direction: column-reverse;
+}
+.product-info  h2{
+    margin: 0;
+    font-size: 18px
+}
+.product-meta {
+    font-size: 14px;
+    color: #777;
+    flex-grow: 1;  /* 텍스트가 이미지 옆에 정렬되도록 */
+    text-align: left
+}
+.product-image {
+    align-items: flex-start;
+    width: 200px;  /* 이미지 크기 줄이기 */
+    height: auto;
+    border-radius: 10px;
+    margin: 0;
+    flex-shrink: 0;
+}
+.review-author {
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+}
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+.author-name {
+    font-weight: bold;
+}
+.review-date {
+    font-size: 14px;
+    color: #777;
+    margin-left: auto;
+}
+.review-content details {
+    border-bottom: 1px solid #ddd;
+    padding: 10px 0;
+}
+.review-image{
+    margin-top: 15px;
+    text-align: center;
+}
+.review-image img{
+    display: block;
+    margin: 0 auto;
+    width: 100%;
+    max-width: 300px;
+    border-radius: 10px;
+}
+.review-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    align-items: center;
+}
+.share-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.no-review {
+    text-align: center;
+    font-size: 16px;
+    color: #777;}
+
+.delete-btn{
+    float: right;
+}
+/* -----------------------mywrite_review--------------------- */
+
+
+/* -----------------------mywrite_community--------------------- */
+/* 공통 스타일 */
+
+.community-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 20px;
+}
+
+/* 탭 스타일 */
+.nav-tabs {
+    margin-bottom: 20px;
+}
+
+.nav-tabs .nav-link {
+    color: #888;
+    font-size: 16px;
+}
+
+.nav-tabs .nav-link.active {
+    color: #4169E1;
+    font-weight: bold;
+    border-bottom: 2px solid #4169E1;
+}
+
+/* 커뮤니티 카드 */
+.community-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
+    background: #fff;
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* 카테고리 태그 */
+.community-category {
+    display: inline-block;
+    background: #f1f1f1;
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #555;
+    margin-bottom: 10px;
+}
+
+/* 제목 */
+.community-title {
+    font-size: 20px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+/* 작성자 정보 */
+.community-meta {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 10px;
+}
+
+.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.author-name {
+    font-weight: bold;
+}
+
+.community-date {
+    margin-left: auto;
+}
+
+/* 본문 */
+.community-content {
+    font-size: 16px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+/* 액션 버튼 */
+.community-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 16px;
+}
+
+.delete-btn, .share-btn {
+    background: none;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.delete-btn:hover {
+    color: red;
+}
+
+.share-btn:hover {
+    color: blue;
+}
+
+/* 빈 리스트 메시지 */
+.no-community {
+    text-align: center;
+    font-size: 16px;
+    color: #777;
+}
+
+/* -----------------------mywrite_community--------------------- */
+
+
+/* -----------------------footer--------------------- */
 /* ✅ 하단 고정된 footer 스타일 */
 .footer {
     /*position: fixed;  !* 하단 고정 *!*/
@@ -63,14 +712,8 @@
     margin-top: auto; /* footer가 항상 아래에 위치하도록*/
 }
 
-/* 본문 컨텐츠 영역에 아래 여백 추가 */
-html, body {
-    padding-top: 100px;  /* ✅ 헤더 높이만큼 조정 */
-    /*padding-bottom: 50px; !* ✅ footer와 겹치지 않도록 여백 유지 -> 제거 *!*/
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
+.main {
+    padding-top: 80px !important;
 }
 
 .content {
