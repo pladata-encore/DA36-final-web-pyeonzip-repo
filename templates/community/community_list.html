@@ -1,7 +1,7 @@
 {% extends '../layout/base.html' %}
 {% load static %}
 
-{% block title %} Community List {% endblock %}
+{% block style %} <link rel="stylesheet" href="{% static 'css/community.css' %}"> {% endblock style %}
 
 {% block content %}
 
@@ -120,51 +120,14 @@
 </div>
     
 
-{% endblock %}
+{% endblock content %}
 
 {% block script %}
+    
     <form id="csrf-form">{% csrf_token %}</form> 
     <script src="{% static 'js/community/community.js' %}"></script>
     <script>
         var voteCommunityUrl = "{% url 'community:vote_community' %}";
     </script>
-
-    <style>
-        .vote-card {
-            width: 45%;
-            height: 320px;
-            max-height: 400px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            border-radius: 10px;
-            padding: 20px;
-            background-color: #f9f9f9;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            transition: transform 0.2s;
-        }
-        
-        .vote-card:hover {
-            transform: scale(1.02);
-        }
-        
-        .profile-section {
-            display: flex;
-            align-items: center;
-            justify-content: flex-start;  /* 왼쪽 정렬 */
-            gap: 10px; /* 프로필과 이름 간격 조정 */
-        }
-
-        .profile-img {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            border: 2px solid #ddd;
-        }
-        
-        .username {
-            font-weight: 600;
-            color: #333;
-        }
-    </style>
-{% endblock %}
+    
+{% endblock script %}

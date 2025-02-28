@@ -45,6 +45,10 @@
     </form>
 </div>
     
+{% endblock content %}
+
+{% block script %}
+
 {#비동기 방식(AJAX)으로 중복체크#}
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -119,6 +123,4 @@ document.getElementById('id_profile').addEventListener('change', function(event)
     }
 });
 </script>
-
-
-{% endblock %}
+{% endblock script %}
