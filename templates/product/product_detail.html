@@ -156,17 +156,20 @@
                     },
                 });
                 const data = await response.json();
-                element.querySelector('span').textContent = data.recommender_count;
-
-
-                const thumbIcon = element.querySelector('#thumbs-icon');
-                console.log(thumbIcon)
-                if (data.recommended) {
-                    thumbIcon.setAttribute('name', 'thumbs-up');
-                } else {
-                    thumbIcon.setAttribute('name', 'thumbs-up-outline');
+                if (data.result==='false'){
+                    alert("자신의 리뷰는 추천이 불가합니다🚫🚫🚫");
                 }
-            }
+                else {
+                    element.querySelector('span').textContent = data.recommender_count;
+                    const thumbIcon = element.querySelector('#thumbs-icon');
+
+                    if (data.recommended) {
+                        thumbIcon.setAttribute('name', 'thumbs-up');
+                    } else {
+                        thumbIcon.setAttribute('name', 'thumbs-up-outline');
+                    }
+                }
+        }
         })
         });
 
