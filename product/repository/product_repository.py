@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from product.entity.models import Product
 from django.db.models import Q
+from django.db.models import Count
 
 class ProductRepository(ABC):
     @abstractmethod
@@ -16,6 +17,10 @@ class ProductRepository(ABC):
 
     @abstractmethod
     def latest_product(self):
+        pass
+
+    @abstractmethod
+    def ai_product(self):
         pass
 
 class ProductRepositoryImpl(ProductRepository):
@@ -57,3 +62,9 @@ class ProductRepositoryImpl(ProductRepository):
         latest_products = Product.objects.filter(updated_at=latest_date)
 
         return latest_products
+
+    def ai_product(self):
+        from django.db.models import Count
+
+        ai_products = Product.objects.annotate(num_reviews=Count('Product_reviews')).filter(num_reviews__gte=10)
+        return ai_products

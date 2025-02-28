@@ -42,14 +42,14 @@
     
 
     <div class="text-center mt-3 mb-3">
-        <button class="btn btn-outline-secondary" type="button"><a href="{% url 'product:main'  %}">더보기 ▶</a></button>
+        <button class="btn btn-outline-secondary" type="button"><a href="{% url 'product:main' tab="LATEST"   %}">더보기 ▶</a></button>
     </div>
 </section>    
 
 
 
 <section class="ai-main">            
-    <div class="ai-main-text">
+    <div class="ai-main-text"> 
         <span>🤖 똑똑한 AI 리뷰 분석</span>
     </div>
     <div class="product-scroll-container" id="product-list">
@@ -144,7 +144,7 @@
     
     
     <div class="text-center mt-3 mb-3">
-        <button class="btn" type="button"><a href="{% url 'review:review_main' %}">더보기 ▶</a></button>
+        <button class="btn" type="button"><a href="{% url 'product:main' tab="AI" %}">더보기 ▶</a></button>
     </div>
     
 </section>

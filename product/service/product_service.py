@@ -16,6 +16,9 @@ class ProductService(ABC):
     @abstractmethod
     def latest_product(self):
         pass
+    @abstractmethod
+    def ai_product(self):
+        pass
 
 class ProductServiceImpl(ProductService):
     __instance = None
@@ -53,3 +56,6 @@ class ProductServiceImpl(ProductService):
 
     def latest_product(self):
         return self.__product_repository.latest_product()
+
+    def ai_product(self):
+        return self.__product_repository.ai_product()

@@ -5,7 +5,6 @@
     overflow: hidden;  /* 카드 내용이 카드 밖으로 나가지 않도록 설정 */
     text-align: center;  /* 텍스트 중앙 정렬 */
 }
-.card-body{ text-align: center}
-#heart-icon {
-    color:red;
+.product-btn-primary {
+    background:cornflowerblue;
 }
