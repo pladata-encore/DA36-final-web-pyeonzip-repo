@@ -1,8 +1,7 @@
 {% extends '../layout/base.html' %}
 {% load static %}
 
-
-{% block title %} Community List {% endblock %}
+{% block style %} <link rel="stylesheet" href="{% static 'css/community.css' %}"> {% endblock style %}
 
 {% block content %}
 
@@ -67,6 +66,7 @@
     </div>
 
 </div>
+{% endblock content %}
 
 {% block script %}
     <form id="csrf-form">{% csrf_token %}</form> 
@@ -74,37 +74,4 @@
     <script>
         var voteCommunityUrl = "{% url 'community:vote_community' %}";
     </script>
-{% endblock %}
-    
-    <style>
-        .product-item img {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            margin-right: 15px;
-            border-radius: 5px;
-        }
-
-        .product-info {
-            flex-grow: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .product-tags {
-            display: flex;
-            gap: 5px;
-            margin-top: 5px;
-        }
-
-        .tag {
-            background-color: #f1f1f1;
-            padding: 5px 10px;
-            border-radius: 10px;
-            font-size: 12px;
-        }
-        
-    </style>
-
-{% endblock content %}
+{% endblock script %}

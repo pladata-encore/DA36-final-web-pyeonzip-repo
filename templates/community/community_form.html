@@ -1,6 +1,7 @@
 {% extends '../layout/base.html' %}
 {% load static %}
 
+{% block style %} <link rel="stylesheet" href="{% static 'css/community.css' %}"> {% endblock style %}
 
 {% block content %}
     <form method="post" action="{% url 'community:community_save' %}">
@@ -66,79 +67,78 @@
     
     </form>
     
-    
-        <script>
-        let selectedProducts = [];
+{% endblock content %}
 
-        function openProductPopup() {
-            window.open("{% url 'product:select_product' %}", "제품 선택", "width=800,height=600");
-        }
+{% block script %}
+<script>
+    let selectedProducts = [];
 
-        function setSelectedProduct(productId, productName, productImage) {
-            if (!selectedProducts.some(p => p.id === productId)) {
-                selectedProducts.push({id: productId, name: productName, image: productImage});
-                updateSelectedProducts();
-                checkFormCompletion();
-            }
-        }
+    function openProductPopup() {
+        window.open("{% url 'product:select_product' %}", "제품 선택", "width=800,height=600");
+    }
 
-        function updateSelectedProducts() {
-            const container = document.getElementById("selectedProducts");
-            const hiddenInput = document.getElementById("productsInput");
-            container.innerHTML = "";
-            hiddenInput.value = selectedProducts.map(p => p.id).join(",");
-
-            selectedProducts.forEach((product, index) => {
-                const card = document.createElement("div");
-                card.className = "card m-2";
-                card.style = "width: 150px;";
-
-                card.innerHTML = `
-                    <img src="${product.image}" class="card-img-top" alt="${product.name}" style="height: 100px;">
-                    <div class="card-body text-center">
-                        <p class="card-text">${product.name}</p>
-                        <button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(${index})">삭제</button>
-                    </div>
-                `;
-
-                container.appendChild(card);
-            });
-        }
-
-        function removeProduct(index) {
-            selectedProducts.splice(index, 1);
+    function setSelectedProduct(productId, productName, productImage) {
+        if (!selectedProducts.some(p => p.id === productId)) {
+            selectedProducts.push({id: productId, name: productName, image: productImage});
             updateSelectedProducts();
             checkFormCompletion();
         }
+    }
 
-        function updateCharCount() {
-            document.getElementById("charCount").innerText = document.getElementById("communityContent").value.length;
+    function updateSelectedProducts() {
+        const container = document.getElementById("selectedProducts");
+        const hiddenInput = document.getElementById("productsInput");
+        container.innerHTML = "";
+        hiddenInput.value = selectedProducts.map(p => p.id).join(",");
+
+        selectedProducts.forEach((product, index) => {
+            const card = document.createElement("div");
+            card.className = "card m-2";
+            card.style = "width: 150px;";
+
+            card.innerHTML = `
+                <img src="${product.image}" class="card-img-top" alt="${product.name}" style="height: 100px;">
+                <div class="card-body text-center">
+                    <p class="card-text">${product.name}</p>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeProduct(${index})">삭제</button>
+                </div>
+            `;
+
+            container.appendChild(card);
+        });
+    }
+
+    function removeProduct(index) {
+        selectedProducts.splice(index, 1);
+        updateSelectedProducts();
+        checkFormCompletion();
+    }
+
+    function updateCharCount() {
+        document.getElementById("charCount").innerText = document.getElementById("communityContent").value.length;
+    }
+
+    function checkFormCompletion() {
+        const category = document.getElementById("category").value;
+        const title = document.getElementById("communityTitle").value.trim();
+        const content = document.getElementById("communityContent").value.trim();
+        const submitBtn = document.getElementById("submitBtn");
+        
+        console.log("Checking form completion..."); // 디버깅 로그
+        console.log("Selected Products:", selectedProducts.length);
+        console.log("Category:", category);
+        console.log("Title:", title);
+        console.log("Content:", content);
+
+        if (selectedProducts.length > 0 && category !== "" && title !== "" && content !== "") {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove("btn-secondary");
+            submitBtn.classList.add("btn-success");
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.classList.remove("btn-success");
+            submitBtn.classList.add("btn-secondary");
         }
-
-        function checkFormCompletion() {
-            const category = document.getElementById("category").value;
-            const title = document.getElementById("communityTitle").value.trim();
-            const content = document.getElementById("communityContent").value.trim();
-            const submitBtn = document.getElementById("submitBtn");
-            
-            console.log("Checking form completion..."); // 디버깅 로그
-            console.log("Selected Products:", selectedProducts.length);
-            console.log("Category:", category);
-            console.log("Title:", title);
-            console.log("Content:", content);
-
-            if (selectedProducts.length > 0 && category !== "" && title !== "" && content !== "") {
-                submitBtn.disabled = false;
-                submitBtn.classList.remove("btn-secondary");
-                submitBtn.classList.add("btn-success");
-            } else {
-                submitBtn.disabled = true;
-                submitBtn.classList.remove("btn-success");
-                submitBtn.classList.add("btn-secondary");
-            }
-        }
-    </script>
-    
-    
-{% endblock content %}
-
+    }
+</script>
+{% endblock script %}
