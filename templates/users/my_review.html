@@ -4,7 +4,7 @@
 {% block content %}
 <link rel="stylesheet" href="{% static 'css/base.css' %}">
     
-
+<div class="community-container">
     <!-- messages 표시 -->
     {% if messages %}
         <div class="alert-container">
@@ -90,6 +90,7 @@
             <p class="no-review">작성한 리뷰가 없습니다.</p>
         {% endif %}
     </div>
+</div>    
 {% endblock content %}
 
 
