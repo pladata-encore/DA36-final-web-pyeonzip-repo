@@ -34,7 +34,7 @@
 {#                            <li class="nav-item">#}
 {#                                <a class="nav-link" href="#" title="{{ user.username }}">#}
                             {% if user.userdetail.profile %}
-                                <img src="{{ user.userdetail.profile.url }}" class="rounded-circle" width="26"/>
+                                <img src="{{ user.userdetail.profile }}" class="rounded-circle" width="26"/>
                             {% else %}
                                 <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
                             {% endif %}    

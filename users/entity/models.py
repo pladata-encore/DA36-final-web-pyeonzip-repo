@@ -16,7 +16,7 @@ class UserDetail(models.Model):
     gender = models.CharField(max_length=10, blank=True, null=True)
     age_range = models.CharField(max_length=10, blank=True, null=True)
     reward=models.IntegerField(blank=True, null=False, default=0)
-    profile=models.ImageField(upload_to='profile/',null=True, blank=True, default='profile/default.jpg')
+    profile=models.ImageField(upload_to='profile/',null=True, blank=True, default='profile/default.jpg',max_length=500)
     email=models.EmailField(blank=True, null=False, default='')
 
     def save(self, *args, **kwargs):
