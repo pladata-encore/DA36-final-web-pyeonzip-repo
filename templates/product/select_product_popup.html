@@ -6,6 +6,19 @@
     <title>제품 선택</title>
 
     <style>
+        .btn-primary{
+            width:8%;
+            margin-bottom : 10px;
+            margin-top: 10px;
+            height:30px;
+        }
+        .search{
+            height:30px;
+            margin-top:10px;
+            margin-bottom: 10px;
+            margin-right: 5px;
+        }
+
         .product-item {
             display: flex;
             align-items: center;
@@ -57,18 +70,20 @@
             background-color: #0056b3;
         }
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
 </head>
 
 <body>
     <!-- 🔍 장고 검색 기능 추가 -->
-    <form method="get" action="{% url 'product:select_product' %}">
-        <input type="text" name="q" class="form-control" placeholder="제품을 검색하세요..." value="{{ query|default:'' }}">
+    <form class="d-flex" method="get" action="{% url 'product:select_product' %}">
+        <input type="text" name="q" class="form-control search" placeholder="제품을 검색하세요..." value="{{ query|default:'' }}">
         <button type="submit" class="btn btn-primary">검색</button>
     </form>
 
     <!-- 📜 검색된 제품 목록 -->
     <div id="productList">
-        {% for p in product %}
+        {% for p in page_obj %}
             <div class="product-item">
                 <span>{{ forloop.counter }}</span> <!-- 순번 추가 -->
                 <img src="{{ p.product_image_url }}" alt="제품 이미지">
@@ -86,6 +101,46 @@
             <p>검색 결과가 존재하지 않습니다.</p>
         {% endfor %}
     </div>
+
+        <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <!-- 이전페이지 영역 시작 -->
+            {% if page_obj.previous_page_number|add:-4 >= 0 %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'product:select_product' %}?page={{ page_obj.previous_page_number|add:-3 }}">Previous</a>
+                </li>
+            {% endif %}
+            <!-- 이전페이지 영역 끝 -->
+
+            <!-- 페이지넘버 영역 시작 -->
+            {% for page_number in page_obj.paginator.page_range %}
+                {# 현재페이지 기준 앞뒤 3개까지만 표시 (4 ~ 7 링크 표시) #}
+                {% if page_number >= page_obj.number|add:-3 and page_number <= page_obj.number|add:3 %}
+                    {% if page_number == page_obj.number %}
+                        {# 현재페이지인 경우 #}
+                        <li class="page-item active"><a class="page-link" href="#">{{ page_number }}</a></li>
+                    {% else %}
+                        {# 현재페이지가 아닌 경우 #}
+                        <li class="page-item">
+                            <a class="page-link" href="{% url 'product:select_product' %}?page={{ page_number }}&q={{ query|default:'' }}">{{ page_number }}</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+
+            {% endfor %}
+            <!-- 페이지넘버 영역 끝 -->
+
+            <!-- 다음페이지 영역 시작 -->
+            {% if last_page >= page_obj.number|add:4 %}
+
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'product:select_product' %}?page={{ page_obj.next_page_number|add:+3 }}">Next</a>
+                </li>
+            {% endif %}
+            <!-- 다음페이지 영역 끝 -->
+        </ul>
+    </nav>
+
 
     <script>
     function selectProduct(productId, productName, productImageUrl, productPrice, productStore, productCategory) {

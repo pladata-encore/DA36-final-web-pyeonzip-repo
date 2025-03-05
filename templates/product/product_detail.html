@@ -24,6 +24,21 @@
             <div>
                 <span class="card-text">🗯️{{ product.Product_reviews.count }}</span>
             </div>
+            <div class="row">
+                <span class="card-text">키워드</span>
+                    <div class="col-5">
+                        <!-- 첫 번째 열 내용 -->
+                        <p>긍정👍🏻 </p>
+                    </div>
+                    <div class="col-2 d-flex align-items-center">
+                <!-- 가운데 선 -->
+                        <div style="height: 100%; border-left: 1px solid black;"></div>
+                    </div>
+                    <div class="col-5">
+                        <!-- 두 번째 열 내용 -->
+                        <p>부정👎🏻</p>
+                    </div>
+            </div>
             <a href="{% url 'review:review_write' %}?product_id={{ product.product_id }}" class="btn btn-primary">리뷰 작성하기</a>
         </div>
     </div>
