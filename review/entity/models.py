@@ -44,7 +44,7 @@ class ReviewForm(forms.ModelForm):
         }
 
 
-class priceLog(models.Model):
+class PriceLog(models.Model):
     id = models.AutoField(primary_key=True)
     review=models.ForeignKey(Review, on_delete=models.CASCADE)
     reviewTokenize=models.CharField(max_length=100)
