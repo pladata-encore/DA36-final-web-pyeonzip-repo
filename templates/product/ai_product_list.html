@@ -55,23 +55,19 @@
                     </label></div>
                     <div><label>
                         <input type="radio" name="category" value="간편식" onclick="filterProducts()" >
-                        간편식
+                        간편식품
                     </label></div>
                     <div><label>
-                        <input type="radio" name="category" value="간식" onclick="filterProducts()">
-                        간식
+                        <input type="radio" name="category" value="과자" onclick="filterProducts()">
+                        과자류
                     </label></div>
                     <div><label>
-                        <input type="radio" name="category" value="즉석조리" onclick="filterProducts()">
-                        즉석조리
+                        <input type="radio" name="category" value="아이스크림" onclick="filterProducts()">
+                        아이스크림
                     </label></div>
                     <div> <label>
-                        <input type="radio" name="category" value="가공식품" onclick="filterProducts()">
-                        가공식품
-                    </label></div>
-                    <div> <label>
-                        <input type="radio" name="category" value="음료/커피" onclick="filterProducts()">
-                        음료/커피
+                        <input type="radio" name="category" value="음료" onclick="filterProducts()">
+                        음료
                     </label></div>
                 </div>
             </div>
@@ -95,16 +91,15 @@
                                         <img src="{{ product.product_image_url }}">
                                     {% else %}
                                         <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26">
-                                    {% endif%}
+                                    {% endif %}
                                     <div class="card-body">
                                         <div class="card-title my-1">{{ product.product_name }}</div>
                                         <div class="product-tags my-1">
                                             <span class="tag">{{ product.product_price }}원</span>
                                             <span class="tag">{{ product.convenient_store_name }}</span>
                                             <span class="tag">{{ product.product_category_name }}</span>
-
                                         </div>
-                                        {% if tab == 'AI' %}
+                                        {# score 받으면 score로 #}
                                         <div style="display: flex; align-items: center;">
                                             <span style="margin-right: 10px;">&nbsp;맛&nbsp;&nbsp;&nbsp;</span>
                                             <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
@@ -117,13 +112,10 @@
                                               <div class="progress-bar w-50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
                                             </div> 
                                         </div>
-                                        {% endif %}
                                         <div class="product-tag my-1">
                                             <span class="text-body-secondary">❤️:{{ product.likes.count }}</span>
                                             <span class="text-body-secondary">🗯️:{{ product.Product_reviews.count }}</span>
                                         </div>
-
-
                                     </div>
                                 </a>
     {#                        </button>#}
@@ -175,15 +167,8 @@
 {% endblock content %}
 {% block script %}
 <script>
-    window.onload = function () {
-        let savedTab = sessionStorage.getItem("selectedTab") || 'all';
-        let savedStore = sessionStorage.getItem("selectedStore") || 'all';
-        let savedCategory = sessionStorage.getItem("selectedCategory") || 'all';
-        let savedPage= sessionStorage.getItem("selectedPage") || 1 ;
-        
-    };
 
-    function openTab(tab='all') {
+    function openTab(tabName='all') {
 
         // 모든 버튼에서 active 클래스를 제거
         let tabButtons = document.getElementsByClassName("product-tab-btn");
@@ -195,24 +180,13 @@
             console.log(tabButtons[i].classList)
         }
 
-        let selectedButton = document.querySelector(`button[onclick="openTab('${tab}')"]`);
+        let selectedButton = document.querySelector(`button[onclick="openTab('${tabName}')"]`);
 
         selectedButton.classList.add("product-btn-primary");
 
-        let storeRadio = document.querySelector(`input[name="store"][value="ALL"]`);
-        if (storeRadio) {
-            storeRadio.checked = true;
-        }
 
-        let categoryRadio = document.querySelector(`input[name="category"][value="ALL"]`);
-        if (categoryRadio) {
-            categoryRadio.checked = true;
-        }
-        
-        history.pushState(null, '', `/product/main/${tab}/`);
-        sessionStorage.setItem("selectedTab", tab);
         // AJAX 요청을 통해 HTML 코드 조각 받아오기
-        fetch(`/product/filter_products/ALL/ALL/${tab}/1`)
+        fetch(`/product/filter_products/ALL/ALL/${tabName}/1`)
             .then(response => response.text())
             .then(html => {
                 // 선택된 탭에 HTML 코드 삽입
@@ -232,11 +206,6 @@
     const selectedCategory = document.querySelector("input[name='category']:checked").value;
     tabname=document.getElementsByClassName("product-btn-primary")[0].value;
     // fetch 요청으로 필터링된 제품 가져오기
-    history.pushState(null, '', `/product/filter_products/${selectedStore}/${selectedCategory}/${tabname}/${page}`)
-    sessionStorage.setItem("selectedTab", tabname);
-    sessionStorage.setItem("selectedStore", selectedStore);
-    sessionStorage.setItem("selectedCategory", selectedCategory);
-    sessionStorage.setItem("selectedPage",page);
     fetch(`/product/filter_products/${selectedStore}/${selectedCategory}/${tabname}/${page}`)
         .then(response => response.text())  // JSON이 아니라 HTML이므로 `.text()` 사용
         .then(html => {
@@ -252,8 +221,6 @@
         }
       }, false);
     }
-    
-
 
 </script>
 

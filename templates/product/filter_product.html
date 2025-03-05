@@ -15,7 +15,22 @@
                             <span class="tag">{{ product.product_price }}원</span>
                             <span class="tag">{{ product.convenient_store_name }}</span>
                             <span class="tag">{{ product.product_category_name }}</span>
-                        </div>    
+                        </div>
+                        
+                            {% if tab == 'AI' %}
+                            <div style="display: flex; align-items: center;">
+                                <span style="margin-right: 10px;">&nbsp;맛&nbsp;&nbsp;&nbsp;</span>
+                                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                  <div class="progress-bar w-50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                </div>
+                            </div>
+                            <div style="display: flex; align-items: center;">
+                                <span style="margin-right: 10px;">가격&nbsp;</span>
+                                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
+                                  <div class="progress-bar w-50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                </div> 
+                            </div>
+                            {% endif %}
                             <span class="text-body-secondary">❤️:{{ product.likes.count }}</span>
                             <span class="text-body-secondary">🗯️:{{ product.Product_reviews.count }}</span>
                     </div>    
