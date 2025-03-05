@@ -30,11 +30,14 @@ def main(request,tab="ALL"):
         last_page = paginator.num_pages
 
     elif tab=="AI":
-        products=product_service.ai_product()
+        products=product_service.ai_product().order_by('-updated_at')
         page = request.GET.get('page', 1)
         paginator = Paginator(products, 20)
         page_obj = paginator.get_page(page)
         last_page = paginator.num_pages
+        page_obj=product_service.price_count(page_obj)
+        return render(request,'product/product_list.html',context={'page_obj': page_obj,'last_page':last_page,'tab':tab})
+
 
     return render(request,'product/product_list.html',context={'page_obj': page_obj,'last_page':last_page,'tab':tab})
 
