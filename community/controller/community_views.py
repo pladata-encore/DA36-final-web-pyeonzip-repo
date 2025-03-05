@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 from django.utils.timezone import now
 from json import loads
 
@@ -12,12 +13,18 @@ community_service = CommunityServiceImpl()
 
 def community_list(request):
     communities = community_service.find_all().order_by('-created_at')
+
+    page = request.GET.get('page', 1)
+    paginator = Paginator(communities, 5)
+    page_obj = paginator.get_page(page)
+    last_page = paginator.num_pages
+
     left_post, right_post = community_service.get_random_unvoted_posts(request.user)
 
     for community in communities:
         community.is_expired = community.deadline < now().date()  # 마감 여부 계산
 
-    return render(request, 'community/community_list.html', {'communities': communities, 'left_post': left_post,
+    return render(request, 'community/community_list.html', {'page_obj': page_obj,'last_page':last_page, 'left_post': left_post,
         'right_post': right_post })
 
 @login_required(login_url='users:login')
