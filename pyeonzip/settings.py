@@ -57,6 +57,7 @@ INSTALLED_APPS = [
     'allauth.socialaccount.providers.naver',
     'allauth.socialaccount.providers.kakao',
     'ebhealthcheck.apps.EBHealthCheckConfig',
+    'storages'
 ]
 
 AUTHENTICATION_BACKENDS = (
@@ -168,8 +169,20 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_REDIRECT_URL = '/'
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
-# 파일 업로드를 위한 설정
-MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+# 파일 업로드를 위한 설정
+# MEDIA_URL = '/media/'
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+# s3 setiing
+AWS_ACCESS_KEY_ID=os.getenv('AWS_ACCESS_KEY_ID')
+AWS_SECRET_ACCESS_KEY=os.getenv('AWS_SECRET_ACCESS_KEY')
+AWS_STORAGE_BUCKET_NAME=os.getenv('AWS_STORAGE_BUCKET_NAME')
+AWS_S3_REGION_NAME=os.getenv('AWS_S3_REGION_NAME','ap-northeast-2')
+
+AWS_CUSTOM_DOMAIN=f"{AWS_STORAGE_BUCKET_NAME}.s3.{AWS_S3_REGION_NAME}.amazonaws.com"
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage' # 로컬이 아닌 s3에 media 저장하도록 경로 설정
+
+MEDIA_URL=f"https://{AWS_CUSTOM_DOMAIN}/media/"
 

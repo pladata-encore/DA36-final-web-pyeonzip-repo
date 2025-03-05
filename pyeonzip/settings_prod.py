@@ -18,7 +18,7 @@ DATABASES = {
         'HOST': os.getenv('DB_HOST_PROD'),
         'PORT': os.getenv('DB_PORT'),
         'OPTIONS': {
-            'charset': 'utf8mb4',
+            'charset': 'utf8mbz4',
         }
     }
 }

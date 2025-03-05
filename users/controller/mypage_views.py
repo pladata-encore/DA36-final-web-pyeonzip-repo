@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.core.signals import request_started
 from django.shortcuts import redirect, render
 import re
 
@@ -10,6 +11,9 @@ from users.entity.models import MypageUpdateForm, UserDetail
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 
+from users.service.upload_profile import S3Client
+
+s3_client = S3Client()
 def mypage_update(request):
     user_detail = UserDetail.objects.get(user=request.user)  # 현재 로그인한 유저의 UserDetail 가져오기
 
@@ -34,8 +38,14 @@ def mypage_update(request):
                 else:
                     user_detail.nickname = nickname  # 닉네임 업데이트
 
-            if profile_changed and 'profile-clear'  not in request.POST:
-                user_detail.profile = form.cleaned_data.get("profile")  # 프로필 사진 업데이트
+            # 프로필 이미지 s3에 저장
+            if profile_changed and 'profile-clear' not in request.POST:
+                # profile_image = form.cleaned_data.get("profile")  # 프로필 사진 업데이트
+                profile_image = request.FILES.get("profile") # 프로필 사진 업데이트
+                if profile_image:
+                    obj_url = s3_client.upload_profile_image(profile_image,request.user.id)
+                    if obj_url:
+                        user_detail.profile = obj_url # s3에 저장
 
             # 🚀 닉네임이나 프로필 사진이 변경되었을 경우 저장
             if nickname_changed or profile_changed:

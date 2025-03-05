@@ -8,8 +8,8 @@
         <div class="mypage-title">✒️마이페이지✒️</div>
             <div class="profile-content">
                 <div class="profile-image">
-                    {% if user_detail.profile and user_detail.profile.url %}
-                        <img src="{{ user_detail.profile.url }}" class="userprofile" alt="프로필이미지">
+                    {% if user_detail.profile and user_detail.profile %}
+                        <img src="{{ user_detail.profile }}" class="userprofile" alt="프로필이미지">
                     {% else %}
                         <img src="{% static 'images/logo.png' %}" class="rounded-circle" />
                     {% endif%}
