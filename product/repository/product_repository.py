@@ -1,7 +1,11 @@
 from abc import ABC, abstractmethod
 from product.entity.models import Product
+from review.entity.models import Review
 from django.db.models import Q
 from django.db.models import Count
+
+from review.entity.models import priceLog
+
 
 class ProductRepository(ABC):
     @abstractmethod
@@ -21,6 +25,10 @@ class ProductRepository(ABC):
 
     @abstractmethod
     def ai_product(self):
+        pass
+
+    @abstractmethod
+    def price_count(self, page_obj):
         pass
 
 class ProductRepositoryImpl(ProductRepository):
@@ -64,7 +72,21 @@ class ProductRepositoryImpl(ProductRepository):
         return latest_products
 
     def ai_product(self):
-        from django.db.models import Count
+
 
         ai_products = Product.objects.annotate(num_reviews=Count('Product_reviews')).filter(num_reviews__gte=10)
         return ai_products
+
+    def price_count(self,page_obj):
+        for product in  page_obj:
+            pos_count, neg_count = 0, 0
+            reviews=Review.objects.filter(product_id=product.product_id)
+            for review in reviews:
+                pos_count+=priceLog.objects.filter(review_id=review.reviewId,PosNeg=1).count()
+                neg_count+=priceLog.objects.filter(review_id=review.reviewId,PosNeg=0).count()
+            try:
+                product.score = (pos_count / pos_count+neg_count) * 100 if pos_count+neg_count > 0 else 50   # NaN 방지
+            except:
+                product.score=0
+            print(product,product.score)
+        return page_obj

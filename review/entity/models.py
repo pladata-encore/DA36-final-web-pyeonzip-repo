@@ -42,3 +42,10 @@ class ReviewForm(forms.ModelForm):
             'product': '제품',
             'reviewImageUrl': '제품 사진',
         }
+
+
+class priceLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    review=models.ForeignKey(Review, on_delete=models.CASCADE)
+    reviewTokenize=models.CharField(max_length=100)
+    PosNeg=models.IntegerField(null=False,default=0)

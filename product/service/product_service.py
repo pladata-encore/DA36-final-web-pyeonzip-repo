@@ -20,6 +20,10 @@ class ProductService(ABC):
     def ai_product(self):
         pass
 
+    @abstractmethod
+    def price_count(self, page_obj):
+        pass
+
 class ProductServiceImpl(ProductService):
     __instance = None
 
@@ -59,3 +63,6 @@ class ProductServiceImpl(ProductService):
 
     def ai_product(self):
         return self.__product_repository.ai_product()
+
+    def price_count(self, page_obj):
+         return self.__product_repository.price_count(page_obj)
