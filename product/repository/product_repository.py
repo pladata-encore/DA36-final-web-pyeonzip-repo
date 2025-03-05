@@ -3,9 +3,7 @@ from product.entity.models import Product
 from review.entity.models import Review
 from django.db.models import Q
 from django.db.models import Count
-
-from review.entity.models import priceLog
-
+from review.entity.models import PriceLog
 
 class ProductRepository(ABC):
     @abstractmethod
@@ -82,8 +80,8 @@ class ProductRepositoryImpl(ProductRepository):
             pos_count, neg_count = 0, 0
             reviews=Review.objects.filter(product_id=product.product_id)
             for review in reviews:
-                pos_count+=priceLog.objects.filter(review_id=review.reviewId,PosNeg=1).count()
-                neg_count+=priceLog.objects.filter(review_id=review.reviewId,PosNeg=0).count()
+                pos_count+=PriceLog.objects.filter(review_id=review.reviewId,PosNeg=1).count()
+                neg_count+=PriceLog.objects.filter(review_id=review.reviewId,PosNeg=0).count()
             try:
                 product.score = (pos_count / pos_count+neg_count) * 100 if pos_count+neg_count > 0 else 50   # NaN 방지
             except:
