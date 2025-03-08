@@ -49,3 +49,11 @@ class PriceLog(models.Model):
     review=models.ForeignKey(Review, on_delete=models.CASCADE)
     reviewTokenize=models.CharField(max_length=100)
     PosNeg=models.IntegerField(null=False,default=0)
+    confidence=models.IntegerField(null=False,default=0)
+
+class TasteLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    review=models.ForeignKey(Review, on_delete=models.CASCADE)
+    reviewTokenize=models.CharField(max_length=100)
+    PosNeg=models.IntegerField(null=False,default=0)
+    confidence=models.IntegerField(null=False,default=0)
