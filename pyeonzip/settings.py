@@ -32,10 +32,10 @@ DEBUG = True
 
 CSRF_TRUSTED_ORIGINS = ["https://pyeonzip.store"]
 
-ALLOWED_HOSTS = [
-    '3.34.109.55',
-]
-
+# ALLOWED_HOSTS = [
+#     '3.34.109.55',
+# ]
+ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 # Application definition
 
@@ -152,7 +152,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 # BASE_DIR = Path(__file__).resolve().parent.parent
 
-# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 # STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
