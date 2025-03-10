@@ -29,24 +29,37 @@
         
              <!-- AI 분석한 리뷰 섹션 -->
             <div class="card mt-3 p-3">
-                <h5>💡편ZIP이 분석한 리뷰 점수는?</h5>
+                <h5>💡편ZIP이 분석한 리뷰 요약</h5>
                 <div>
-                    <label>😋맛</label>
-                    <p>맛 점수: {{ product.taste_score }}</p>
+                    <label>😋 맛 점수 : {{ product.taste_score }}</label>
                     <div class="progress">
-                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="{{ product.taste_score }}" aria-valuemin="0" aria-valuemax="100">
-                            <div class="progress-bar bg-success" style="width: {{ product.taste_score }}%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        <div class="progress-bar custom-progress-bar" role="progressbar" 
+                             aria-label="Basic example" aria-valuenow="{{ product.taste_score }}" 
+                             aria-valuemin="0" aria-valuemax="100" 
+                             style="width: {{ product.taste_score }}%; min-width: 0;">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="mt-2">
+                    <label>💸 가격 점수 : {{ product.price_score }}</label>
+                    <div class="progress">
+                        <div class="progress-bar custom-progress-bar" role="progressbar" 
+                             aria-label="Basic example" aria-valuenow="{{ product.price_score }}" 
+                             aria-valuemin="0" aria-valuemax="100" 
+                             style="width: {{ product.price_score }}%; min-width: 0;">
                         </div>
                     </div>
                 </div>
                 <div class="mt-2">
-                    <label>💸가격</label>
-                    <p>가격 점수: {{ product.price_score }}</p>
-                    <div class="progress">
-                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="{{ product.price_score }}" aria-valuemin="0" aria-valuemax="100">
-                            <div class="progress-bar bg-success" style="width: {{ product.price_score }}%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                        </div>
-                    </div>
+                    <label>🌟 특징 키워드 : </label>
+                        {% if product.conv_keywords %}
+                            {% for keyword in product.conv_keywords %}
+                                <span class="badge bg-warning text-dark">#{{ keyword }}</span>
+                            {% endfor %}
+                        {% else %}
+                            <span class="text-muted">아직 키워드가 없습니다</span>
+                        {% endif %}
                 </div>
             </div>
         

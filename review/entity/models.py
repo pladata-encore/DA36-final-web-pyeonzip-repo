@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import SET_NULL
 from product.entity.models import Product
-from django.contrib.postgres.fields import JSONField
 
 class Review(models.Model):
     reviewId = models.AutoField(primary_key=True)  # okay
