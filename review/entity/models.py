@@ -47,5 +47,13 @@ class ReviewForm(forms.ModelForm):
 class PriceLog(models.Model):
     id = models.AutoField(primary_key=True)
     review=models.ForeignKey(Review, on_delete=models.CASCADE)
-    reviewTokenize=models.CharField(max_length=100)
+    reviewTokenize=models.CharField(max_length=200)
+    PosNeg=models.IntegerField(null=False,default=1)
+    Confidence=models.IntegerField(null=False,default=0)
+
+class TasteLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    review=models.ForeignKey(Review, on_delete=models.CASCADE)
+    reviewTokenize=models.CharField(max_length=200)
     PosNeg=models.IntegerField(null=False,default=0)
+    Confidence=models.IntegerField(null=False,default=0)

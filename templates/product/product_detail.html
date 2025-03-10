@@ -5,51 +5,91 @@
 {% block style %} <link rel="stylesheet" href="{% static 'css/product.css' %}"> {% endblock style %}
 
 {% block content %}
-
+    
 <div class="container">    
-    <div class="product-detail-container">
+    <div class="product-detail-container d-flex align-items-center justify-content-between">
+        <!-- 상품 이미지 -->
         <div class="product-detail-image">
-                <img src="{{ product.product_image_url }}" alt="{{ product.product_name }}"  style="max-width: 300px; max-height: 300px; width: 100%; height: auto;">
-         </div>
+            <img src="{{ product.product_image_url }}" alt="{{ product.product_name }}" style="max-width: 300px; max-height: 300px; width: 100%; height: auto;">
+        </div>
 
+        <!-- 상품 정보 -->
         <div class="product-detail-info">
-            <div class="card-title">{{ product.product_name }}</div>
-            <div class="card-store-name">{{ product.product_category_name }}</div>
+            <div class="d-flex align-items-center justify-content-between">
+                <h2 class="card-title me-3">{{ product.product_name }}</h2>
+                
+                <!-- 좋아요(하트) 아이콘 + 좋아요 개수 -->
+                <div class="d-flex align-items-center like-section">
+                    <ion-icon id="heart-icon" size="large" name="{% if liked %}heart{% else %}heart-outline{% endif %}"></ion-icon>
+                    <span class="badge rounded-pill bg-success">{{ product.likes.count }}</span>
+                </div>
+            </div>
 
-            <div class="card-store-name">{{ product.convenient_store_name }}</div>
-            <div class="recommend" data-uri="{% url 'product:product_likes' product.product_id %}">
-                <ion-icon id="heart-icon" size="large" name="{% if liked %}heart{% else %}heart-outline{% endif %}" ></ion-icon>
-                <span class="badge rounded-pill bg-success">{{ product.likes.count }}</span>
+            <div>💰 {{ product.product_price }}원 | 🏪 {{ product.convenient_store_name }} | 🏷️ {{ product.product_category_name }} | 🗯️ {{ product.Product_reviews.count }}개의 리뷰 ZIP중!</div>
+        
+             <!-- AI 분석한 리뷰 섹션 -->
+            <div class="card mt-3 p-3">
+                <h5>💡편ZIP이 분석한 리뷰 점수는?</h5>
+                <div>
+                    <label>😋맛</label>
+                    <p>맛 점수: {{ product.taste_score }}</p>
+                    <div class="progress">
+                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="{{ product.taste_score }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-success" style="width: {{ product.taste_score }}%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2">
+                    <label>💸가격</label>
+                    <p>가격 점수: {{ product.price_score }}</p>
+                    <div class="progress">
+                        <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="{{ product.price_score }}" aria-valuemin="0" aria-valuemax="100">
+                            <div class="progress-bar bg-success" style="width: {{ product.price_score }}%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div>
-                <span class="card-text">🗯️{{ product.Product_reviews.count }}</span>
-            </div>
-            <div class="row">
-                <span class="card-text">키워드</span>
+        
+            <!-- 긍정/부정 키워드 카드 -->
+            <div class="card mt-3 p-3">
+                <div class="row">
                     <div class="col-5">
-                        <!-- 첫 번째 열 내용 -->
-                        <p>긍정👍🏻 </p>
+                        <h5>😊 긍정 키워드</h5>
+                        <ul>
+                            <li>맛있는</li>
+                            <li>재구매한</li>
+                            <li>달달한</li>
+                        </ul>
                     </div>
-                    <div class="col-2 d-flex align-items-center">
-                <!-- 가운데 선 -->
-                        <div style="height: 100%; border-left: 1px solid black;"></div>
+                    <div class="col-2 d-flex align-items-center justify-content-center">
+                        <div style="height: 100%; border-left: 2px solid black;"></div>
                     </div>
                     <div class="col-5">
-                        <!-- 두 번째 열 내용 -->
-                        <p>부정👎🏻</p>
+                        <h5>😞 부정 키워드</h5>
+                        <ul>
+                            <li>비싼</li>
+                            <li>딱딱한</li>
+                            <li>맛없는</li>
+                        </ul>
                     </div>
+                </div>
             </div>
-            <a href="{% url 'review:review_write' %}?product_id={{ product.product_id }}" class="btn btn-primary">리뷰 작성하기</a>
+        
+                    <!-- 리뷰 작성 버튼 -->
+            <a href="{% url 'review:review_write' %}?product_id={{ product.product_id }}" class="btn btn-primary mt-3">
+                <ion-icon name="create-outline"></ion-icon> 리뷰 작성하기
+            </a>
         </div>
     </div>
-        <hr>
-    
+
+  <hr>
+
     {% if reviews %}
         {% for review in reviews %}
         <div class="review-container">
             <div class="review-card">
                 <div class="review-author">
-                    <img class="profile-pic" src="{{ review.author.userdetail.profile.url }}" alt="{{ review.author.userdetail.nickname }}">
+                    <img class="profile-pic" src="{{ review.author.userdetail.profile }}" alt="{{ review.author.userdetail.nickname }}">
                     <span class="author-name">{{ review.author.userdetail.nickname }}</span>
                     <span class="review-date">{{ review.created_at|date:"Y.m.d" }}</span>
                     <div class="recommend ms-2" data-uri="{% url 'review:review_recommend' review.reviewId %}">
@@ -92,9 +132,7 @@
     {% endif %}
 </div>
 
-
-
-
+    
 {% endblock content %}
 
 {% block script %}

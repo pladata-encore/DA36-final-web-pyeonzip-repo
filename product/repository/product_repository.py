@@ -3,7 +3,7 @@ from product.entity.models import Product
 from review.entity.models import Review
 from django.db.models import Q
 from django.db.models import Count
-from review.entity.models import PriceLog
+from review.entity.models import PriceLog, TasteLog
 
 class ProductRepository(ABC):
     @abstractmethod
@@ -47,7 +47,23 @@ class ProductRepositoryImpl(ProductRepository):
         return Product.objects.prefetch_related().order_by('-updated_at')
 
     def find_by_id(self, id):
-        return Product.objects.get(pk=id)
+        product = Product.objects.get(pk=id)
+        price_pos_count, price_neg_count = 0, 0
+        taste_pos_count, taste_neg_count = 0, 0
+        reviews = Review.objects.filter(product_id=product.product_id)
+        for review in reviews:
+            price_pos_count += PriceLog.objects.filter(review_id=review.reviewId, PosNeg=1).count()
+            price_neg_count += PriceLog.objects.filter(review_id=review.reviewId, PosNeg=0).count()
+            taste_pos_count += TasteLog.objects.filter(review_id=review.reviewId, PosNeg=1).count()
+            taste_neg_count += TasteLog.objects.filter(review_id=review.reviewId, PosNeg=0).count()
+        try:
+            product.price_score = (price_pos_count / price_pos_count + price_neg_count) * 100 if price_pos_count + price_neg_count > 0 else 50  # NaN 방지
+            product.taste_score = (taste_pos_count / taste_pos_count + taste_neg_count) * 100 if taste_pos_count + taste_neg_count > 0 else 50
+        except:
+            product.price_score = 0
+            product.taste_score = 0
+        print(product.price_score, product.taste_score)
+        return product
 
     def add_remove_likes(self, product, likes):
         if product.likes.filter(id=likes.id).exists():

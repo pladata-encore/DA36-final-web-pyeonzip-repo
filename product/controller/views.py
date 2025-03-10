@@ -77,9 +77,12 @@ def product_detail(request,product_id):
         for review in reviews:
             review.recommender_count = review.reviewrecommender_set.count()
             review.recommended=review.recommender.filter(id=request.user.id).exists()
-
+        # 각 상품의 좋아요 조회
         liked=product.likes.filter(id=request.user.id).exists()
-        return render(request, 'product/product_detail.html', context={'product':product,"reviews":reviews,"liked":liked})
+        # ai 맛, 가격 점수 조회
+        price_score = product.price_score
+        taste_score = product.taste_score
+        return render(request, 'product/product_detail.html', context={'product':product,"reviews":reviews,"liked":liked, "price_score":price_score,"taste_score":taste_score})
 
 @login_required(login_url='users:login')
 def product_likes(request, product_id):
