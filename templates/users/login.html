@@ -5,17 +5,22 @@
 {% load socialaccount %}
 
 {% block content %}
-    <div style="text-align: center; margin-top:20px; ">
-        <div id="naverIdLogin">
-            <a id="naverIdLogin_loginButton" href="{% provider_login_url 'naver' %}">
-                <img src="https://static.nid.naver.com/oauth/big_g.PNG?version=js-2.0.1" height="50">
-            </a>
-        </div>
-        
-        <div style="margin-top: 10px">
-            <a id="kakaoIdLogin" href="{% provider_login_url 'kakao' %}">
-                <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" height="50">
-            </a>
+    <div class="login-container">
+        <div class="mypage-title">로그인</div>
+        <div style="text-align: center; margin-top:20px; ">
+            <div id="naverIdLogin">
+                <a id="naverIdLogin_loginButton" href="{% provider_login_url 'naver' %}">
+                    <img src="https://static.nid.naver.com/oauth/big_g.PNG?version=js-2.0.1" height="60" width="250">
+                </a>
+            </div>
+            
+            <div style="margin-top: 10px">
+                <a id="kakaoIdLogin" href="{% provider_login_url 'kakao' %}">
+                    <img src="https://k.kakaocdn.net/14/dn/btroDszwNrM/I6efHub1SN5KCJqLm1Ovx1/o.jpg" height="60" width="250">
+                </a>
+            </div>
+            
+            <div class="container" style="padding-top: 30px;">회원가입 없이도 이용 가능하며<br> 첫 로그인시 이용약관 및 개인정보처리방침 동의로 간주합니다.</div>
         </div>
     </div>
 {% endblock content %}

@@ -33,6 +33,7 @@
                         <div class="card-title">{{ product.product_name}}</div>
                         <div class="card-store-name">{{product.convenient_store_name}}</div>
                         <div class="card-price">{{ product.product_price }}원</div>
+                        <div class="card-price">{{ product.product_category_name }}</div>
                     </div>
                 </div>
         </a>    
@@ -71,6 +72,7 @@
                         <div class="card-title"><strong></strong>{{ product.product_name}}</div>
                         <div class="card-store-name">{{product.convenient_store_name}}</div>
                         <div class="card-price">{{ product.product_price }}원</div>
+                        <div class="card-price">{{ product.product_category_name }}</div>
                     </div>
                 </div>
         </a>    
@@ -80,7 +82,7 @@
     
     
     <div class="text-center mt-3 mb-3">
-        <button class="btn" type="button"><a href="{% url 'product:main' tab="AI" %}">더보기 ▶</a></button>
+        <button class="btn btn-outline-secondary" type="button"><a href="{% url 'product:main' tab="AI" %}">더보기 ▶</a></button>
     </div>
     
 </section>

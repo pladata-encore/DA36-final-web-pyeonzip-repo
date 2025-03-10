@@ -6,7 +6,7 @@
         <div class="container-fluid">
         <!-- 🔹 로고 -->
             <a class="navbar-brand" href="{% url 'home' %}">
-                <img src="{% static 'images/logo.png' %}" alt="Logo" width="120" height="40">
+                <img src="{% static 'images/logo2.png' %}" alt="Logo" width="120" height="40">
             </a>
     
             <!-- 🔹 토글 버튼 (모바일용) -->
@@ -35,7 +35,7 @@
                             {% if user.userdetail.profile %}
                                 <img src="{{ user.userdetail.profile }}" class="rounded-circle" width="26"/>
                             {% else %}
-                                <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
+                                <img src="{% static 'images/logo2.png' %}" class="rounded-circle" width="26"/>
                             {% endif %}    
                         </a>
 
