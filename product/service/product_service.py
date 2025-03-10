@@ -6,7 +6,7 @@ class ProductService(ABC):
     def find_all(self):
         pass
     @abstractmethod
-    def find_by_id(self, id):
+    def find_by_id(self, product_id):
         pass
 
     @abstractmethod
@@ -46,8 +46,8 @@ class ProductServiceImpl(ProductService):
     def find_all(self):
         return self.__product_repository.find_all()
 
-    def find_by_id(self,id):
-        return self.__product_repository.find_by_id(id)
+    def find_by_id(self,product_id):
+        return self.__product_repository.find_by_id(product_id)
 
 
     def add_remove_likes(self, product_id, likes):

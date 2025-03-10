@@ -28,4 +28,5 @@ urlpatterns = [
     path('review_write/', review_views.review_write, name='review_write'),
     path('review_recommend/<int:review_id>', review_views.review_recommend, name='review_recommend'),
     path('analyze_review/', review_views.analyze_review_sentiment, name='analyze_review_sentiment'),
+    path('analyze_review_keyword/', review_views.analyze_review_keyword, name='analyze_review_keyword'),
 ]

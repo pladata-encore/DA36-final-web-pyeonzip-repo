@@ -10,7 +10,7 @@ class ProductRepository(ABC):
     def find_all(self):
         pass
     @abstractmethod
-    def find_by_id(self, id):
+    def find_by_id(self, product_id):
         pass
 
     @abstractmethod
@@ -46,22 +46,24 @@ class ProductRepositoryImpl(ProductRepository):
     def find_all(self):
         return Product.objects.prefetch_related().order_by('-updated_at')
 
-    def find_by_id(self, id):
-        product = Product.objects.get(pk=id)
+    def find_by_id(self, product_id):
+        product = Product.objects.get(pk=product_id)
+        print(product)
         price_pos_count, price_neg_count = 0, 0
         taste_pos_count, taste_neg_count = 0, 0
         reviews = Review.objects.filter(product_id=product.product_id)
         for review in reviews:
             price_pos_count += PriceLog.objects.filter(review_id=review.reviewId, PosNeg=1).count()
             price_neg_count += PriceLog.objects.filter(review_id=review.reviewId, PosNeg=0).count()
-            taste_pos_count += TasteLog.objects.filter(review_id=review.reviewId, PosNeg=1).count()
+            taste_pos_count += TasteLog.objects.filter(review_id=review.reviewId, PosNeg=2).count()
+            print(review, taste_neg_count, taste_pos_count)
             taste_neg_count += TasteLog.objects.filter(review_id=review.reviewId, PosNeg=0).count()
         try:
             product.price_score = (price_pos_count / price_pos_count + price_neg_count) * 100 if price_pos_count + price_neg_count > 0 else 50  # NaN 방지
             product.taste_score = (taste_pos_count / taste_pos_count + taste_neg_count) * 100 if taste_pos_count + taste_neg_count > 0 else 50
         except:
-            product.price_score = 0
-            product.taste_score = 0
+            product.price_score = 50
+            product.taste_score = 50
         print(product.price_score, product.taste_score)
         return product
 
