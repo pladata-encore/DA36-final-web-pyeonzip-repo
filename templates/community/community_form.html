@@ -6,7 +6,7 @@
 {% block content %}
     <form method="post" action="{% url 'community:community_save' %}">
         {% csrf_token %}
-        
+    <div class="container">    
         <!-- 1️⃣ 연관 상품 선택 -->
         <div class="p-5">
             <label for="productId" class="form-label">🔍연관 상품을 선택해주세요</label>
@@ -64,7 +64,7 @@
         <div class="p-5 text-end">
             <button type="submit" id="submitBtn" class="btn btn-secondary" disabled>등록</button>
         </div>
-    
+    </div>
     </form>
     
 {% endblock content %}

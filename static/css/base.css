@@ -45,7 +45,6 @@
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-
 /* -----------------------main--------------------- */
 
 .disabled-input-like {
@@ -72,7 +71,7 @@
     flex-direction: column;
     align-items: flex-start; /* 왼쪽 정렬 */
     justify-content: center;
-    background: url('/static/images/bg.png') no-repeat center center;
+    background: url('/static/images/bg2.png') no-repeat center center;
     background-size: cover;
     color: black;
     text-align: center;
@@ -96,9 +95,9 @@
 
 .search-main-title {
     font-family: "Noto Sans KR Bold";
-    font-size: 32px;
+    font-size: 38px;
     font-weight: 500;
-    padding: 8px 0px;
+    padding: 0px 0px;
     color: black;
     text-align: left;
 
@@ -106,7 +105,7 @@
 
 .search-main-sub-title {
     font-family: "Noto Sans KR ExtraBold";
-    font-size: 48px;
+    font-size: 58px;
     font-weight: 500;
     padding: 8px 0px;
     color: black;
@@ -221,6 +220,10 @@
 /* -----------------------main end--------------------- */
 
 /* -----------------------mypage start--------------------- */
+.login-container{
+    height: 1000px;
+}
+
 .mypage-title {
     font-family: "Noto Sans KR SemiBold";
     font-size: 48px;
