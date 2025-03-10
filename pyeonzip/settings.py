@@ -172,7 +172,7 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 
 # 파일 업로드를 위한 설정
 # MEDIA_URL = '/media/'
-# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # s3 setiing
 AWS_ACCESS_KEY_ID=os.getenv('AWS_ACCESS_KEY_ID')
