@@ -87,47 +87,41 @@
 {#            </div>#}
 
         <!--오른쪽 상품 목록-->
-        <div class="col-md-10">
-            <div id="product-list" class="row row-cols-2 row-cols-sm-3 row-cols-md-4">
+        <div class="col-md-10 flex-container">
+            <div id="product-list" class="row row-cols-2 row-cols-sm-3 row-cols-md-3 g-3">
                 {% for product in page_obj %}
                     <div class="col">
-                        <div class="product-card mb-3" >
+                            <div class="product-card mb-3" >
     {#                       <button type="button" id="product-btn" class="btn">#}
                                 <a href="{% url 'product:product_detail' product_id=product.product_id %}" class="text-decoration-none">
                                     {% if product.product_image_url %}
-                                        <img src="{{ product.product_image_url }}">
+                                        <img class="product-image" src="{{ product.product_image_url }}">
                                     {% else %}
-                                        <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26">
+                                        <img src="{% static 'images/logo.png' %}">
                                     {% endif%}
-                                
+
                                     <div class="card-body">
                                         <div class="card-title my-1">{{ product.product_name }}</div>
-                                        <div class="product-tags my-1">
-                                            <span class="tag">{{ product.product_price }}원</span>
-                                            <span class="tag">{{ product.convenient_store_name }}</span>
-                                            <span class="tag">{{ product.product_category_name }}</span>
+                                        <div>💰 {{ product.product_price }}원 | 🏪 {{ product.convenient_store_name }} | 🏷️ {{ product.product_category_name }} </div>
 
-                                        </div>
                                         {% if tab == 'AI' %}
-                                        <div style="display: flex; align-items: center;">
-                                            <span style="margin-right: 10px;">&nbsp;맛&nbsp;</span>
-                                            <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                              <div class="progress-bar w-50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                            <div>
+                                                {% for keyword in product.conv_keywords %}
+                                                    <span class="badge bg-warning text-dark">#{{ keyword }}</span>
+                                                {% endfor %}
                                             </div>
-                                        </div>
-                                        <div style="display: flex; align-items: center;">
-                                            <span style="margin-right: 10px;">💸&nbsp;</span>
+                                            <div>
+                                                <span> 😋맛 : {{ product.taste_score }} | </span>
+                                                <span> 💸가격 : {{ product.price_score }}</span>
+                                            </div>
 
-                                            <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="{{ product.score }}" aria-valuemin="0" aria-valuemax="100">
-                                              <div class="progress-bar" style="width: {{ product.score }}%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                                            </div> 
-                                        </div>
-                                        {% endif %}
+                                        {% else %}
                                         <div class="product-tag my-1">
                                             <span class="text-body-secondary">❤️:{{ product.likes.count }}</span>
                                             <span class="text-body-secondary">🗯️:{{ product.Product_reviews.count }}</span>
                                         </div>
 
+                                        {% endif %}
 
                                     </div>
                                 </a>
@@ -135,7 +129,7 @@
                         </div>
                     </div>
                 {% endfor %}
-            
+
                 <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">
                         <!-- 이전페이지 영역 시작 -->
@@ -175,7 +169,7 @@
             </div>
         </div>
     </div>
-</div>    
+</div>    `
 
 {% endblock content %}
 {% block script %}
