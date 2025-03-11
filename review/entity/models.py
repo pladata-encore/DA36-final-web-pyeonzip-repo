@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import SET_NULL
 from product.entity.models import Product
-from users.entity.models import UserDetail
 
 class Review(models.Model):
     reviewId = models.AutoField(primary_key=True)  # okay
@@ -48,12 +47,22 @@ class PriceLog(models.Model):
     id = models.AutoField(primary_key=True)
     review=models.ForeignKey(Review, on_delete=models.CASCADE)
     reviewTokenize=models.CharField(max_length=200)
-    PosNeg=models.IntegerField(null=False,default=1)
-    Confidence=models.IntegerField(null=False,default=0)
+    PosNeg=models.IntegerField(null=False,default=0)
+    Confidence=models.FloatField(null=False,default=0.0)
 
 class TasteLog(models.Model):
     id = models.AutoField(primary_key=True)
     review=models.ForeignKey(Review, on_delete=models.CASCADE)
     reviewTokenize=models.CharField(max_length=200)
-    PosNeg=models.IntegerField(null=False,default=0)
-    Confidence=models.IntegerField(null=False,default=0)
+    PosNeg=models.IntegerField(null=False,default=1)
+    Confidence=models.FloatField(null=False,default=0.0)
+
+class ConvenienceLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    reviewTokenize = models.CharField(max_length=200)
+    keybert_keywords = models.JSONField(default=list)
+    top_sim_tags = models.JSONField(default=list)
+
+    def __str__(self):
+        return f"ConvenienceLog {self.id} - Review {self.review.id}"

@@ -1,10 +1,11 @@
+from django.conf import settings
 from django.shortcuts import redirect, render
 from django.shortcuts import get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from review.entity.models import ReviewForm, Review, ReviewRecommender, TasteLog, PriceLog
+from review.entity.models import ReviewForm, Review, ReviewRecommender, TasteLog, PriceLog, ConvenienceLog
 from review.service.review_service import ReviewServiceImpl
 from django.http import JsonResponse
 from django.contrib import messages
@@ -12,16 +13,20 @@ from django.urls import reverse
 
 from review.service.upload_service import S3Client
 from review.service.sentiment_service import analyze_sentiment
+from review.service.keyword_service import extract_keywords
+
 import re
-import os
 import json
 import requests
+import os
+from konlpy.tag import Okt
+
 
 review_service = ReviewServiceImpl()
 s3_client = S3Client()
 
 def review_main(request):
-    return render(request, 'review/review_main.html', {'review_main':review_main})
+    return render(request, 'product/ai_product_list.html', {'ai_product_list':review_main})
 
 
 @login_required(login_url='users:login')
@@ -76,7 +81,7 @@ def review_recommend(request, review_id):
         }, status=400)
 
 
-def preprocess_review(text):
+def preprocess_review_for_sentiment(text):
     if not text:
         return []
 
@@ -112,6 +117,7 @@ def preprocess_review(text):
 @require_POST
 @csrf_exempt
 def analyze_review_sentiment(request):
+
     try:
         data = json.loads(request.body)
         review_id = data.get("review_id")
@@ -120,18 +126,16 @@ def analyze_review_sentiment(request):
         review = Review.objects.get(reviewId=review_id)
 
         # ✅ 리뷰 데이터 전처리
-        taste_texts = preprocess_review(review.tasteContent)
+        taste_texts = preprocess_review_for_sentiment(review.tasteContent)
         # price_texts = preprocess_review(review.priceContent)
-        # conv_texts = preprocess_review(review.convenienceContent)
         print(f"🔹 [Django] 분석 요청: {taste_texts}")
 
         # ✅ AI 추론 요청
         taste_results = analyze_sentiment(taste_texts)
         # price_results = analyze_sentiment(price_texts)
-        # conv_results = analyze_sentiment(conv_texts)
         print(f"🔹 [Django] FastAPI 응답: {taste_results}")
 
-        # ✅ DB 저장 (TasteLog, PriceLog, ConvLog)
+        # ✅ DB 저장 (TasteLog, PriceLog)
         for text, result in zip(taste_texts, taste_results):
             TasteLog.objects.create(
                 review=review,
@@ -142,14 +146,6 @@ def analyze_review_sentiment(request):
 
         # for text, result in zip(price_texts, price_results):
         #     PriceLog.objects.create(
-        #         review=review,
-        #         reviewTokenize=text,
-        #         PosNeg=result["PosNeg"],
-        #         Confidence=result["Confidence"]
-        #     )
-        #
-        # for text, result in zip(conv_texts, conv_results):
-        #     ConvLog.objects.create(
         #         review=review,
         #         reviewTokenize=text,
         #         PosNeg=result["PosNeg"],
@@ -169,4 +165,60 @@ def analyze_review_sentiment(request):
         return JsonResponse({"error": str(e)}, status=500)
 
 
+okt = Okt()
 
+# MEDIAFILES 내 stopwords 파일 경로
+stopword_file = os.path.join(settings.MEDIA_ROOT, "reviews\\stopwords.txt")
+
+def load_stopwords(filepath):
+    with open(filepath, 'r', encoding='CP949') as f:
+        stopwords = set(f.read().strip().split(","))
+    return stopwords
+
+stopwords = load_stopwords(stopword_file)
+
+# ✅ 텍스트 정제 및 불용어 제거
+def preprocess_review_for_keyword(review, stopwords):
+    cleaned_review = re.sub(r"[^가-힣\s]", "", review)
+    words = okt.morphs(cleaned_review)
+    filtered_words = [word for word in words if word not in stopwords]  # 불용어 제거
+    return " ".join(filtered_words)
+
+@require_POST
+@csrf_exempt
+# ✅ 리뷰 전처리 및 키워드 추출 + DB 저장
+def analyze_review_keyword(request):
+    try:
+        data = json.loads(request.body)
+        review_id = data.get("review_id")
+
+        # ✅ 리뷰 가져오기
+        review = Review.objects.get(reviewId=review_id)
+
+        # ✅ 리뷰 데이터 전처리
+        conv_texts = preprocess_review_for_keyword(review.convenienceContent, stopwords)
+        print(f"🔹 [Django] 분석 요청: {conv_texts}")
+
+        # ✅ AI 추론 요청
+        keyword_result = extract_keywords(conv_texts)
+        print(f"🔹 [Django] FastAPI 응답: {keyword_result}")
+
+        # ✅ DB 저장 (ConvenienceLog 모델에 저장)
+        ConvenienceLog.objects.create(
+            review=review,
+            reviewTokenize=conv_texts,
+            keybert_keywords=keyword_result["keybert_keywords"],
+            top_sim_tags=keyword_result["top_sim_tags"]
+            )
+
+        return JsonResponse({
+            "message": "Keyword analysis completed",
+            "review_id": review_id
+        }, status=200)
+
+    except Review.DoesNotExist:
+        return JsonResponse({"error": "Review not found"}, status=404)
+    except json.JSONDecodeError:
+        return JsonResponse({"error": "Invalid JSON"}, status=400)
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=500)

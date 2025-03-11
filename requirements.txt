@@ -11,3 +11,4 @@ pillow
 django-ebhealthcheck
 boto3
 django-storages
+konlpy
