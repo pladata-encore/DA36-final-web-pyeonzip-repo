@@ -19,7 +19,9 @@
                 <h2 class="card-title me-3">{{ product.product_name }}</h2>
                 
                 <!-- 좋아요(하트) 아이콘 + 좋아요 개수 -->
-                <div class="d-flex align-items-center like-section">
+
+
+                <div class="recommend d-flex align-items-center like-section" data-uri="{% url 'product:product_likes' product.product_id %}">
                     <ion-icon id="heart-icon" size="large" name="{% if liked %}heart{% else %}heart-outline{% endif %}"></ion-icon>
                     <span class="badge rounded-pill bg-success">{{ product.likes.count }}</span>
                 </div>
