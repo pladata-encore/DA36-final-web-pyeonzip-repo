@@ -108,14 +108,23 @@
                                             <span class="tag">{{ product.product_category_name }}</span>
 
                                         </div>
+
                                         {% if tab == 'AI' %}
-                                        <div class="progress">
-                                        <div class="progress-bar custom-progress-bar" role="progressbar"
-                                                 aria-label="Basic example" aria-valuenow="{{ product.taste_score }}"
-                                                 aria-valuemin="0" aria-valuemax="100"
-                                                 style="width: {{ product.taste_score }}%; min-width: 0;">
+                                            <div>keywords</div>
+                                            <div>
+                                                {% for keyword in product.conv_keywords %}
+                                                    <span class="tag">{{ keyword }}</span>
+                                                {% endfor %}
                                             </div>
-                                        </div>
+                                            
+                                                <div class="progress">
+                                                    <div class="progress-bar custom-progress-bar" role="progressbar"
+                                                         aria-label="Basic example" aria-valuenow="{{ product.taste_score }}"
+                                                         aria-valuemin="0" aria-valuemax="100"
+                                                         style="width: {{ product.taste_score }}%; min-width: 0;">
+                                                    </div>
+                                                </div>
+
                                         <div class="progress">
                                         <div class="progress-bar custom-progress-bar" role="progressbar"
                                                  aria-label="Basic example" aria-valuenow="{{ product.price_score }}"
