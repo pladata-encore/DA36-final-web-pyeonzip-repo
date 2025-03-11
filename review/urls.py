@@ -24,7 +24,6 @@ from django.views.generic import RedirectView
 from review.controller import review_views
 app_name='review'
 urlpatterns = [
-    path('reveiw_main/', review_views.review_main, name='review_main'),
     path('review_write/', review_views.review_write, name='review_write'),
     path('review_recommend/<int:review_id>', review_views.review_recommend, name='review_recommend'),
     path('analyze_review/', review_views.analyze_review_sentiment, name='analyze_review_sentiment'),

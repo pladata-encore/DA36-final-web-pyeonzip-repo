@@ -110,23 +110,23 @@ class ProductRepositoryImpl(ProductRepository):
             price_pos_count, price_neg_count, taste_pos_count, taste_neg_count = 0,0,0,0
             reviews=Review.objects.filter(product_id=product.product_id)
             for review in reviews:
-                price_pos_count+=PriceLog.objects.filter(review_id=review.reviewId,PosNeg=1).count()
-                price_neg_count+=PriceLog.objects.filter(review_id=review.reviewId,PosNeg=0).count()
+                price_pos_count+=PriceLog.objects.filter(review_id=review.reviewId,PosNeg=1,Confidence__gte=0.8).count()
+                price_neg_count+=PriceLog.objects.filter(review_id=review.reviewId,PosNeg=0,Confidence__gte=0.8).count()
 
                 taste_pos_count += TasteLog.objects.filter(review_id=review.reviewId, PosNeg=2, Confidence__gte=0.8).count()
                 taste_neg_count += TasteLog.objects.filter(review_id=review.reviewId, PosNeg=0, Confidence__gte=0.8).count()
 
 
             try:
-                product.price_score = (price_pos_count / (price_pos_count + price_neg_count)) * 100 if (price_pos_count + price_neg_count) > 0 else 50
-                product.taste_score = (taste_pos_count / (taste_pos_count + taste_neg_count)) * 100 if (taste_pos_count + taste_neg_count) > 0 else 50
+                product.price_score =int( (price_pos_count / (price_pos_count + price_neg_count)) * 100 if (price_pos_count + price_neg_count) > 0 else 50)
+                product.taste_score = int((taste_pos_count / (taste_pos_count + taste_neg_count)) * 100 if (taste_pos_count + taste_neg_count) > 0 else 50)
             except:
                 product.price_score=0
                 product.taste_score=0
 
             print("ai",product,product.price_score,product.taste_score)
 
-            product.conv_keywords = self.conv_keyword(product.product_id)
+            product.conv_keywords = self.conv_keyword(product.product_id)[:3]
             print(product.conv_keywords)
 
         return products
