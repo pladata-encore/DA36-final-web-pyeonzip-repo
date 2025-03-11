@@ -109,18 +109,19 @@
 
                                         </div>
                                         {% if tab == 'AI' %}
-                                        <div style="display: flex; align-items: center;">
-                                            <span style="margin-right: 10px;">&nbsp;맛&nbsp;</span>
-                                            <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                              <div class="progress-bar w-50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
+                                        <div class="progress">
+                                        <div class="progress-bar custom-progress-bar" role="progressbar"
+                                                 aria-label="Basic example" aria-valuenow="{{ product.taste_score }}"
+                                                 aria-valuemin="0" aria-valuemax="100"
+                                                 style="width: {{ product.taste_score }}%; min-width: 0;">
                                             </div>
                                         </div>
-                                        <div style="display: flex; align-items: center;">
-                                            <span style="margin-right: 10px;">💸&nbsp;</span>
-
-                                            <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="{{ product.score }}" aria-valuemin="0" aria-valuemax="100">
-                                              <div class="progress-bar" style="width: {{ product.score }}%">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                                            </div> 
+                                        <div class="progress">
+                                        <div class="progress-bar custom-progress-bar" role="progressbar"
+                                                 aria-label="Basic example" aria-valuenow="{{ product.price_score }}"
+                                                 aria-valuemin="0" aria-valuemax="100"
+                                                 style="width: {{ product.price_score }}%; min-width: 0;">
+                                            </div>
                                         </div>
                                         {% endif %}
                                         <div class="product-tag my-1">

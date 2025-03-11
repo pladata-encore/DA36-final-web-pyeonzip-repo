@@ -165,7 +165,7 @@ def analyze_review_sentiment(request):
         return JsonResponse({"error": str(e)}, status=500)
 
 
-okt = Okt()
+# okt = Okt()
 
 # MEDIAFILES 내 stopwords 파일 경로
 stopword_file = os.path.join(settings.MEDIA_ROOT, "reviews\\stopwords.txt")
