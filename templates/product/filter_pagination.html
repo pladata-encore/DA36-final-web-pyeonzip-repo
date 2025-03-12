@@ -1,0 +1,31 @@
+<div class="col-12 text-center">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.previous_page_number|add:-4 >= 0 %}
+                <li class="page-item">
+                    <button class="page-link" onclick="filterProducts({{ page_obj.previous_page_number|add:-3 }})">
+                        Previous
+                    </button>
+                </li>
+            {% endif %}
+
+            {% for page_number in page_obj.paginator.page_range %}
+                {% if page_number >= page_obj.number|add:-3 and page_number <= page_obj.number|add:3 %}
+                    {% if page_number == page_obj.number %}
+                        <li class="pagination-link active"><a class="page-link" href="#">{{ page_number }}</a></li>
+                    {% else %}
+                        <li class="page-item">
+                            <button class="page-link" onclick="filterProducts({{ page_number }})">{{ page_number }}</button>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% if last_page >= page_obj.number|add:4 %}
+                <button class="page-link" onclick="filterProducts({{ page_obj.next_page_number|add:+3 }})">
+                    Next
+                </button>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
