@@ -168,7 +168,7 @@
     <form id="csrf-form">{% csrf_token %}</form> 
     <script src="{% static 'js/community/community.js' %}"></script>
     <script>
-        var voteCommunityUrl = "{% url 'community:vote_community' %}";
+        const voteCommunityUrl = "{% url 'community:vote_community' %}";
     </script>
     
 {% endblock script %}
