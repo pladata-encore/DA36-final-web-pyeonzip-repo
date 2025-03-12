@@ -25,10 +25,6 @@ from konlpy.tag import Okt
 review_service = ReviewServiceImpl()
 s3_client = S3Client()
 
-def review_main(request):
-    return render(request, 'product/ai_product_list.html', {'ai_product_list':review_main})
-
-
 @login_required(login_url='users:login')
 def review_write(request):
     product_id = request.GET.get("product_id", "")  # GET 요청에서 product_id 가져오기

@@ -1,78 +1,68 @@
-{% load static %}
-{% for product in page_obj %}
-    <div class="col">
-        <div class="product-card mb-3">
-{#           <button type="button" class="btn">#}
-                <a href="{% url 'product:product_detail' product_id=product.product_id %}" class="text-decoration-none">
-                    {% if product.product_image_url %}
-                        <img src="{{ product.product_image_url }}" class="img-fluid">
-                    {% else %}
-                        <img src="{% static 'images/logo.png' %}" class="rounded-circle" width="26"/>
-                    {% endif%}
-                    <div class="card-body g-2">
-                        <div class="card-title">{{ product.product_name }}</div>
-                        <div class="product-tags">    
-                            <span class="tag">{{ product.product_price }}원</span>
-                            <span class="tag">{{ product.convenient_store_name }}</span>
-                            <span class="tag">{{ product.product_category_name }}</span>
-                        </div>
-                        
-                            {% if tab == 'AI' %}
-                            <div style="display: flex; align-items: center;">
-                                <span style="margin-right: 10px;">&nbsp;맛&nbsp;&nbsp;&nbsp;</span>
-                                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                  <div class="progress-bar w-50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                                </div>
-                            </div>
-                            <div style="display: flex; align-items: center;">
-                                <span style="margin-right: 10px;">가격&nbsp;</span>
-                                <div class="progress" role="progressbar" aria-label="Basic example" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100">
-                                  <div class="progress-bar w-50">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</div>
-                                </div> 
-                            </div>
-                            {% endif %}
-                            <span class="text-body-secondary">❤️:{{ product.likes.count }}</span>
-                            <span class="text-body-secondary">🗯️:{{ product.Product_reviews.count }}</span>
-                    </div>    
-                </a>
-{#            </button>#}
+{% load static %}{% for product in page_obj %}
+<div class="col">
+    <div class="product-card mb-3" >
+        <a href="{% url 'product:product_detail' product_id=product.product_id %}" class="text-decoration-none">
+            {% if product.product_image_url %}
+                <img class="product-image" src="{{ product.product_image_url }}" style="background-color:white;">
+            {% endif%}
+
+            <div class="card-body">
+                <div class="card-title my-1">{{ product.product_name }}</div>
+                <div>💰 {{ product.product_price }}원 | 🏪 {{ product.convenient_store_name }} | 🏷️ {{ product.product_category_name }} </div>
+
+                {% if tab == 'AI' %}
+                    <div>
+                        {% for keyword in product.conv_keywords %}
+                            <span class="badge bg-warning text-dark">#{{ keyword }}</span>
+                        {% endfor %}
+                    </div>
+                    <div>
+                        <span> 😋맛 : {{ product.taste_score }} | </span>
+                        <span> 💸가격 : {{ product.price_score }}</span>
+                    </div>
+
+                {% else %}
+                <div class="product-tag my-1">
+                    <span class="text-body-secondary">❤️:{{ product.likes.count }}</span>
+                    <span class="text-body-secondary">🗯️:{{ product.Product_reviews.count }}</span>
+                </div>
+
+                {% endif %}
+
+            </div>
+        </a>
         </div>
     </div>
 {% endfor %}
-
-<nav aria-label="Page navigation example">
-    <ul class="pagination justify-content-center">
-        <!-- 이전페이지 영역 시작 -->
-        {% if page_obj.previous_page_number|add:-4 >= 0 %}
-            <li class="page-item">
-                <button class="page-link" onclick="filterProducts({{ page_obj.previous_page_number|add:-3 }})">
-                    Previous
-                </button>
-            </li>
-        {% endif %}
-        <!-- 이전페이지 영역 끝 -->
-
-        <!-- 페이지넘버 영역 시작 -->
-        {% for page_number in page_obj.paginator.page_range %}
-                            {% if page_number >= page_obj.number|add:-3 and page_number <= page_obj.number|add:3 %}
-                                {% if page_number == page_obj.number %}
-                                    <li class="pagination-link active"><a class="page-link" href="#">{{ page_number }}</a></li>
-                {% else %}
-                    {# 현재 페이지가 아닌 경우 #}
-                    <li class="page-item">
-                        <button class="page-link" onclick="filterProducts({{ page_number }})">{{ page_number }}</button>
-                    </li>
-                {% endif %}
+<div class="row mt-4" id="pagination">
+<div class="col-12 text-center">
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.previous_page_number|add:-4 >= 0 %}
+                <li class="page-item">
+                    <button class="page-link" onclick="filterProducts({{ page_obj.previous_page_number|add:-3 }})">
+                        Previous
+                    </button>
+                </li>
             {% endif %}
-        {% endfor %}
-        <!-- 페이지넘버 영역 끝 -->
 
-        <!-- 다음페이지 영역 시작 -->
-        {% if last_page >= page_obj.number|add:4 %}
-           <button class="page-link" onclick="filterProducts({{ page_obj.next_page_number|add:+3 }})">
+            {% for page_number in page_obj.paginator.page_range %}
+                {% if page_number >= page_obj.number|add:-3 and page_number <= page_obj.number|add:3 %}
+                    {% if page_number == page_obj.number %}
+                        <li class="pagination-link active"><a class="page-link" href="#">{{ page_number }}</a></li>
+                    {% else %}
+                        <li class="page-item">
+                            <button class="page-link" onclick="filterProducts({{ page_number }})">{{ page_number }}</button>
+                        </li>
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+
+            {% if last_page >= page_obj.number|add:4 %}
+                <button class="page-link" onclick="filterProducts({{ page_obj.next_page_number|add:+3 }})">
                     Next
-            </button>
-          {% endif %}
-        <!-- 다음페이지 영역 끝 -->
-    </ul>
-</nav>
+                </button>
+            {% endif %}
+        </ul>
+    </nav>
+</div>

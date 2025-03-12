@@ -21,7 +21,7 @@ class ProductService(ABC):
         pass
 
     @abstractmethod
-    def price_count(self, page_obj):
+    def ai_score_count(self, products):
         pass
 
 class ProductServiceImpl(ProductService):
@@ -64,5 +64,5 @@ class ProductServiceImpl(ProductService):
     def ai_product(self):
         return self.__product_repository.ai_product()
 
-    def price_count(self, page_obj):
-         return self.__product_repository.price_count(page_obj)
+    def ai_score_count(self, products):
+         return self.__product_repository.ai_score_count(products)

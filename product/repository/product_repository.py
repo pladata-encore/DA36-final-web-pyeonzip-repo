@@ -28,12 +28,9 @@ class ProductRepository(ABC):
         pass
 
     @abstractmethod
-    def price_count(self, page_obj):
+    def ai_score_count(self, products):
         pass
 
-    @abstractmethod
-    def taste_count(self, page_obj):
-        pass
 
     @abstractmethod
     def conv_keyword(self, product_id):
@@ -72,8 +69,8 @@ class ProductRepositoryImpl(ProductRepository):
                 product.price_score = (price_pos_count / (price_pos_count + price_neg_count)) * 100 if (price_pos_count + price_neg_count) > 0 else 50  # NaN 방지
                 product.taste_score = (taste_pos_count / (taste_pos_count + taste_neg_count)) * 100 if (taste_pos_count + taste_neg_count) > 0 else 50
             except ZeroDivisionError:
-                product.price_score = 50
-                product.taste_score = 50
+                product.price_score = 0
+                product.taste_score = 0
             print(product.price_score, product.taste_score)
 
         else:
@@ -108,22 +105,32 @@ class ProductRepositoryImpl(ProductRepository):
         ai_products = Product.objects.annotate(num_reviews=Count('Product_reviews')).filter(num_reviews__gte=10)
         return ai_products
 
-    def price_count(self,page_obj):
-        for product in  page_obj:
-            pos_count, neg_count = 0, 0
+    def ai_score_count(self,products):
+        for product in  products:
+            price_pos_count, price_neg_count, taste_pos_count, taste_neg_count = 0,0,0,0
             reviews=Review.objects.filter(product_id=product.product_id)
             for review in reviews:
-                pos_count+=PriceLog.objects.filter(review_id=review.reviewId,PosNeg=1).count()
-                neg_count+=PriceLog.objects.filter(review_id=review.reviewId,PosNeg=0).count()
-            try:
-                product.score = (pos_count / pos_count+neg_count) * 100 if pos_count+neg_count > 0 else 50   # NaN 방지
-            except:
-                product.score=0
-            print(product,product.score)
-        return page_obj
+                price_pos_count+=PriceLog.objects.filter(review_id=review.reviewId,PosNeg=1,Confidence__gte=0.8).count()
+                price_neg_count+=PriceLog.objects.filter(review_id=review.reviewId,PosNeg=0,Confidence__gte=0.8).count()
 
-    def taste_count(self, page_obj):
-        pass
+                taste_pos_count += TasteLog.objects.filter(review_id=review.reviewId, PosNeg=2, Confidence__gte=0.8).count()
+                taste_neg_count += TasteLog.objects.filter(review_id=review.reviewId, PosNeg=0, Confidence__gte=0.8).count()
+
+
+            try:
+                product.price_score =int( (price_pos_count / (price_pos_count + price_neg_count)) * 100 if (price_pos_count + price_neg_count) > 0 else 50)
+                product.taste_score = int((taste_pos_count / (taste_pos_count + taste_neg_count)) * 100 if (taste_pos_count + taste_neg_count) > 0 else 50)
+            except:
+                product.price_score=0
+                product.taste_score=0
+
+            print("ai",product,product.price_score,product.taste_score)
+
+            product.conv_keywords = self.conv_keyword(product.product_id)[:3]
+            print(product.conv_keywords)
+
+        return products
+
 
     def conv_keyword(self, product_id):
         """

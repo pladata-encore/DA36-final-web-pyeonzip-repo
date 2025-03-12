@@ -8,6 +8,7 @@
 <div class="container mt-4">
     <!-- 🎯 투표 안내 문구 -->
     <br>
+    {% if request.user.is_authenticated and request.user.id %}
     <h2 class="text-center">🎯 둘 중 더 맘에 드는 아이디어 or 꿀조합은? </h2>
     <br>
     <br>
@@ -74,7 +75,7 @@
             <p class="text-center text-muted">🎉 모든 커뮤니티 글에 투표 완료했습니다!</p>
         {% endif %}
     </div>
-    
+    {% endif %}
     <br>
     <hr class="custom-divider">
     <br>
@@ -167,7 +168,7 @@
     <form id="csrf-form">{% csrf_token %}</form> 
     <script src="{% static 'js/community/community.js' %}"></script>
     <script>
-        var voteCommunityUrl = "{% url 'community:vote_community' %}";
+        const voteCommunityUrl = "{% url 'community:vote_community' %}";
     </script>
     
 {% endblock script %}
