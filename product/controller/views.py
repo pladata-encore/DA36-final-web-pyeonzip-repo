@@ -15,44 +15,32 @@ review_service=ReviewServiceImpl.get_instance()
 # Create your views here.
 
 def main(request,tab="ALL"):
+    page = request.GET.get('page', 1)
 
     products = product_service.find_all()
-    page = request.GET.get('page', 1)
+
+    if tab == 'LATEST':
+        products = product_service.latest_product()
+
+    elif tab=="AI":
+        products=product_service.ai_product().order_by('-updated_at')
+        products=product_service.ai_score_count(products)
+
     paginator = Paginator(products, 20)
     page_obj = paginator.get_page(page)
     last_page = paginator.num_pages
 
-    if tab == 'LATEST':
-        products = product_service.latest_product()
-        page = request.GET.get('page', 1)
-        paginator = Paginator(products, 20)
-        page_obj = paginator.get_page(page)
-        last_page = paginator.num_pages
-
-    elif tab=="AI":
-        products=product_service.ai_product().order_by('-updated_at')
-        page = request.GET.get('page', 1)
-        paginator = Paginator(products, 20)
-        page_obj = paginator.get_page(page)
-        last_page = paginator.num_pages
-        page_obj=product_service.price_count(page_obj)
-        return render(request,'product/product_list.html',context={'page_obj': page_obj,'last_page':last_page,'tab':tab})
-
-
     return render(request,'product/product_list.html',context={'page_obj': page_obj,'last_page':last_page,'tab':tab})
 
 def filter_products(request,store="ALL",category="ALL",tab="ALL",page=1):
-
-    products = product_service.find_all()
     page = request.GET.get('page', page)
+    products = product_service.find_all()
 
-    if tab == 'LATEST':
-        products = product_service.latest_product()
-        page = request.GET.get('page', page)
+    if tab == "LATEST":
+        products=product_service.latest_product()
 
-    elif tab == 'AI':
+    elif tab == "AI":
         products=product_service.ai_product()
-        page=request.GET.get('page', page)
 
     if category=="ALL":
         if store == "ALL":
@@ -63,10 +51,13 @@ def filter_products(request,store="ALL",category="ALL",tab="ALL",page=1):
     else:
         products = products.filter(Q(convenient_store_name__icontains=store) & Q(product_category_name__icontains=category))
 
+    if tab=="AI":
+        products=product_service.ai_score_count(products)
+
     paginator = Paginator(products, 20)  # 한페이지에 몇개씩?
     page_obj = paginator.get_page(page)
     last_page = paginator.num_pages
-    print(page,page_obj,last_page)
+
     return render(request, 'product/filter_product.html', context={'page_obj': page_obj,'last_page':last_page,"store":store,"category":category,"page":page ,"tab":tab})
 
 def product_detail(request,product_id):

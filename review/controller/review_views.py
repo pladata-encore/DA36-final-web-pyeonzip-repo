@@ -25,10 +25,6 @@ from konlpy.tag import Okt
 review_service = ReviewServiceImpl()
 s3_client = S3Client()
 
-def review_main(request):
-    return render(request, 'product/ai_product_list.html', {'ai_product_list':review_main})
-
-
 @login_required(login_url='users:login')
 def review_write(request):
     product_id = request.GET.get("product_id", "")  # GET 요청에서 product_id 가져오기
@@ -165,7 +161,7 @@ def analyze_review_sentiment(request):
         return JsonResponse({"error": str(e)}, status=500)
 
 
-okt = Okt()
+# okt = Okt()
 
 # MEDIAFILES 내 stopwords 파일 경로
 stopword_file = os.path.join(settings.MEDIA_ROOT, "reviews\\stopwords.txt")

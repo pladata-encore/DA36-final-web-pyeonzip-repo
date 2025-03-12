@@ -9,6 +9,7 @@ from community.entity.models import CommunityForm, Community
 from community.service.community_service import CommunityServiceImpl
 from users.entity.models import UserDetail
 
+
 community_service = CommunityServiceImpl()
 
 def community_list(request):
@@ -19,11 +20,13 @@ def community_list(request):
     page_obj = paginator.get_page(page)
     last_page = paginator.num_pages
 
-    left_post, right_post = community_service.get_random_unvoted_posts(request.user)
-
+    if request.user.id is not None:
+        left_post, right_post = community_service.get_random_unvoted_posts(request.user)
+    else:
+        left_post, right_post = None, None
     for community in communities:
         community.is_expired = community.deadline < now().date()  # 마감 여부 계산
-
+    print(request.user.id)
     return render(request, 'community/community_list.html', {'page_obj': page_obj,'last_page':last_page, 'left_post': left_post,
         'right_post': right_post })
 
