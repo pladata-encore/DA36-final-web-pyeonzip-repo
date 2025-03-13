@@ -2,6 +2,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.signals import request_started
 from django.shortcuts import redirect, render
 import re
+from django.db.models import Case, When
+
 
 from django.contrib import messages
 from product.entity.models import Product, ProductLikes
@@ -65,14 +67,16 @@ def mypage(request):
     user = request.user # 접속한 유저
     user_detail = UserDetail.objects.get(user=request.user)
 
-    liked_product_ids = ProductLikes.objects.filter(user=user).values_list('product_id', flat=True)
-    liked_products = Product.objects.filter(product_id__in=liked_product_ids) # 현재 유저가 좋아요 한 상품
+    liked_product_ids = ProductLikes.objects.filter(user=user).order_by('-liked_at').values_list('product_id',flat=True)
+    liked_products = Product.objects.filter(product_id__in=liked_product_ids).order_by(
+    Case(*[When(product_id=pid, then=pos) for pos, pid in enumerate(liked_product_ids)]))# 현재 유저가 좋아요 한 상품
 
     return render(request, 'users/mypage.html', {
         'user_detail': user_detail,
         'nickname' : user_detail.nickname,
         'email' : user_detail.email,
-        'liked_products':liked_products
+        'liked_products':liked_products,
+
     })
 
 

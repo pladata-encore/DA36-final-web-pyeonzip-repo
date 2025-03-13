@@ -71,9 +71,9 @@
                     <div class="col-5">
                         <h5>😊 긍정 키워드</h5>
                         <ul>
-                            <li>맛있는</li>
-                            <li>재구매한</li>
-                            <li>달달한</li>
+                            <li>{% if product.taste_pos_keywords and product.taste_pos_keywords|length > 0 %}{{ product.taste_pos_keywords.0 }}{% else %}{% endif %}</li>
+                            <li>{% if product.taste_pos_keywords and product.taste_pos_keywords|length > 1 %}{{ product.taste_pos_keywords.1 }}{% else %}{% endif %}</li>
+                            <li>{% if product.taste_pos_keywords and product.taste_pos_keywords|length > 2 %}{{ product.taste_pos_keywords.2 }}{% else %}{% endif %}</li>
                         </ul>
                     </div>
                     <div class="col-2 d-flex align-items-center justify-content-center">
@@ -82,9 +82,9 @@
                     <div class="col-5">
                         <h5>😞 부정 키워드</h5>
                         <ul>
-                            <li>비싼</li>
-                            <li>딱딱한</li>
-                            <li>맛없는</li>
+                            <li>{% if product.taste_neg_keywords and product.taste_neg_keywords|length > 0 %}{{ product.taste_neg_keywords.0 }}{% else %}{% endif %}</li>
+                            <li>{% if product.taste_neg_keywords and product.taste_neg_keywords|length > 1 %}{{ product.taste_neg_keywords.1 }}{% else %}{% endif %}</li>
+                            <li>{% if product.taste_neg_keywords and product.taste_neg_keywords|length > 2 %}{{ product.taste_neg_keywords.2 }}{% else %}{% endif %}</li>
                         </ul>
                     </div>
                 </div>

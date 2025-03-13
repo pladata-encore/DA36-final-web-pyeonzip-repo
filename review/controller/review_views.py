@@ -5,14 +5,15 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.http import require_POST
 
-from review.entity.models import ReviewForm, Review, ReviewRecommender, TasteLog, PriceLog, ConvenienceLog
+from review.entity.models import ReviewForm, Review, ReviewRecommender, TasteLog, PriceLog, ConvenienceLog, \
+    TasteKeywordLog
 from review.service.review_service import ReviewServiceImpl
 from django.http import JsonResponse
 from django.contrib import messages
 from django.urls import reverse
 
 from review.service.upload_service import S3Client
-from review.service.sentiment_service import analyze_sentiment
+from review.service.sentiment_service import analyze_sentiment_taste, analyze_sentiment_cost
 from review.service.keyword_service import extract_keywords
 
 import re
@@ -123,30 +124,39 @@ def analyze_review_sentiment(request):
 
         # ✅ 리뷰 데이터 전처리
         taste_texts = preprocess_review_for_sentiment(review.tasteContent)
-        # price_texts = preprocess_review(review.priceContent)
-        print(f"🔹 [Django] 분석 요청: {taste_texts}")
+        price_texts = preprocess_review_for_sentiment(review.priceContent)
+        print(f"🔹 [Django] 분석 요청: {taste_texts, price_texts}")
 
         # ✅ AI 추론 요청
-        taste_results = analyze_sentiment(taste_texts)
-        # price_results = analyze_sentiment(price_texts)
-        print(f"🔹 [Django] FastAPI 응답: {taste_results}")
+        taste_results = analyze_sentiment_taste(taste_texts)
+        price_results = analyze_sentiment_cost(price_texts)
+        print(f"🔹 [Django] FastAPI 응답: {taste_results, price_texts}")
 
         # ✅ DB 저장 (TasteLog, PriceLog)
-        for text, result in zip(taste_texts, taste_results):
-            TasteLog.objects.create(
-                review=review,
-                reviewTokenize=text,
-                PosNeg=result["PosNeg"],
-                Confidence=result["Confidence"]
-            )
-
-        # for text, result in zip(price_texts, price_results):
-        #     PriceLog.objects.create(
+        # for text, result in zip(taste_texts, taste_results):
+        #     TasteLog.objects.create(
         #         review=review,
         #         reviewTokenize=text,
         #         PosNeg=result["PosNeg"],
         #         Confidence=result["Confidence"]
         #     )
+
+        for idx, (text, result) in enumerate(zip(taste_texts, taste_results)):
+            TasteLog.objects.create(
+                review=review,
+                reviewTokenize=text,
+                sentence_id=idx,  # sentence_id 추가
+                PosNeg=result["PosNeg"],
+                Confidence=result["Confidence"]
+            )
+
+        for text, result in zip(price_texts, price_results):
+            PriceLog.objects.create(
+                review=review,
+                reviewTokenize=text,
+                PosNeg=result["PosNeg"],
+                Confidence=result["Confidence"]
+            )
 
         return JsonResponse({
             "message": "Sentiment analysis completed",
@@ -194,10 +204,30 @@ def analyze_review_keyword(request):
         # ✅ 리뷰 데이터 전처리
         conv_texts = preprocess_review_for_keyword(review.convenienceContent, stopwords)
         print(f"🔹 [Django] 분석 요청: {conv_texts}")
+        taste_texts = preprocess_review_for_sentiment(review.tasteContent)
+        print(f"🔹 [Django] 분석 요청: {taste_texts}")
 
         # ✅ AI 추론 요청
         keyword_result = extract_keywords(conv_texts)
         print(f"🔹 [Django] FastAPI 응답: {keyword_result}")
+        # for taste_text in taste_texts:
+        #     keyword_result_taste = extract_keywords(taste_text)
+        #     TasteKeywordLog.objects.create(
+        #         review=review,
+        #         reviewTokenize=taste_texts,
+        #         keybert_keywords=keyword_result_taste["keybert_keywords"],
+        #         top_sim_tags=keyword_result_taste["top_sim_tags"]
+        #     )
+        for idx, taste_text in enumerate(taste_texts):
+            keyword_result_taste = extract_keywords(taste_text)
+            TasteKeywordLog.objects.create(
+                review=review,
+                reviewTokenize=taste_text,
+                sentence_id=idx,  # sentence_id 추가
+                keybert_keywords=keyword_result_taste["keybert_keywords"],
+                top_sim_tags=keyword_result_taste["top_sim_tags"]
+            )
+            print(keyword_result_taste)
 
         # ✅ DB 저장 (ConvenienceLog 모델에 저장)
         ConvenienceLog.objects.create(
