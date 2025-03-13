@@ -20,7 +20,7 @@ import re
 import json
 import requests
 import os
-from konlpy.tag import Okt
+# from konlpy.tag import Okt
 
 
 review_service = ReviewServiceImpl()
