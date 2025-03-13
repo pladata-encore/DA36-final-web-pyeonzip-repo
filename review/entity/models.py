@@ -56,6 +56,7 @@ class TasteLog(models.Model):
     reviewTokenize=models.CharField(max_length=200)
     PosNeg=models.IntegerField(null=False,default=1)
     Confidence=models.FloatField(null=False,default=0.0)
+    sentence_id = models.IntegerField(null=False, default=0)
 
 class ConvenienceLog(models.Model):
     id = models.AutoField(primary_key=True)
@@ -63,6 +64,17 @@ class ConvenienceLog(models.Model):
     reviewTokenize = models.CharField(max_length=200)
     keybert_keywords = models.JSONField(default=list)
     top_sim_tags = models.JSONField(default=list)
+
+    def __str__(self):
+        return f"ConvenienceLog {self.id} - Review {self.review.id}"
+
+class TasteKeywordLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    reviewTokenize = models.CharField(max_length=200)
+    keybert_keywords = models.JSONField(default=list)
+    top_sim_tags = models.JSONField(default=list)
+    sentence_id = models.IntegerField(null=False, default=0)
 
     def __str__(self):
         return f"ConvenienceLog {self.id} - Review {self.review.id}"
