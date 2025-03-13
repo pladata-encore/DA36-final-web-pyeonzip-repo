@@ -32,10 +32,9 @@ DEBUG = True
 
 CSRF_TRUSTED_ORIGINS = ["https://pyeonzip.store","http://pyeonzip.store"]
 
-# ALLOWED_HOSTS = [
-#     '3.34.109.55',
-# ]
-ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
+ALLOWED_HOSTS = []
+# '3.34.109.55',
+# ALLOWED_HOSTS = os.getenv("DJANGO_ALLOWED_HOSTS", "127.0.0.1,localhost").split(",")
 
 # Application definition
 
@@ -172,7 +171,7 @@ SOCIALACCOUNT_LOGIN_ON_GET = True
 
 # 파일 업로드를 위한 설정
 # MEDIA_URL = '/media/'
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # s3 setiing
 AWS_ACCESS_KEY_ID=os.getenv('AWS_ACCESS_KEY_ID')

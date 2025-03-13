@@ -190,61 +190,61 @@ def analyze_review_sentiment(request):
 #     filtered_words = [word for word in words if word not in stopwords]  # 불용어 제거
 #     return " ".join(filtered_words)
 
-@require_POST
-@csrf_exempt
+# @require_POST
+# @csrf_exempt
 # ✅ 리뷰 전처리 및 키워드 추출 + DB 저장
-def analyze_review_keyword(request):
-    try:
-        data = json.loads(request.body)
-        review_id = data.get("review_id")
-
-        # ✅ 리뷰 가져오기
-        review = Review.objects.get(reviewId=review_id)
-
-        # ✅ 리뷰 데이터 전처리
-        conv_texts = preprocess_review_for_keyword(review.convenienceContent, stopwords)
-        print(f"🔹 [Django] 분석 요청: {conv_texts}")
-        taste_texts = preprocess_review_for_sentiment(review.tasteContent)
-        print(f"🔹 [Django] 분석 요청: {taste_texts}")
-
-        # ✅ AI 추론 요청
-        keyword_result = extract_keywords(conv_texts)
-        print(f"🔹 [Django] FastAPI 응답: {keyword_result}")
-        # for taste_text in taste_texts:
-        #     keyword_result_taste = extract_keywords(taste_text)
-        #     TasteKeywordLog.objects.create(
-        #         review=review,
-        #         reviewTokenize=taste_texts,
-        #         keybert_keywords=keyword_result_taste["keybert_keywords"],
-        #         top_sim_tags=keyword_result_taste["top_sim_tags"]
-        #     )
-        for idx, taste_text in enumerate(taste_texts):
-            keyword_result_taste = extract_keywords(taste_text)
-            TasteKeywordLog.objects.create(
-                review=review,
-                reviewTokenize=taste_text,
-                sentence_id=idx,  # sentence_id 추가
-                keybert_keywords=keyword_result_taste["keybert_keywords"],
-                top_sim_tags=keyword_result_taste["top_sim_tags"]
-            )
-            print(keyword_result_taste)
-
-        # ✅ DB 저장 (ConvenienceLog 모델에 저장)
-        ConvenienceLog.objects.create(
-            review=review,
-            reviewTokenize=conv_texts,
-            keybert_keywords=keyword_result["keybert_keywords"],
-            top_sim_tags=keyword_result["top_sim_tags"]
-            )
-
-        return JsonResponse({
-            "message": "Keyword analysis completed",
-            "review_id": review_id
-        }, status=200)
-
-    except Review.DoesNotExist:
-        return JsonResponse({"error": "Review not found"}, status=404)
-    except json.JSONDecodeError:
-        return JsonResponse({"error": "Invalid JSON"}, status=400)
-    except Exception as e:
-        return JsonResponse({"error": str(e)}, status=500)
+# def analyze_review_keyword(request):
+#     try:
+#         data = json.loads(request.body)
+#         review_id = data.get("review_id")
+#
+#         # ✅ 리뷰 가져오기
+#         review = Review.objects.get(reviewId=review_id)
+#
+#         # ✅ 리뷰 데이터 전처리
+#         conv_texts = preprocess_review_for_keyword(review.convenienceContent, stopwords)
+#         print(f"🔹 [Django] 분석 요청: {conv_texts}")
+#         taste_texts = preprocess_review_for_sentiment(review.tasteContent)
+#         print(f"🔹 [Django] 분석 요청: {taste_texts}")
+#
+#         # ✅ AI 추론 요청
+#         keyword_result = extract_keywords(conv_texts)
+#         print(f"🔹 [Django] FastAPI 응답: {keyword_result}")
+#         # for taste_text in taste_texts:
+#         #     keyword_result_taste = extract_keywords(taste_text)
+#         #     TasteKeywordLog.objects.create(
+#         #         review=review,
+#         #         reviewTokenize=taste_texts,
+#         #         keybert_keywords=keyword_result_taste["keybert_keywords"],
+#         #         top_sim_tags=keyword_result_taste["top_sim_tags"]
+#         #     )
+#         for idx, taste_text in enumerate(taste_texts):
+#             keyword_result_taste = extract_keywords(taste_text)
+#             TasteKeywordLog.objects.create(
+#                 review=review,
+#                 reviewTokenize=taste_text,
+#                 sentence_id=idx,  # sentence_id 추가
+#                 keybert_keywords=keyword_result_taste["keybert_keywords"],
+#                 top_sim_tags=keyword_result_taste["top_sim_tags"]
+#             )
+#             print(keyword_result_taste)
+#
+#         # ✅ DB 저장 (ConvenienceLog 모델에 저장)
+#         ConvenienceLog.objects.create(
+#             review=review,
+#             reviewTokenize=conv_texts,
+#             keybert_keywords=keyword_result["keybert_keywords"],
+#             top_sim_tags=keyword_result["top_sim_tags"]
+#             )
+#
+#         return JsonResponse({
+#             "message": "Keyword analysis completed",
+#             "review_id": review_id
+#         }, status=200)
+#
+#     except Review.DoesNotExist:
+#         return JsonResponse({"error": "Review not found"}, status=404)
+#     except json.JSONDecodeError:
+#         return JsonResponse({"error": "Invalid JSON"}, status=400)
+#     except Exception as e:
+#         return JsonResponse({"error": str(e)}, status=500)
