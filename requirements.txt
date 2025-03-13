@@ -9,3 +9,6 @@ requests
 python-dotenv
 pillow
 django-ebhealthcheck
+boto3
+django-storages
+konlpy

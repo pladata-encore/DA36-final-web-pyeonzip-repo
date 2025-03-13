@@ -8,6 +8,7 @@
 <div class="container mt-4">
     <!-- 🎯 투표 안내 문구 -->
     <br>
+    {% if request.user.is_authenticated and request.user.id %}
     <h2 class="text-center">🎯 둘 중 더 맘에 드는 아이디어 or 꿀조합은? </h2>
     <br>
     <br>
@@ -27,7 +28,7 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <!-- 🏆 프로필 & 이름 (왼쪽 정렬) -->
                     <div class="d-flex align-items-center">
-                        <img src="{{ left_post.author.profile.url }}" class="rounded-circle me-2 border" width="35" height="40">
+                        <img src="{{ left_post.author.profile }}" class="rounded-circle me-2 border" width="35" height="40">
                         <span class="fw-semibold text-dark">{{ left_post.author.user.username }}</span>
                     </div>
                 
@@ -56,7 +57,7 @@
                 <div class="d-flex align-items-center justify-content-between">
                     <!-- 🏆 프로필 & 이름 (왼쪽 정렬) -->
                     <div class="d-flex align-items-center">
-                        <img src="{{ right_post.author.profile.url }}" class="rounded-circle me-2 border" width="35" height="40">
+                        <img src="{{ right_post.author.profile }}" class="rounded-circle me-2 border" width="35" height="40">
                         <span class="fw-semibold text-dark">{{ right_post.author.user.username }}</span>
                     </div>
                 
@@ -74,7 +75,7 @@
             <p class="text-center text-muted">🎉 모든 커뮤니티 글에 투표 완료했습니다!</p>
         {% endif %}
     </div>
-    
+    {% endif %}
     <br>
     <hr class="custom-divider">
     <br>
@@ -84,7 +85,8 @@
 
 
     <!-- 📌 커뮤니티 목록 -->
-    {% for community in communities %}
+
+    {% for community in page_obj %}
     <div class="card mb-4 mx-auto shadow-sm" style="max-width: 80%;">
         <div class="card-header bg-light d-flex align-items-center">
             <span class="badge bg-primary me-2">{{ community.category.categoryName }}</span>
@@ -99,7 +101,7 @@
         
         <div class="card-footer d-flex justify-content-between align-items-center">
             <div class="d-flex align-items-center">
-                <img src="{{ community.author.profile.url }}" alt="User" class="rounded-circle me-2" width="30" height="30">
+                <img src="{{ community.author.profile }}" alt="User" class="rounded-circle me-2" width="30" height="30">
                 <span class="fw-semibold">{{ community.author.user.username }}</span>
             </div>
             <div class="text-end">
@@ -119,6 +121,45 @@
     {% endfor %}
 </div>
     
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <!-- 이전페이지 영역 시작 -->
+            {% if page_obj.previous_page_number|add:-4 >= 0 %}
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'community:community_list' %}?page={{ page_obj.previous_page_number|add:-3 }}">Previous</a>
+                </li>
+            {% endif %}
+            <!-- 이전페이지 영역 끝 -->
+
+            <!-- 페이지넘버 영역 시작 -->
+            {% for page_number in page_obj.paginator.page_range %}
+                {# 현재페이지 기준 앞뒤 3개까지만 표시 (4 ~ 7 링크 표시) #}
+                {% if page_number >= page_obj.number|add:-3 and page_number <= page_obj.number|add:3 %}
+                    {% if page_number == page_obj.number %}
+                        {# 현재페이지인 경우 #}
+                        <li class="page-item active"><a class="page-link" href="#">{{ page_number }}</a></li>
+                    {% else %}
+                        {# 현재페이지가 아닌 경우 #}
+                        <li class="page-item">
+                            <a class="page-link" href="{% url 'community:community_list' %}?page={{ page_number }}">{{ page_number }}</a>
+                        </li>
+                    {% endif %}
+                {% endif %}
+
+            {% endfor %}
+            <!-- 페이지넘버 영역 끝 -->
+
+            <!-- 다음페이지 영역 시작 -->
+            {% if last_page >= page_obj.number|add:4 %}
+        
+                <li class="page-item">
+                    <a class="page-link" href="{% url 'community:community_list' %}?page={{ page_obj.next_page_number|add:+3 }}">Next</a>
+                </li>
+            {% endif %}
+            <!-- 다음페이지 영역 끝 -->
+        </ul>
+    </nav>
+    
 
 {% endblock content %}
 
@@ -127,7 +168,7 @@
     <form id="csrf-form">{% csrf_token %}</form> 
     <script src="{% static 'js/community/community.js' %}"></script>
     <script>
-        var voteCommunityUrl = "{% url 'community:vote_community' %}";
+        const voteCommunityUrl = "{% url 'community:vote_community' %}";
     </script>
     
 {% endblock script %}

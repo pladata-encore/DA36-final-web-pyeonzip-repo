@@ -2,7 +2,9 @@ from .settings import *
 import os
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["127.0.0.1", "localhost"]
+
+STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 # DB 관련 세팅
 DATABASES = {

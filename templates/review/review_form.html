@@ -4,7 +4,7 @@
 {% block content %}
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        
+    <div class="container">    
         <!-- 1️⃣ 연관 상품 선택 -->
         <div class="p-5">
             <label for="selectedProduct" class="form-label"><strong>🪙 해당 상품에 대한 리뷰를 남기고 포인트 받아가세요~ 🪙</strong></label>
@@ -27,22 +27,23 @@
 
         <!-- 2️⃣ 맛 리뷰 작성 -->
         <div class="p-5">
-            <label for="tasteContent" class="form-label"><strong>🍽️ 맛은 어떠셨나요?</strong></label>
-            <textarea class="form-control" name="tasteContent" id="tasteContent" placeholder="맛에 대한 전반적인 평가를 작성해주세요 (20자 이상)" rows="10" minlength="20" maxlength="200" oninput="updateCharCount('tasteContent', 'charCountTaste'); checkFormCompletion();"></textarea>
+            <label for="tasteContent" class="form-label"><strong>🍽️ 맛은 만족스러우셨나요?</strong></label>
+            <textarea class="form-control" name="tasteContent" id="tasteContent" placeholder="맛에 대한 전반적인 평가를 작성해주세요 (20자 이상)" rows="2" minlength="20" maxlength="200" oninput="updateCharCount('tasteContent', 'charCountTaste'); checkFormCompletion();"></textarea>
             <div class="text-end"><span id="charCountTaste">0</span>/200</div>
         </div>
 
         <!-- 3️⃣ 가격 리뷰 작성 -->
         <div class="p-5">
-            <label for="priceContent" class="form-label"><strong>💸 가격은 어떠셨나요?</strong></label>
-            <textarea class="form-control" name="priceContent" id="priceContent" placeholder="가격에 대한 전반적인 평가를 작성해주세요 (20자 이상)" rows="10" minlength="20" maxlength="200" oninput="updateCharCount('priceContent', 'charCountPrice'); checkFormCompletion();"></textarea>
+            <label for="priceContent" class="form-label"><strong>💸 가격은 만족스러우셨나요?</strong></label>
+            <textarea class="form-control" name="priceContent" id="priceContent" placeholder="가격 대비 만족도에 대한 전반적인 평가를 작성해주세요.(20자 이상)" rows="2" minlength="20" maxlength="200" oninput="updateCharCount('priceContent', 'charCountPrice'); checkFormCompletion();"></textarea>
             <div class="text-end"><span id="charCountPrice">0</span>/200</div>
         </div>
 
         <!-- 4️⃣ 편의성 리뷰 작성 -->
         <div class="p-5">
-            <label for="convenienceContent" class="form-label"><strong>💡 편의성은 어떠셨나요?</strong></label>
-            <textarea class="form-control" name="convenienceContent" id="convenienceContent" placeholder="편의성, 패키지/디자인, 재구매에 대한 전반적인 평가를 작성해주세요 (20자 이상)" rows="10" minlength="20" maxlength="200" oninput="updateCharCount('convenienceContent', 'charCountConvenience'); checkFormCompletion();"></textarea>
+            <label for="convenienceContent" class="form-label"><strong>💡 해당 제품만의 눈에 띄었던 특징은 무엇인가요?</strong></label>
+            <textarea class="form-control" name="convenienceContent" id="convenienceContent" 
+            placeholder="예시) '야식으로 최고', '미니사이즈라 휴대성이 좋아요' 등과 같은 전반적인 특징에 대해 작성해주세요. (20자 이상)" rows="10" minlength="20" maxlength="200" oninput="updateCharCount('convenienceContent', 'charCountConvenience'); checkFormCompletion();"></textarea>
             <div class="text-end"><span id="charCountConvenience">0</span>/200</div>
         </div>
 
@@ -55,7 +56,9 @@
         <div class="p-5 text-end">
             <button type="submit" id="submitBtn" class="btn btn-secondary" disabled>등록</button>
         </div>
+    </div>
     </form>
+    
 {% endblock content %}
 
 {% block script %}

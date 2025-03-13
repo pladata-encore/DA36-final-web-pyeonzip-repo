@@ -6,7 +6,6 @@ from django.contrib.auth.models import User
 from django.db import models
 from django.db.models import SET_NULL
 from product.entity.models import Product
-from users.entity.models import UserDetail
 
 class Review(models.Model):
     reviewId = models.AutoField(primary_key=True)  # okay
@@ -17,7 +16,7 @@ class Review(models.Model):
     convenienceContent = models.TextField()  # erd cloud 추가
     created_at = models.DateTimeField(auto_now_add=True)
     modified_at = models.DateTimeField(auto_now=True)
-    reviewImageUrl = models.ImageField(upload_to='reviews/', null=True, blank=True)  # url, imageField, null, blank true
+    reviewImageUrl = models.ImageField(upload_to='review/', null=True, blank=True, max_length=500)  # url, imageField, null, blank true
     recommender = models.ManyToManyField(User, null=True, blank=True,related_name='Review_recommender',through='ReviewRecommender')  # 투표일 추가 가능인지 check , 불가능일 시 : model 따로 만들어
 
 class ReviewRecommender(models.Model):
@@ -42,3 +41,40 @@ class ReviewForm(forms.ModelForm):
             'product': '제품',
             'reviewImageUrl': '제품 사진',
         }
+
+
+class PriceLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    review=models.ForeignKey(Review, on_delete=models.CASCADE)
+    reviewTokenize=models.CharField(max_length=200)
+    PosNeg=models.IntegerField(null=False,default=0)
+    Confidence=models.FloatField(null=False,default=0.0)
+
+class TasteLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    review=models.ForeignKey(Review, on_delete=models.CASCADE)
+    reviewTokenize=models.CharField(max_length=200)
+    PosNeg=models.IntegerField(null=False,default=1)
+    Confidence=models.FloatField(null=False,default=0.0)
+    sentence_id = models.IntegerField(null=False, default=0)
+
+class ConvenienceLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    reviewTokenize = models.CharField(max_length=200)
+    keybert_keywords = models.JSONField(default=list)
+    top_sim_tags = models.JSONField(default=list)
+
+    def __str__(self):
+        return f"ConvenienceLog {self.id} - Review {self.review.id}"
+
+class TasteKeywordLog(models.Model):
+    id = models.AutoField(primary_key=True)
+    review = models.ForeignKey(Review, on_delete=models.CASCADE)
+    reviewTokenize = models.CharField(max_length=200)
+    keybert_keywords = models.JSONField(default=list)
+    top_sim_tags = models.JSONField(default=list)
+    sentence_id = models.IntegerField(null=False, default=0)
+
+    def __str__(self):
+        return f"ConvenienceLog {self.id} - Review {self.review.id}"

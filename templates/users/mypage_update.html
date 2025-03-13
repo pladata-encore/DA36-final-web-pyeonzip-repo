@@ -10,7 +10,7 @@
         <div class="profile-content">
             <div class="image-container" onclick="document.getElementById('id_profile').click();">
             {%  if user_detail.profile %}
-                <img src="{{ user_detail.profile.url }}" alt="프로필 이미지 사진" class="userprofile" id="profileImage">
+                <img src="{{ user_detail.profile }}" alt="프로필 이미지 사진" class="userprofile" id="profileImage">
             {% endif %}
 {#            {{ form.profile }}#}
             </div>
@@ -20,7 +20,7 @@
 {#                <i class="fas fa-camera">사진 업로드</i>#}
 {#            </button>    #}
         </div>
-
+    
         <!--닉네임 입력 필드-->
         <div class="nickname-section">
             <label for="id_nickname">닉네임</label>

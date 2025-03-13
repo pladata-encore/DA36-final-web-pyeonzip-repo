@@ -45,7 +45,6 @@
     transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
-
 /* -----------------------main--------------------- */
 
 .disabled-input-like {
@@ -72,7 +71,7 @@
     flex-direction: column;
     align-items: flex-start; /* 왼쪽 정렬 */
     justify-content: center;
-    background: url('/static/images/bg.png') no-repeat center center;
+    background: url('/static/images/bg2.png') no-repeat center center;
     background-size: cover;
     color: black;
     text-align: center;
@@ -96,9 +95,9 @@
 
 .search-main-title {
     font-family: "Noto Sans KR Bold";
-    font-size: 32px;
+    font-size: 38px;
     font-weight: 500;
-    padding: 8px 0px;
+    padding: 0px 0px;
     color: black;
     text-align: left;
 
@@ -106,7 +105,7 @@
 
 .search-main-sub-title {
     font-family: "Noto Sans KR ExtraBold";
-    font-size: 48px;
+    font-size: 58px;
     font-weight: 500;
     padding: 8px 0px;
     color: black;
@@ -165,7 +164,7 @@
 
 .product-card {
     flex: 0 0 auto;  /* flex 컨테이너에서 크기 자동 조정 */
-    width: 250px;  /* ✅ 현재 카드 너비 (200px) */
+    width: 310px;  /* ✅ 현재 카드 너비 (200px) */
     height: 300px;
     border: 1px solid #ddd;  /* ✅ 테두리 적용 */
     border-radius: 8px;  /* ✅ 모서리를 둥글게 */
@@ -174,10 +173,13 @@
     background: white;  /* ✅ 배경색 흰색 */
     padding: 10px;  /* ✅ 내부 여백 */
     white-space: normal;  /* ✅ 줄 바꿈 허용 */
+
 }
 
 .product-card img {
-    width: 100%;
+    display: flex;
+    justify-content: center;
+    width: 80%;
     height: 150px;
     background: #ccc;
 }
@@ -221,6 +223,10 @@
 /* -----------------------main end--------------------- */
 
 /* -----------------------mypage start--------------------- */
+.login-container{
+    height: 1000px;
+}
+
 .mypage-title {
     font-family: "Noto Sans KR SemiBold";
     font-size: 48px;

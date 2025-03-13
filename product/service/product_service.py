@@ -6,7 +6,7 @@ class ProductService(ABC):
     def find_all(self):
         pass
     @abstractmethod
-    def find_by_id(self, id):
+    def find_by_id(self, product_id):
         pass
 
     @abstractmethod
@@ -18,6 +18,10 @@ class ProductService(ABC):
         pass
     @abstractmethod
     def ai_product(self):
+        pass
+
+    @abstractmethod
+    def ai_score_count(self, products):
         pass
 
 class ProductServiceImpl(ProductService):
@@ -42,8 +46,8 @@ class ProductServiceImpl(ProductService):
     def find_all(self):
         return self.__product_repository.find_all()
 
-    def find_by_id(self,id):
-        return self.__product_repository.find_by_id(id)
+    def find_by_id(self,product_id):
+        return self.__product_repository.find_by_id(product_id)
 
 
     def add_remove_likes(self, product_id, likes):
@@ -59,3 +63,6 @@ class ProductServiceImpl(ProductService):
 
     def ai_product(self):
         return self.__product_repository.ai_product()
+
+    def ai_score_count(self, products):
+         return self.__product_repository.ai_score_count(products)
