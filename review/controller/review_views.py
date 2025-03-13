@@ -173,22 +173,22 @@ def analyze_review_sentiment(request):
 
 # okt = Okt()
 
-# MEDIAFILES 내 stopwords 파일 경로
-stopword_file = os.path.join(settings.MEDIA_ROOT, "reviews\\stopwords.txt")
-
-def load_stopwords(filepath):
-    with open(filepath, 'r', encoding='CP949') as f:
-        stopwords = set(f.read().strip().split(","))
-    return stopwords
-
-stopwords = load_stopwords(stopword_file)
-
-# ✅ 텍스트 정제 및 불용어 제거
-def preprocess_review_for_keyword(review, stopwords):
-    cleaned_review = re.sub(r"[^가-힣\s]", "", review)
-    words = okt.morphs(cleaned_review)
-    filtered_words = [word for word in words if word not in stopwords]  # 불용어 제거
-    return " ".join(filtered_words)
+# # MEDIAFILES 내 stopwords 파일 경로
+# stopword_file = os.path.join(settings.MEDIA_ROOT, "reviews\\stopwords.txt")
+#
+# def load_stopwords(filepath):
+#     with open(filepath, 'r', encoding='CP949') as f:
+#         stopwords = set(f.read().strip().split(","))
+#     return stopwords
+#
+# stopwords = load_stopwords(stopword_file)
+#
+# # ✅ 텍스트 정제 및 불용어 제거
+# def preprocess_review_for_keyword(review, stopwords):
+#     cleaned_review = re.sub(r"[^가-힣\s]", "", review)
+#     words = okt.morphs(cleaned_review)
+#     filtered_words = [word for word in words if word not in stopwords]  # 불용어 제거
+#     return " ".join(filtered_words)
 
 @require_POST
 @csrf_exempt
