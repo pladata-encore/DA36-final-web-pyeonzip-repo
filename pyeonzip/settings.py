@@ -112,7 +112,9 @@ DATABASES = {
         'OPTIONS': {
             'charset': 'utf8mb4',
         }
-    }
+    },
+
+    'CONN_MAX_AGE': 600,  # 10분 동안 연결 유지
 }
 
 
