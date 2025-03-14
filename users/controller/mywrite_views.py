@@ -18,7 +18,7 @@ def my_review(request):
     for review in my_reviews:
         review.recommend_count = review.recommender.count()
         review.author_nickname = review.author.userdetail.nickname if review.author.userdetail else "익명"
-        review.author_profile = review.author.userdetail.profile.url if review.author.userdetail and review.author.userdetail.profile else None
+        review.author_profile = review.author.userdetail.profile if review.author.userdetail and review.author.userdetail.profile else None
 
     # user = UserDetail.objects.filter(user_id=request.user.id).first()
     # user_profile = user.profile.url if user and user.profile else None
